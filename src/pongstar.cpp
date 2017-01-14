@@ -20,6 +20,9 @@ Pongstar::~Pongstar() {
 void Pongstar::initialize(HWND hwnd) {
 	Game::initialize(hwnd); // throws GameError
 
+	dataManager = new DataManager;
+	dataManager->readFile(CONTROLS_JSON);
+
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));

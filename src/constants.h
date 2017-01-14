@@ -52,4 +52,7 @@ const char BALL_IMAGE[] = "sprites\\Ball.png";
 const char PADDLE_IMAGE[] = "sprites\\Paddle.png";
 const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
 
+// Config
+const char CONTROLS_JSON[] = "config\\controls.json";
+
 #endif
