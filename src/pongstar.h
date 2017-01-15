@@ -2,13 +2,25 @@
 #define _PONGSTAR_H
 #define _WIN32_LEAN_AND_MEAN
 
+#include <vector>
+
 #include "game.h"
-#include "textureManager.h"
 #include "image.h"
+#include "textureManager.h"
+
+#include "paddle.h"
+#include "ball.h"
 
 class Pongstar : public Game {
 private:
 	// Game items
+	TextureManager dividerTexture;
+	TextureManager paddleTexture;
+	TextureManager ballTexture;
+
+	Image divider;
+
+	std::vector<Entity> entityVector;
 
 public:
 	// Constructor
@@ -19,6 +31,8 @@ public:
 
 	// Initialize the game
 	void initialize(HWND hwnd);
+	void initializeEntities();
+
 	void update();      // must override pure virtual from Game
 	void ai();          // "
 	void collisions();  // "

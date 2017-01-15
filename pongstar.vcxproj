@@ -75,20 +75,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\ball.h" />
     <ClInclude Include="src\constants.h" />
+    <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameError.h" />
     <ClInclude Include="src\graphics.h" />
     <ClInclude Include="src\image.h" />
     <ClInclude Include="src\input.h" />
+    <ClInclude Include="src\paddle.h" />
     <ClInclude Include="src\pongstar.h" />
     <ClInclude Include="src\textureManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\ball.cpp" />
+    <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\graphics.cpp" />
     <ClCompile Include="src\image.cpp" />
     <ClCompile Include="src\input.cpp" />
+    <ClCompile Include="src\paddle.cpp" />
     <ClCompile Include="src\pongstar.cpp" />
     <ClCompile Include="src\textureManager.cpp" />
     <ClCompile Include="src\winmain.cpp" />
