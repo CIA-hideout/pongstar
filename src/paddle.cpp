@@ -14,7 +14,7 @@ void Paddle::update(float frameTime) {
 	float yVelocity = 0.0f;
 
 	if (input->isKeyDown(controls.up)) {
-		yVelocity -= paddleNS::VELOCITY;
+		yVelocity = -paddleNS::VELOCITY;
 	}
 
 	if (input->isKeyDown(controls.down)) {

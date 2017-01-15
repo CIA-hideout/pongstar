@@ -8,8 +8,7 @@
 //=============================================================================
 // Constructor
 //=============================================================================
-Graphics::Graphics()
-{
+Graphics::Graphics() {
 	direct3d = NULL;
 	device3d = NULL;
 	sprite = NULL;
@@ -22,16 +21,14 @@ Graphics::Graphics()
 //=============================================================================
 // Destructor
 //=============================================================================
-Graphics::~Graphics()
-{
+Graphics::~Graphics() {
 	releaseAll();
 }
 
 //=============================================================================
 // Release all
 //=============================================================================
-void Graphics::releaseAll()
-{
+void Graphics::releaseAll() {
 	SAFE_RELEASE(sprite);
 	SAFE_RELEASE(device3d);
 	SAFE_RELEASE(direct3d);
@@ -41,8 +38,7 @@ void Graphics::releaseAll()
 // Initialize DirectX graphics
 // throws GameError on error
 //=============================================================================
-void Graphics::initialize(HWND hw, int w, int h, bool full)
-{
+void Graphics::initialize(HWND hw, int w, int h, bool full) {
 	hwnd = hw;
 	width = w;
 	height = h;
@@ -97,9 +93,8 @@ void Graphics::initialize(HWND hw, int w, int h, bool full)
 //=============================================================================
 // Initialize D3D presentation parameters
 //=============================================================================
-void Graphics::initD3Dpp()
-{
-	try{
+void Graphics::initD3Dpp() {
+	try {
 		ZeroMemory(&d3dpp, sizeof(d3dpp));              // fill the structure with 0
 		// fill in the parameters we need
 		d3dpp.BackBufferWidth = width;
@@ -131,8 +126,7 @@ void Graphics::initD3Dpp()
 // Returns HRESULT
 //=============================================================================
 HRESULT Graphics::loadTexture(const char *filename, COLOR_ARGB transcolor,
-	UINT &width, UINT &height, LP_TEXTURE &texture)
-{
+	UINT &width, UINT &height, LP_TEXTURE &texture) {
 	// The struct for reading file info
 	D3DXIMAGE_INFO info;
 	result = E_FAIL;
@@ -179,8 +173,7 @@ HRESULT Graphics::loadTexture(const char *filename, COLOR_ARGB transcolor,
 //=============================================================================
 // Display the backbuffer
 //=============================================================================
-HRESULT Graphics::showBackbuffer()
-{
+HRESULT Graphics::showBackbuffer() {
 	result = E_FAIL;    // default to fail, replace on success
 	// Display backbuffer to screen
 	result = device3d->Present(NULL, NULL, NULL, NULL);
@@ -195,8 +188,7 @@ HRESULT Graphics::showBackbuffer()
 // Post: Returns true if compatible mode found and pMode structure is filled.
 //       Returns false if no compatible mode found.
 //=============================================================================
-bool Graphics::isAdapterCompatible()
-{
+bool Graphics::isAdapterCompatible() {
 	UINT modes = direct3d->GetAdapterModeCount(D3DADAPTER_DEFAULT,
 		d3dpp.BackBufferFormat);
 	for (UINT i = 0; i<modes; i++)
@@ -221,8 +213,7 @@ bool Graphics::isAdapterCompatible()
 //   spriteData.rect.right must be right edge + 1
 //   spriteData.rect.bottom must be bottom edge + 1
 //=============================================================================
-void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
-{
+void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color) {
 	if (spriteData.texture == NULL)      // if no texture
 		return;
 
@@ -272,8 +263,7 @@ void Graphics::drawSprite(const SpriteData &spriteData, COLOR_ARGB color)
 //=============================================================================
 // Test for lost device
 //=============================================================================
-HRESULT Graphics::getDeviceState()
-{
+HRESULT Graphics::getDeviceState() {
 	result = E_FAIL;    // default to fail, replace on success
 	if (device3d == NULL)
 		return  result;
@@ -284,8 +274,7 @@ HRESULT Graphics::getDeviceState()
 //=============================================================================
 // Reset the graphics device
 //=============================================================================
-HRESULT Graphics::reset()
-{
+HRESULT Graphics::reset() {
 	result = E_FAIL;    // default to fail, replace on success
 	initD3Dpp();                        // init D3D presentation parameters
 	sprite->OnLostDevice();
@@ -300,8 +289,7 @@ HRESULT Graphics::reset()
 // Pre: All user created D3DPOOL_DEFAULT surfaces are freed.
 // Post: All user surfaces are recreated.
 //=============================================================================
-void Graphics::changeDisplayMode(graphicsNS::DISPLAY_MODE mode)
-{
+void Graphics::changeDisplayMode(graphicsNS::DISPLAY_MODE mode) {
 	try{
 		switch (mode)
 		{

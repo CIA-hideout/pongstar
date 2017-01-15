@@ -7,9 +7,10 @@
 #define _GRAPHICS_H             // file is included in more than one place
 #define WIN32_LEAN_AND_MEAN
 
-#ifdef _DEBUG
+#ifndef _DEBUG
 #define D3D_DEBUG_INFO
 #endif
+
 #include <d3d9.h>
 #include <d3dx9.h>
 #include "constants.h"
@@ -27,8 +28,7 @@
 #define SETCOLOR_ARGB(a,r,g,b) \
     ((COLOR_ARGB)((((a)&0xff)<<24)|(((r)&0xff)<<16)|(((g)&0xff)<<8)|((b)&0xff)))
 
-namespace graphicsNS
-{
+namespace graphicsNS {
 	// Some common colors
 	// ARGB numbers range from 0 through 255
 	// A = Alpha channel (transparency where 255 is opaque)
@@ -62,8 +62,7 @@ namespace graphicsNS
 }
 
 // SpriteData: The properties required by Graphics::drawSprite to draw a sprite
-struct SpriteData
-{
+struct SpriteData {
 	int         width;      // width of sprite in pixels
 	int         height;     // height of sprite in pixels
 	float       x;          // screen location (top left corner of sprite)
@@ -76,8 +75,7 @@ struct SpriteData
 	bool        flipVertical;   // true to flip sprite vertically
 };
 
-class Graphics
-{
+class Graphics {
 private:
 	// DirectX pointers and stuff
 	LP_3D       direct3d;
@@ -189,8 +187,7 @@ public:
 	//=============================================================================
 	// Clear backbuffer and BeginScene()
 	//=============================================================================
-	HRESULT beginScene()
-	{
+	HRESULT beginScene() {
 		result = E_FAIL;
 		if (device3d == NULL)
 			return result;
@@ -203,8 +200,7 @@ public:
 	//=============================================================================
 	// EndScene()
 	//=============================================================================
-	HRESULT endScene()
-	{
+	HRESULT endScene() {
 		result = E_FAIL;
 		if (device3d)
 			result = device3d->EndScene();
@@ -214,16 +210,14 @@ public:
 	//=============================================================================
 	// Sprite Begin
 	//=============================================================================
-	void spriteBegin()
-	{
+	void spriteBegin() {
 		sprite->Begin(D3DXSPRITE_ALPHABLEND);
 	}
 
 	//=============================================================================
 	// Sprite End
 	//=============================================================================
-	void spriteEnd()
-	{
+	void spriteEnd() {
 		sprite->End();
 	}
 };

@@ -5,8 +5,7 @@ int currentId = 0;
 //=============================================================================
 // constructor
 //=============================================================================
-Entity::Entity() : Image()
-{
+Entity::Entity() : Image() {
 	radius = 1.0;
 	edge.left = -1;
 	edge.top = -1;
@@ -34,8 +33,7 @@ Entity::Entity() : Image()
 // Post: returns true if successful, false if failed
 //=============================================================================
 bool Entity::initialize(Game *gamePtr, int width, int height, int ncols,
-	TextureManager *textureM)
-{
+	TextureManager *textureM) {
 	currentId++;
 	id = currentId;
 
@@ -46,8 +44,7 @@ bool Entity::initialize(Game *gamePtr, int width, int height, int ncols,
 //=============================================================================
 // activate the entity
 //=============================================================================
-void Entity::activate()
-{
+void Entity::activate() {
 	active = true;
 }
 
@@ -56,8 +53,7 @@ void Entity::activate()
 // typically called once per frame
 // frameTime is used to regulate the speed of movement and animation
 //=============================================================================
-void Entity::update(float frameTime)
-{
+void Entity::update(float frameTime) {
 	velocity += deltaV;
 	deltaV.x = 0;
 	deltaV.y = 0;
@@ -70,8 +66,7 @@ void Entity::update(float frameTime)
 // typically called once per frame
 // performs ai calculations, ent is passed for interaction
 //=============================================================================
-void Entity::ai(float frameTime, Entity &ent)
-{}
+void Entity::ai(float frameTime, Entity &ent) {}
 
 //=============================================================================
 // Perform collision detection between this entity and the other Entity.
@@ -83,8 +78,7 @@ void Entity::ai(float frameTime, Entity &ent)
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
-{
+bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	// if either entity is not active then no collision may occcur
 	if (!active || !ent.getActive())
 		return false;
@@ -119,8 +113,7 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector)
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collideCircle(Entity &ent, VECTOR2 &collisionVector)
-{
+bool Entity::collideCircle(Entity &ent, VECTOR2 &collisionVector) {
 	// difference between centers
 	distSquared = *getCenter() - *ent.getCenter();
 	distSquared.x = distSquared.x * distSquared.x;      // difference squared
@@ -146,8 +139,7 @@ bool Entity::collideCircle(Entity &ent, VECTOR2 &collisionVector)
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector)
-{
+bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector) {
 	// if either entity is not active then no collision may occcur
 	if (!active || !ent.getActive())
 		return false;
@@ -175,8 +167,7 @@ bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector)
 // The separating axis test:
 //   Two boxes are not colliding if their projections onto a line do not overlap.
 //=============================================================================
-bool Entity::collideRotatedBox(Entity &ent, VECTOR2 &collisionVector)
-{
+bool Entity::collideRotatedBox(Entity &ent, VECTOR2 &collisionVector) {
 	computeRotatedBox();                    // prepare rotated box
 	ent.computeRotatedBox();                // prepare rotated box
 	if (projectionsOverlap(ent) && ent.projectionsOverlap(*this))
@@ -193,8 +184,7 @@ bool Entity::collideRotatedBox(Entity &ent, VECTOR2 &collisionVector)
 // Called by collideRotatedBox()
 // Post: returns true if projections overlap, false otherwise
 //=============================================================================
-bool Entity::projectionsOverlap(Entity &ent)
-{
+bool Entity::projectionsOverlap(Entity &ent) {
 	float projection, min01, max01, min03, max03;
 
 	// project other box onto edge01
@@ -253,8 +243,7 @@ bool Entity::projectionsOverlap(Entity &ent)
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collideRotatedBoxCircle(Entity &ent, VECTOR2 &collisionVector)
-{
+bool Entity::collideRotatedBoxCircle(Entity &ent, VECTOR2 &collisionVector) {
 	float min01, min03, max01, max03, center01, center03;
 
 	computeRotatedBox();                    // prepare rotated box
@@ -296,8 +285,7 @@ bool Entity::collideRotatedBoxCircle(Entity &ent, VECTOR2 &collisionVector)
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collideCornerCircle(VECTOR2 corner, Entity &ent, VECTOR2 &collisionVector)
-{
+bool Entity::collideCornerCircle(VECTOR2 corner, Entity &ent, VECTOR2 &collisionVector) {
 	distSquared = corner - *ent.getCenter();            // corner - circle
 	distSquared.x = distSquared.x * distSquared.x;      // difference squared
 	distSquared.y = distSquared.y * distSquared.y;
@@ -322,8 +310,7 @@ bool Entity::collideCornerCircle(VECTOR2 corner, Entity &ent, VECTOR2 &collision
 // |   |
 // 3---2
 //=============================================================================
-void Entity::computeRotatedBox()
-{
+void Entity::computeRotatedBox() {
 	if (rotatedBoxReady)
 		return;
 	float projection;
@@ -375,8 +362,7 @@ void Entity::computeRotatedBox()
 // Is this Entity outside the specified rectangle
 // Post: returns true if outside rect, false otherwise
 //=============================================================================
-bool Entity::outsideRect(RECT rect)
-{
+bool Entity::outsideRect(RECT rect) {
 	if (spriteData.x + spriteData.width*getScale() < rect.left ||
 		spriteData.x > rect.right ||
 		spriteData.y + spriteData.height*getScale() < rect.top ||
@@ -386,18 +372,9 @@ bool Entity::outsideRect(RECT rect)
 }
 
 //=============================================================================
-// damage
-// This entity has been damaged by a weapon.
-// Override this function in the inheriting class.
-//=============================================================================
-void Entity::damage(int weapon)
-{}
-
-//=============================================================================
 // Entity bounces after collision with another entity
 //=============================================================================
-void Entity::bounce(VECTOR2 &collisionVector, Entity &ent)
-{
+void Entity::bounce(VECTOR2 &collisionVector, Entity &ent) {
 	VECTOR2 Vdiff = ent.getVelocity() - velocity;
 	VECTOR2 cUV = collisionVector;              // collision unit vector
 	Graphics::Vector2Normalize(&cUV);
@@ -425,8 +402,7 @@ void Entity::bounce(VECTOR2 &collisionVector, Entity &ent)
 //                    2              2
 //  r*r  =   (Ax - Bx)   +  (Ay - By)
 //=============================================================================
-void Entity::gravityForce(Entity *ent, float frameTime)
-{
+void Entity::gravityForce(Entity *ent, float frameTime) {
 	// if either entity is not active then no gravity effect
 	if (!active || !ent->getActive())
 		return;

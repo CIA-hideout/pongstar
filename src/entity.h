@@ -6,14 +6,12 @@
 #include "input.h"
 #include "game.h"
 
-namespace entityNS
-{
+namespace entityNS {
 	enum COLLISION_TYPE { NONE, CIRCLE, BOX, ROTATED_BOX };
 	const float GRAVITY = 6.67428e-11f;         // gravitational constant
 }
 
-class Entity : public Image
-{
+class Entity : public Image {
 	// Entity properties
 protected:
 	int id;
@@ -77,8 +75,7 @@ public:
 	const int getId() { return id; }
 
 	// Return center of scaled Entity as screen x,y.
-	virtual const VECTOR2* getCenter()
-	{
+	virtual const VECTOR2* getCenter() {
 		center = VECTOR2(getCenterX(), getCenterY());
 		return &center;
 	}
@@ -90,8 +87,7 @@ public:
 	virtual const RECT& getEdge() const { return edge; }
 
 	// Return corner c of ROTATED_BOX
-	virtual const VECTOR2* getCorner(UINT c) const
-	{
+	virtual const VECTOR2* getCorner(UINT c) const {
 		if (c >= 4)
 			c = 0;
 		return &corners[c];
@@ -171,9 +167,6 @@ public:
 
 	// Does this entity collide with ent?
 	virtual bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
-
-	// Damage this Entity with weapon.
-	virtual void damage(int weapon);
 
 	// Entity bounces after collision with other Entity
 	void bounce(VECTOR2 &collisionVector, Entity &ent);
