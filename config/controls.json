@@ -1,10 +1,10 @@
 {
 	"p1": {
-		"up": "a",
-		"down": "z"
+		"up": "W",
+		"down": "S"
 	},
 	"p2": {
-		"up": "l",
-		"down": "m"
+		"up": "up",
+		"down": "down"
 	}
 }

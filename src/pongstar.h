@@ -23,7 +23,7 @@ private:
 
 	Image divider;
 
-	std::vector<Entity> entityVector;
+	std::vector<Entity*> entityVector;
 
 public:
 	// Constructor

@@ -16,6 +16,7 @@ class Entity : public Image
 {
 	// Entity properties
 protected:
+	int id;
 	entityNS::COLLISION_TYPE collisionType;
 	VECTOR2 center;         // center of entity
 	float   radius;         // radius of collision circle
@@ -72,6 +73,9 @@ public:
 	//           Get functions            //
 	////////////////////////////////////////
 
+	// Return id of entity
+	const int getId() { return id; }
+
 	// Return center of scaled Entity as screen x,y.
 	virtual const VECTOR2* getCenter()
 	{
@@ -114,6 +118,9 @@ public:
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
+
+	// Set id of entity
+	void setId(int i) { id = i; }
 
 	// Set velocity.
 	virtual void  setVelocity(VECTOR2 v)    { velocity = v; }

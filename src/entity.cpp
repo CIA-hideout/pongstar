@@ -1,5 +1,7 @@
 #include "entity.h"
 
+int currentId = 0;
+
 //=============================================================================
 // constructor
 //=============================================================================
@@ -34,6 +36,9 @@ Entity::Entity() : Image()
 bool Entity::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM)
 {
+	currentId++;
+	id = currentId;
+
 	input = gamePtr->getInput();                // the input system
 	return(Image::initialize(gamePtr->getGraphics(), width, height, ncols, textureM));
 }
@@ -440,5 +445,4 @@ void Entity::gravityForce(Entity *ent, float frameTime)
 	gravityV *= force * frameTime;
 	// Add gravity vector to moving velocity vector to change direction
 	velocity += gravityV;
->>>>>>> Add entity class
 }

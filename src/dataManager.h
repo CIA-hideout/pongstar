@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <map>
 
 // rapidjson/example/simpledom/simpledom.cpp`
 #include "rapidjson/document.h"
@@ -12,39 +13,46 @@
 #include "rapidjson/stringbuffer.h"
 
 #include "constants.h"
+#include "gameError.h"
 
 using namespace rapidjson;
 
-struct pControls {
+struct PaddleControls {
 	UCHAR up;
 	UCHAR down;
-	pControls() {}
-	pControls(UCHAR up, UCHAR down) : up(up), down(down) {}
+	PaddleControls() {}
+	PaddleControls(UCHAR up, UCHAR down) : up(up), down(down) {}
 };
 
-struct controlsJson {
-	pControls p1Control;
-	pControls p2Control;
+struct ControlsJson {
+	PaddleControls p1;
+	PaddleControls p2;
 
-	controlsJson() {}
-	controlsJson(
-		pControls p1C, 
-		pControls p2C
+	ControlsJson() {}
+	ControlsJson(
+		PaddleControls p1, 
+		PaddleControls p2
 	) : 
-		p1Control(p1C), 
-		p2Control(p2C) {}
+		p1(p1), 
+		p2(p2) {}
 };
 
 class DataManager {
 private:
+	ControlsJson controlsJson;
 
 public:
 	DataManager();
 	~DataManager();
 
-	Document readFile(const char* fileName);	// Takes in a pointer to a char array
+	// getters
+	ControlsJson getControlsJson() { return controlsJson; };
+	
+	// setters
+	void setControlsJson(ControlsJson cj) { controlsJson = cj; }
 
-	controlsJson initControlData(const char* fileName);
+	Document readFile(const char* fileName);	// Takes in a pointer to a char array
+	void initControlData(const char* fileName);
 };
 
 #endif
