@@ -4,28 +4,45 @@ DataManager::DataManager() {}
 
 DataManager::~DataManager() {}
 
-void DataManager::readFile(const char* fileName) {
+Document DataManager::readFile(const char* fileName) {
 	
-	//std::ifstream config_doc(fileName, std::ifstream::binary);
-	//config_doc >> root;
+	Document document;
+	std::string jsonString,line;
+	std::ifstream file(fileName, std::ifstream::binary);
 
-	//printf("%s", root["p1"]);
+	if (file.is_open()) {
+		while (getline(file, line)) {
+			jsonString.append(line + "\n");
+		}
+		file.close();
+	}
+	else {
+		printf("Unable to open file\n");
+	}
 
-		// 1. Parse a JSON string into DOM.
-		const char* json = "{\"project\":\"rapidjson\",\"stars\":10}";
-		Document d;
-		d.Parse(json);
+	if (document.Parse(jsonString.c_str()).HasParseError()) {
+		printf("Error in json");
+	}
 
-		// 2. Modify it by DOM.
-		Value& s = d["stars"];
-		s.SetInt(s.GetInt() + 1);
-
-		// 3. Stringify the DOM
-		StringBuffer buffer;
-		Writer<StringBuffer> writer(buffer);
-		d.Accept(writer);
-
-		// Output {"project":"rapidjson","stars":11}
-		std::cout << buffer.GetString() << std::endl;
-
+	return document;
 }
+
+pControls getPlayerControls(Value val) {
+	return pControls((unsigned char)val["up"].GetString(), (unsigned char)val["down"].GetString());
+}
+
+controlsJson DataManager::initControlData(const char* fileName) {
+	Document document = readFile(fileName);
+	
+	controlsJson cj = controlsJson();
+	cj.p1Control = getPlayerControls(document["p1"].GetObjectA());
+	cj.p2Control = getPlayerControls(document["p2"].GetObjectA());
+
+	return cj;
+}
+
+/*char b = 'B';
+UCHAR unsignedB = (unsigned char)b;
+
+printf("%u", A_KEY);
+printf("%u", unsignedB);*/

@@ -13,6 +13,9 @@ namespace paddleNS {
 class Paddle : public Entity {
 private:
 public:
+	UCHAR up;
+	UCHAR down;
+public:
 	Paddle();
 	~Paddle();
 

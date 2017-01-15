@@ -22,6 +22,7 @@ void Pongstar::initialize(HWND hwnd) {
 
 	dataManager = new DataManager;
 	dataManager->readFile(CONTROLS_JSON);
+	controlsJson cjson = dataManager->initControlData(CONTROLS_JSON);
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
@@ -38,6 +39,8 @@ void Pongstar::initialize(HWND hwnd) {
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
 
 	this->initializeEntities();
+
+	// Create new paddles using cjson
 
 	return;
 }
