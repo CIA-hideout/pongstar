@@ -20,6 +20,9 @@ Pongstar::~Pongstar() {
 void Pongstar::initialize(HWND hwnd) {
 	Game::initialize(hwnd); // throws GameError
 
+	dataManager = new DataManager;
+	dataManager->initControlData(CONTROLS_JSON);
+
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
@@ -40,26 +43,28 @@ void Pongstar::initialize(HWND hwnd) {
 }
 
 void Pongstar::initializeEntities() {
-	Paddle paddle1;
-	Paddle paddle2;
-	Ball ball;
+	ControlsJson controls = dataManager->getControlsJson();
 
-	if (!paddle1.initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
+	Paddle *paddle1 = new Paddle(controls.p1);
+	Paddle *paddle2 = new Paddle(controls.p2);
+	Ball* ball = new Ball();
+
+	if (!paddle1->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle1"));
 
-	if (!paddle2.initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
+	if (!paddle2->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
 
-	if (!ball.initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, &ballTexture))
+	if (!ball->initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, &ballTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
-	paddle1.setX((float)paddleNS::SIDE_SPACE);
-	paddle1.setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
-	paddle2.setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
-	paddle2.setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
+	paddle1->setX((float)paddleNS::SIDE_SPACE);
+	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
+	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
+	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 
-	ball.setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
-	ball.setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
+	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
+	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
@@ -69,7 +74,11 @@ void Pongstar::initializeEntities() {
 //=============================================================================
 // Update all game items
 //=============================================================================
-void Pongstar::update() {}
+void Pongstar::update() {
+	for (size_t i = 0; i < entityVector.size(); ++i) {
+		entityVector[i]->update(frameTime);
+	}
+}
 
 //=============================================================================
 // Artificial Intelligence
@@ -90,7 +99,7 @@ void Pongstar::render() {
 	divider.draw();
 
 	for (size_t i = 0; i < entityVector.size(); ++i) {
-		entityVector[i].draw();
+		entityVector[i]->draw();
 	}
 
 	graphics->spriteEnd();                  // end drawing sprites

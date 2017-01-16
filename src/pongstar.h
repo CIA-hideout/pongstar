@@ -5,8 +5,9 @@
 #include <vector>
 
 #include "game.h"
-#include "image.h"
 #include "textureManager.h"
+#include "dataManager.h"
+#include "image.h"
 
 #include "paddle.h"
 #include "ball.h"
@@ -14,13 +15,15 @@
 class Pongstar : public Game {
 private:
 	// Game items
+	DataManager *dataManager;
+
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;
 	TextureManager ballTexture;
 
 	Image divider;
 
-	std::vector<Entity> entityVector;
+	std::vector<Entity*> entityVector;
 
 public:
 	// Constructor

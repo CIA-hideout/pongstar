@@ -41,15 +41,17 @@ const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE;
 const UCHAR ESC_KEY = VK_ESCAPE;
 const UCHAR ALT_KEY = VK_MENU;
 const UCHAR ENTER_KEY = VK_RETURN;
-
-const UCHAR P1_UP_KEY = 0x57;		// W key
-const UCHAR P1_DOWN_KEY = 0x53;		// S key
-const UCHAR P2_UP_KEY = VK_UP;		// Up arrow
-const UCHAR P2_DOWN_KEY = VK_DOWN;	// Down arrow
+const UCHAR UP_KEY = VK_UP;
+const UCHAR DOWN_KEY = VK_DOWN;
+const UCHAR LEFT_KEY = VK_LEFT;
+const UCHAR RIGHT_KEY = VK_RIGHT;
 
 // Sprites
 const char BALL_IMAGE[] = "sprites\\Ball.png";
 const char PADDLE_IMAGE[] = "sprites\\Paddle.png";
 const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
+
+// Config
+const char CONTROLS_JSON[] = "config\\controls.json";
 
 #endif

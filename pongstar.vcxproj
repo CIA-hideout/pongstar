@@ -77,6 +77,7 @@
   <ItemGroup>
     <ClInclude Include="src\ball.h" />
     <ClInclude Include="src\constants.h" />
+    <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameError.h" />
@@ -89,6 +90,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ball.cpp" />
+    <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\graphics.cpp" />
@@ -98,6 +100,9 @@
     <ClCompile Include="src\pongstar.cpp" />
     <ClCompile Include="src\textureManager.cpp" />
     <ClCompile Include="src\winmain.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config\controls.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
