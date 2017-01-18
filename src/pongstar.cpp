@@ -23,6 +23,9 @@ void Pongstar::initialize(HWND hwnd) {
 	dataManager = new DataManager;
 	dataManager->initControlData(CONTROLS_JSON);
 
+	fontManager = new FontManager(graphics);
+	fontManager->initialize();
+
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
@@ -36,7 +39,7 @@ void Pongstar::initialize(HWND hwnd) {
 	// Images
 	if (!divider.initialize(graphics, 0, 0, 0, &dividerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
-
+	
 	this->initializeEntities();
 
 	return;
@@ -102,6 +105,13 @@ void Pongstar::render() {
 		entityVector[i]->draw();
 	}
 
+	fontManager->print(
+		fontNS::SABO_FILLED,
+		GAME_WIDTH /2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") /2,
+		5,
+		"60"
+		);
+
 	graphics->spriteEnd();                  // end drawing sprites
 }
 
@@ -113,6 +123,8 @@ void Pongstar::releaseAll() {
 	dividerTexture.onLostDevice();
 	paddleTexture.onLostDevice();
 	ballTexture.onLostDevice();
+
+	fontManager->releaseAll();
 
 	Game::releaseAll();
 	return;
@@ -126,6 +138,8 @@ void Pongstar::resetAll() {
 	dividerTexture.onResetDevice();
 	paddleTexture.onResetDevice();
 	ballTexture.onResetDevice();
+
+	fontManager->resetAll();
 
 	Game::resetAll();
 	return;

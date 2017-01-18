@@ -51,6 +51,12 @@ const char BALL_IMAGE[] = "sprites\\Ball.png";
 const char PADDLE_IMAGE[] = "sprites\\Paddle.png";
 const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
 
+// Font
+const char SABO_FONT_TEXTURE[] = "resources\\font\\sabo.png";
+const char SABO_FONT_INFO[] = "resources\\font\\sabo.dat";
+const char SABO_FILLED_FONT_TEXTURE[] = "resources\\font\\sabo_filled.png";
+const char SABO_FILLED_FONT_INFO[] = "resources\\font\\sabo_filled.dat";
+
 // Config
 const char CONTROLS_JSON[] = "config\\controls.json";
 
