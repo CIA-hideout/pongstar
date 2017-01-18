@@ -43,6 +43,11 @@ void Pongstar::initialize(HWND hwnd) {
 }
 
 void Pongstar::initializeEntities() {
+	// RNG
+	std::random_device rd;     // only used once to initialise (seed) engine
+	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+	std::uniform_int_distribution<int> uniformDirection(0, 1);
+
 	ControlsJson controls = dataManager->getControlsJson();
 
 	Paddle *paddle1 = new Paddle(controls.p1);
@@ -66,6 +71,14 @@ void Pongstar::initializeEntities() {
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
+	// Randomize initial ball direction (left or right)
+	float startingVelocity = ballNS::VELOCITY;
+	if (uniformDirection(rng) == 1) {
+		startingVelocity = -ballNS::VELOCITY;
+	}
+
+	ball->setVelocity(VECTOR2(startingVelocity, 0));
+
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
@@ -88,9 +101,26 @@ void Pongstar::ai() {}
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void Pongstar::collisions() {}
+void Pongstar::collisions() {
+	VECTOR2 collisionVector;
 
-//=============================================================================
+	for (size_t i = 0; i < entityVector.size(); ++i) {
+		for (size_t j = 0; j < entityVector.size(); ++j) {
+			if (entityVector[i]->getId() != entityVector[j]->getId()) {
+				switch (entityVector[i]->getEntityType()) {
+				case entityNS::BALL:
+					if (entityVector[i]->collidesWith(*entityVector[j], collisionVector)) {
+						printf("wow\n");
+						entityVector[i]->paddleBounce(collisionVector, *entityVector[j], ballNS::VELOCITY);
+					}
+					break;
+				}
+			}
+		}
+	}
+}
+
+//==========================================================i]===================
 // Render game items
 //=============================================================================
 void Pongstar::render() {

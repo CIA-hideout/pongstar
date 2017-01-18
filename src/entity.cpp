@@ -18,7 +18,7 @@ Entity::Entity() : Image() {
 	deltaV.y = 0.0;
 	active = true;                  // the entity is active
 	rotatedBoxReady = false;
-	collisionType = entityNS::CIRCLE;
+	collisionType = entityNS::BOX;
 	health = 100;
 	gravity = entityNS::GRAVITY;
 }
@@ -89,6 +89,7 @@ bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	// If both entities are BOX collision
 	if (collisionType == entityNS::BOX && ent.getCollisionType() == entityNS::BOX)
 		return collideBox(ent, collisionVector);
+		
 	// All other combinations use separating axis test
 	// If neither entity uses CIRCLE collision
 	if (collisionType != entityNS::CIRCLE && ent.getCollisionType() != entityNS::CIRCLE)
@@ -153,6 +154,7 @@ bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector) {
 
 		return false;
 	}
+
 	// set collision vector
 	collisionVector = *ent.getCenter() - *getCenter();
 	return true;
@@ -386,13 +388,23 @@ void Entity::bounce(VECTOR2 &collisionVector, Entity &ent) {
 	// If entities are already moving apart then bounce must
 	// have been previously called and they are still colliding.
 	// Move entities apart along collisionVector
-	if (cUVdotVdiff > 0)
-	{
+	if (cUVdotVdiff > 0) {
 		setX(getX() - cUV.x * massRatio);
 		setY(getY() - cUV.y * massRatio);
 	}
 	else
 		deltaV += ((massRatio * cUVdotVdiff) * cUV);
+}
+
+void Entity::paddleBounce(VECTOR2 &collisionVector, Entity &ent, float ballVelocity) {
+	// Calculate ratios of collision vector 
+	float xRatio = collisionVector.x / (fabs(collisionVector.x) + fabs(collisionVector.y));
+	float yRatio = collisionVector.y / (fabs(collisionVector.x) + fabs(collisionVector.y));
+
+	// Use ratios to determine resultant velocity of ball
+	// Negative used to invert the direction
+	VECTOR2 newVelocity = VECTOR2(ballVelocity * -xRatio, ballVelocity * -yRatio);
+	velocity = newVelocity;
 }
 
 //=============================================================================

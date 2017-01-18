@@ -32,7 +32,7 @@ const UINT GAME_HEIGHT = 720;
 
 // Game
 const double PI = 3.14159265;
-const float FRAME_RATE = 200.0f;
+const float FRAME_RATE = 500.0f;
 const float MIN_FRAME_RATE = 10.0f;
 const float MIN_FRAME_TIME = 1.0f / FRAME_RATE;
 const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE;

@@ -7,6 +7,7 @@ namespace ballNS {
 	const int HEIGHT = 20;
 	const int WIDTH = 20;
 	const int NCOLS = 1;
+	const float VELOCITY = 800.0f;
 }
 
 class Ball : public Entity {
@@ -16,6 +17,7 @@ public:
 	~Ball();
 
 	void update(float frameTime);
+	void wallCollision();
 };
 
 #endif
