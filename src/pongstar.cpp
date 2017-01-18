@@ -107,8 +107,8 @@ void Pongstar::render() {
 
 	fontManager->print(
 		fontNS::SABO_FILLED,
-		GAME_WIDTH /2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") /2,
-		5,
+		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") /2 - fontNS::CENTER_OFFSET,
+		HUD_Y_POS,
 		"60"
 		);
 

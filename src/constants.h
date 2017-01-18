@@ -57,6 +57,8 @@ const char SABO_FONT_INFO[] = "resources\\font\\sabo.dat";
 const char SABO_FILLED_FONT_TEXTURE[] = "resources\\font\\sabo_filled.png";
 const char SABO_FILLED_FONT_INFO[] = "resources\\font\\sabo_filled.dat";
 
+const int HUD_Y_POS = 12;
+
 // Config
 const char CONTROLS_JSON[] = "config\\controls.json";
 

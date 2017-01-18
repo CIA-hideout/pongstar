@@ -11,6 +11,7 @@
 
 namespace fontNS {
 	enum FONT_NAME { SABO, SABO_FILLED };
+	const int CENTER_OFFSET = 11;
 }
 
 typedef std::pair<fontNS::FONT_NAME, Font*> nameFontPair;

@@ -87,7 +87,3 @@ int Font::getTotalWidth(std::string text) {
 void Font::draw() {
 	Image::draw();
 }
-
-void Font::update(float deltaTime) {
-
-}
