@@ -4,12 +4,19 @@
 #include <map>
 #include <string>
 
-#include "constants.h"
 #include "textureManager.h"
 #include "font.h"
 #include "graphics.h"
 
 namespace fontNS {
+	const char SABO_FONT_TEXTURE[] = "resources\\font\\sabo.png";
+	const char SABO_FONT_INFO[] = "resources\\font\\sabo.dat";
+	const char SABO_FILLED_FONT_TEXTURE[] = "resources\\font\\sabo_filled.png";
+	const char SABO_FILLED_FONT_INFO[] = "resources\\font\\sabo_filled.dat";
+	const int CHAR_WIDTH = 128;
+	const int CHAR_HEIGHT = 128;
+	const int NCOLS = 16;
+
 	enum FONT_NAME { SABO, SABO_FILLED };
 	const int CENTER_OFFSET = 11;
 }

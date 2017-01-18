@@ -7,19 +7,19 @@ FontManager::FontManager(Graphics *g) {
 FontManager::~FontManager() {}
 
 void FontManager::initialize() {
-	if (!saboFontTexture.initialize(graphics, SABO_FONT_TEXTURE))
+	if (!saboFontTexture.initialize(graphics, fontNS::SABO_FONT_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing sabo font texture"));
 
-	if (!saboFilledFontTexure.initialize(graphics, SABO_FILLED_FONT_TEXTURE))
+	if (!saboFilledFontTexure.initialize(graphics, fontNS::SABO_FILLED_FONT_TEXTURE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing sabo filled font texture"));
 
 	Font* saboFont = new Font();
-	saboFont->initialize(graphics, 128, 128, 16, &saboFontTexture);
-	saboFont->loadTextData(SABO_FONT_INFO);
+	saboFont->initialize(graphics, fontNS::CHAR_WIDTH, fontNS::CHAR_HEIGHT, fontNS::NCOLS, &saboFontTexture);
+	saboFont->loadTextData(fontNS::SABO_FONT_INFO);
 
 	Font* saboFilledFont = new Font();
-	saboFilledFont->initialize(graphics, 128, 128, 16, &saboFilledFontTexure);
-	saboFilledFont->loadTextData(SABO_FILLED_FONT_INFO);
+	saboFilledFont->initialize(graphics, fontNS::CHAR_WIDTH, fontNS::CHAR_HEIGHT, fontNS::NCOLS, &saboFilledFontTexure);
+	saboFilledFont->loadTextData(fontNS::SABO_FILLED_FONT_INFO);
 
 	fonts.insert(nameFontPair(fontNS::SABO, saboFont));
 	fonts.insert(nameFontPair(fontNS::SABO_FILLED, saboFilledFont));
