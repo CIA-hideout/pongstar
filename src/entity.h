@@ -7,6 +7,7 @@
 #include "game.h"
 
 namespace entityNS {
+	enum ENTITY_TYPE { BALL, PADDLE, PICKUP, BUMPER };
 	enum COLLISION_TYPE { NONE, CIRCLE, BOX, ROTATED_BOX };
 	const float GRAVITY = 6.67428e-11f;         // gravitational constant
 }
@@ -24,7 +25,7 @@ protected:
 	// left and top are typically negative numbers
 	RECT    edge;           // for BOX and ROTATED_BOX collision detection
 	VECTOR2 corners[4];     // for ROTATED_BOX collision detection
-	VECTOR2 edge01, edge03;  // edges used for projection
+	VECTOR2 edge01, edge03; // edges used for projection
 	float   edge01Min, edge01Max, edge03Min, edge03Max; // min and max projections
 	VECTOR2 velocity;       // velocity
 	VECTOR2 deltaV;         // added to velocity during next call to update()
@@ -37,6 +38,8 @@ protected:
 	HRESULT hr;             // standard return type
 	bool    active;         // only active entities may collide
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
+	entityNS::ENTITY_TYPE entityType;
+
 
 	// --- The following functions are protected because they are not intended to be
 	// --- called from outside the class.
@@ -111,6 +114,9 @@ public:
 	// Return collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
 	virtual entityNS::COLLISION_TYPE getCollisionType() { return collisionType; }
 
+	// Return entity type (BALL, PADDLE, PICKUP,  BUMPER)
+	virtual entityNS::ENTITY_TYPE getEntityType() { return entityType; }
+
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
@@ -170,6 +176,8 @@ public:
 
 	// Entity bounces after collision with other Entity
 	void bounce(VECTOR2 &collisionVector, Entity &ent);
+
+	void paddleBounce(VECTOR2 &collisionVector, Entity &ent, float ballVelocity);
 
 	// Adds the gravitational force to the velocity vector of this entity
 	void gravityForce(Entity *other, float frameTime);

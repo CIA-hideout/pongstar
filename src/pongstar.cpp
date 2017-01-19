@@ -78,9 +78,31 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
+	// RNG
+	std::random_device rd;     // only used once to initialise (seed) engine
+	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+	std::uniform_int_distribution<int> randomBool(0, 1);
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
+
+		if (entityVector[i]->getEntityType() == entityNS::BALL) {
+			VECTOR2 ballVelocity = entityVector[i]->getVelocity();
+
+			// If ball is stationary
+			if (ballVelocity.x == 0 && ballVelocity.y == 0) {
+				if (input->wasKeyPressed(SPACE_KEY)) {
+					// Randomize initial ball direction (left or right)
+					float startingVelocity = (randomBool(rng) == 1) ? ballNS::VELOCITY : -ballNS::VELOCITY;
+					entityVector[i]->setVelocity(VECTOR2(startingVelocity, 0));
+				}
+			}
+		}
 	}
+
+
+
+	
 }
 
 //=============================================================================
@@ -91,9 +113,25 @@ void Pongstar::ai() {}
 //=============================================================================
 // Handle collisions
 //=============================================================================
-void Pongstar::collisions() {}
+void Pongstar::collisions() {
+	VECTOR2 collisionVector;
 
-//=============================================================================
+	for (size_t i = 0; i < entityVector.size(); ++i) {
+		for (size_t j = 0; j < entityVector.size(); ++j) {
+			if (entityVector[i]->getId() != entityVector[j]->getId()) {
+				switch (entityVector[i]->getEntityType()) {
+				case entityNS::BALL:
+					if (entityVector[i]->collidesWith(*entityVector[j], collisionVector)) {
+						entityVector[i]->paddleBounce(collisionVector, *entityVector[j], ballNS::VELOCITY);
+					}
+					break;
+				}
+			}
+		}
+	}
+}
+
+//==========================================================i]===================
 // Render game items
 //=============================================================================
 void Pongstar::render() {

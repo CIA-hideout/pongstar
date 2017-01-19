@@ -37,7 +37,7 @@ char* strToCharArr(std::string str) {
 std::string toUpperCase(std::string str) {
 	const char* charArr = str.c_str();
 
-	for (int i = 0; i < strlen(charArr); i++) {
+	for (size_t i = 0; i < strlen(charArr); i++) {
 		if (str[i] >= 'a' && str[i] <= 'z')
 		{
 			str[i] = str[i] - 'a' + 'A';

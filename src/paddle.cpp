@@ -3,6 +3,14 @@
 Paddle::Paddle() : Entity() {}
 
 Paddle::Paddle(PaddleControls pc) {
+	entityType = entityNS::PADDLE;
+	spriteData.width = paddleNS::WIDTH;
+	spriteData.height = paddleNS::HEIGHT;
+	edge.top = -paddleNS::HEIGHT / 2;
+	edge.bottom = paddleNS::HEIGHT / 2;
+	edge.left = -paddleNS::WIDTH / 2;
+	edge.right = paddleNS::WIDTH / 2;
+
 	controls = pc;
 }
 
@@ -14,15 +22,19 @@ void Paddle::update(float frameTime) {
 	float yVelocity = 0.0f;
 
 	if (input->isKeyDown(controls.up)) {
-		yVelocity = -paddleNS::VELOCITY;
+		if (getY() > 0) {
+			yVelocity = -paddleNS::VELOCITY;
+		}
 	}
 
 	if (input->isKeyDown(controls.down)) {
-		yVelocity = paddleNS::VELOCITY;
+		if (getY() + paddleNS::HEIGHT < GAME_HEIGHT) {
+			yVelocity = paddleNS::VELOCITY;
+		}
 	}
 
 	setVelocity(VECTOR2(0, yVelocity));
 
-	spriteData.x += frameTime * velocity.x;         // move ship along X 
-	spriteData.y += frameTime * velocity.y;         // move ship along Y
+	spriteData.x += frameTime * velocity.x;
+	spriteData.y += frameTime * velocity.y;
 }
