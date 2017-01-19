@@ -43,11 +43,6 @@ void Pongstar::initialize(HWND hwnd) {
 }
 
 void Pongstar::initializeEntities() {
-	// RNG
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> uniformDirection(0, 1);
-
 	ControlsJson controls = dataManager->getControlsJson();
 
 	Paddle *paddle1 = new Paddle(controls.p1);
@@ -71,14 +66,6 @@ void Pongstar::initializeEntities() {
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
-	// Randomize initial ball direction (left or right)
-	float startingVelocity = ballNS::VELOCITY;
-	if (uniformDirection(rng) == 1) {
-		startingVelocity = -ballNS::VELOCITY;
-	}
-
-	ball->setVelocity(VECTOR2(startingVelocity, 0));
-
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
@@ -88,9 +75,31 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
+	// RNG
+	std::random_device rd;     // only used once to initialise (seed) engine
+	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+	std::uniform_int_distribution<int> randomBool(0, 1);
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
+
+		if (entityVector[i]->getEntityType() == entityNS::BALL) {
+			VECTOR2 ballVelocity = entityVector[i]->getVelocity();
+
+			// If ball is stationary
+			if (ballVelocity.x == 0 && ballVelocity.y == 0) {
+				if (input->wasKeyPressed(SPACE_KEY)) {
+					// Randomize initial ball direction (left or right)
+					float startingVelocity = (randomBool(rng) == 1) ? ballNS::VELOCITY : -ballNS::VELOCITY;
+					entityVector[i]->setVelocity(VECTOR2(startingVelocity, 0));
+				}
+			}
+		}
 	}
+
+
+
+	
 }
 
 //=============================================================================
@@ -110,7 +119,6 @@ void Pongstar::collisions() {
 				switch (entityVector[i]->getEntityType()) {
 				case entityNS::BALL:
 					if (entityVector[i]->collidesWith(*entityVector[j], collisionVector)) {
-						printf("wow\n");
 						entityVector[i]->paddleBounce(collisionVector, *entityVector[j], ballNS::VELOCITY);
 					}
 					break;
