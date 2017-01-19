@@ -7,6 +7,7 @@
 #include "game.h"
 #include "textureManager.h"
 #include "dataManager.h"
+#include "fontManager.h"
 #include "image.h"
 
 #include "paddle.h"
@@ -16,6 +17,7 @@ class Pongstar : public Game {
 private:
 	// Game items
 	DataManager *dataManager;
+	FontManager* fontManager;
 
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;

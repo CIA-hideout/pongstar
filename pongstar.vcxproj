@@ -79,6 +79,8 @@
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\font.h" />
+    <ClInclude Include="src\fontManager.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\gameError.h" />
     <ClInclude Include="src\graphics.h" />
@@ -92,6 +94,8 @@
     <ClCompile Include="src\ball.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\entity.cpp" />
+    <ClCompile Include="src\font.cpp" />
+    <ClCompile Include="src\fontManager.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\graphics.cpp" />
     <ClCompile Include="src\image.cpp" />
