@@ -6,6 +6,7 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include <vector>
 
 // rapidjson/example/simpledom/simpledom.cpp`
 #include "rapidjson/document.h"
@@ -37,9 +38,26 @@ struct ControlsJson {
 		p2(p2) {}
 };
 
+struct PickupData {
+	std::string name;
+	int frame;
+	float duration;
+
+	PickupData() {}
+	PickupData(std::string n, int f, float d) : name(n), frame(f), duration(d) {}
+};
+
+struct PickupsJson {
+	std::vector<PickupData*> pickups;
+
+	PickupsJson() {}
+	PickupsJson(std::vector<PickupData*> p) : pickups(p) {}	{}
+};
+
 class DataManager {
 private:
 	ControlsJson controlsJson;
+	PickupsJson	pickupsJson;
 
 public:
 	DataManager();
@@ -47,12 +65,18 @@ public:
 
 	// getters
 	ControlsJson getControlsJson() { return controlsJson; };
+	PickupsJson	getPickupsJson() { return pickupsJson; }
 	
 	// setters
 	void setControlsJson(ControlsJson cj) { controlsJson = cj; }
+	void setPickupsJson(PickupsJson pj) { pickupsJson = pj; }
 
 	Document readFile(const char* fileName);	// Takes in a pointer to a char array
 	void initControlData(const char* fileName);
+	void initPickupsData(const char* fileName);
+
+	// Logging
+	void logPickupsJson();
 };
 
 #endif

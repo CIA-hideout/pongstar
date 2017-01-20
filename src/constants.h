@@ -56,5 +56,6 @@ const int HUD_Y_POS = 12;
 
 // Config
 const char CONTROLS_JSON[] = "config\\controls.json";
+const char PICKUPS_JSON[] = "config\\pickups.json";
 
 #endif

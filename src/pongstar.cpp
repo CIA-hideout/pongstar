@@ -22,6 +22,7 @@ void Pongstar::initialize(HWND hwnd) {
 
 	dataManager = new DataManager;
 	dataManager->initControlData(CONTROLS_JSON);
+	dataManager->initPickupsData(PICKUPS_JSON);
 
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
