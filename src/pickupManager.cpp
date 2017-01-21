@@ -10,26 +10,29 @@ PickupManager::PickupManager() {}
 
 PickupManager::~PickupManager() {}
 
-void PickupManager::initialize(PickupJson pickupJson) {
-	std::unordered_map<pickupNS::PICKUP_TYPE, Pickup*> pickupsMap;
+void PickupManager::initialize(Graphics* graphics, PickupJson pickupJson) {
 	std::vector<PickupData*> pickupDataVec = pickupJson.pickupDataVec;
 	PickupData* dataPtr = NULL;
-	Pickup* pickupPtr = NULL;
 	pickupNS::PICKUP_TYPE pickupType;
 
 	// store all pickup info into pickupManager
 	for (size_t i = 0; i < pickupDataVec.size(); i++) {
-		dataPtr = new PickupData();
 		dataPtr = pickupDataVec[i];
 		pickupType = nameToEnum[dataPtr->name];
 
-		pickupPtr = new Pickup(pickupType, dataPtr->frame, dataPtr->duration);
-		pickupsMap.insert(typePickupPair(pickupType, pickupPtr));
+		pickupDataMap.insert(typePickupDataPair(pickupType, dataPtr));
 	}
 
-	pickups = pickupsMap;
+	if (!pickupTexture.initialize(graphics, PICKUP_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pickup texture"));
 }
 
-Pickup* createPickup(pickupNS::PICKUP_TYPE pickupType) {
+Pickup* PickupManager::createPickup(Game* game, pickupNS::PICKUP_TYPE pickupType) {
+	PickupData* data = pickupDataMap[pickupType];
+	Pickup* pickup = new Pickup(pickupType, data->frame, data->duration);
+	
+	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, &pickupTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pickup"));
 
+	return pickup;
 }

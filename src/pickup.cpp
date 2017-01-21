@@ -6,7 +6,6 @@ Pickup::Pickup() : Entity() {
 Pickup::Pickup(pickupNS::PICKUP_TYPE pt, int f, float d) : Entity() {
 	entityType = entityNS::PICKUP;
 	pickupType = pt;
-	frame = f;
 	duration = d;
 
 	// entity
@@ -17,9 +16,9 @@ Pickup::Pickup(pickupNS::PICKUP_TYPE pt, int f, float d) : Entity() {
 	edge.left = -pickupNS::WIDTH / 2;
 	edge.right = pickupNS::WIDTH / 2;
 
-	// image
 	currentFrame = f;
-	loop = false;
+	loop = false; 
+	spriteData.scale = 0.4f;
 }
 
 Pickup::~Pickup() {}

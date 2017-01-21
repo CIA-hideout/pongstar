@@ -28,7 +28,7 @@ void Pongstar::initialize(HWND hwnd) {
 	fontManager->initialize();
 
 	pickupManager = new PickupManager();
-	pickupManager->initialize(dataManager->getPickupJson());
+	pickupManager->initialize(graphics, dataManager->getPickupJson());
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
@@ -78,7 +78,12 @@ void Pongstar::initializeEntities() {
 	entityVector.push_back(ball);
 
 	// randomly generate basic set of pickups
-	
+	Pickup* pickup = pickupManager->createPickup(this, pickupNS::INVERT);
+
+	pickup->setX(100);
+	pickup->setY(100);
+
+	entityVector.push_back(pickup);
 }
 
 //=============================================================================

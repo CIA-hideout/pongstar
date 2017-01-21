@@ -6,7 +6,7 @@
 #include "entity.h"
 
 namespace pickupNS {
-	enum PICKUP_TYPE { MAGNET, INVERT };
+	const enum PICKUP_TYPE { MAGNET, INVERT };
 	const int HEIGHT = 100;
 	const int WIDTH = 100;
 	const int NCOLS = 9;
@@ -16,13 +16,20 @@ namespace pickupNS {
 class Pickup : public Entity {
 private:
 	pickupNS::PICKUP_TYPE pickupType;
-	int frame;
 	float duration;
 public:
 	Pickup();
 	Pickup(pickupNS::PICKUP_TYPE pt, int f, float d);
 
 	~Pickup();
+
+	// getters
+	pickupNS::PICKUP_TYPE getPickupType() { return pickupType; }
+	float getDuration() { return duration; }
+
+	// setters
+	void setPickupType(pickupNS::PICKUP_TYPE pt) { pickupType = pt; }
+	void setDuration(float d) { duration = d; }
 
 	void update(float frameTime);
 };
