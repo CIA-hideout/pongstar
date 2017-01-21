@@ -110,18 +110,16 @@ void DataManager::initPickupsData(const char* fileName) {
 		pickups.push_back(pickupData);
 	}
 
-	pickupsJson = PickupsJson(pickups);
+	pickupJson = PickupJson(pickups);
 }
 
 void DataManager::logPickupsJson() {
-	std::vector<PickupData*> pickups = pickupsJson.pickups;
+	std::vector<PickupData*> pickups = pickupJson.pickupDataVec;
 	PickupData* tempPtr = NULL;
 
 	for (size_t i = 0; i < pickups.size(); i++) {
 		tempPtr = pickups[i];
 		
-		// c_str() is needed or else printf() will find the first sizeof(char*) bytes of the str, 
-		// which leads to an access violation because those bytes aren't really a pointer.
 		printf("name: %s frame: %d duration: %f \n", tempPtr->name.c_str(), tempPtr->frame, tempPtr->duration);
 	}
 }
