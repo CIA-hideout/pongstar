@@ -3,9 +3,9 @@
 Pickup::Pickup() : Entity() {
 }
 
-Pickup::Pickup(pickupNS::PICKUP_TYPE pt, int f, float d) : Entity() {
+Pickup::Pickup(pickupNS::EFFECT_TYPE et, int f, float d) : Entity() {
 	entityType = entityNS::PICKUP;
-	pickupType = pt;
+	effectType = et;
 	duration = d;
 
 	// entity
