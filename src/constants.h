@@ -51,10 +51,12 @@ const UCHAR RIGHT_KEY = VK_RIGHT;
 const char BALL_IMAGE[] = "sprites\\Ball.png";
 const char PADDLE_IMAGE[] = "sprites\\Paddle.png";
 const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
+const char PICKUP_IMAGE[] = "sprites\\Pickups.jpg";
 
 const int HUD_Y_POS = 12;
 
 // Config
 const char CONTROLS_JSON[] = "config\\controls.json";
+const char PICKUPS_JSON[] = "config\\pickups.json";
 
 #endif

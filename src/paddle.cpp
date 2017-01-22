@@ -2,7 +2,7 @@
 
 Paddle::Paddle() : Entity() {}
 
-Paddle::Paddle(PaddleControls pc) {
+Paddle::Paddle(PaddleControls pc) : Entity() {
 	entityType = entityNS::PADDLE;
 	spriteData.width = paddleNS::WIDTH;
 	spriteData.height = paddleNS::HEIGHT;

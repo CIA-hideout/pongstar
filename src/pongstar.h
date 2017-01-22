@@ -9,6 +9,7 @@
 #include "textureManager.h"
 #include "dataManager.h"
 #include "fontManager.h"
+#include "pickupManager.h"
 #include "image.h"
 
 #include "paddle.h"
@@ -19,6 +20,7 @@ private:
 	// Game items
 	DataManager *dataManager;
 	FontManager* fontManager;
+	PickupManager* pickupManager;
 
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;

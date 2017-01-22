@@ -20,11 +20,15 @@ Pongstar::~Pongstar() {
 void Pongstar::initialize(HWND hwnd) {
 	Game::initialize(hwnd); // throws GameError
 
-	dataManager = new DataManager;
+	dataManager = new DataManager();
 	dataManager->initControlData(CONTROLS_JSON);
+	dataManager->initPickupsData(PICKUPS_JSON);
 
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
+
+	pickupManager = new PickupManager();
+	pickupManager->initialize(graphics, dataManager->getPickupVec());
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
@@ -72,6 +76,14 @@ void Pongstar::initializeEntities() {
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
+
+	// randomly generate basic set of pickups
+	Pickup* pickup = pickupManager->createPickup(this, pickupNS::MAGNET);
+
+	pickup->setX(100);
+	pickup->setY(100);
+
+	entityVector.push_back(pickup);
 }
 
 //=============================================================================
@@ -99,9 +111,6 @@ void Pongstar::update() {
 			}
 		}
 	}
-
-
-
 	
 }
 

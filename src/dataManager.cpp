@@ -20,6 +20,7 @@ Document DataManager::readFile(const char* fileName) {
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error in opening " + std::string(fileName)));
 	}
 
+	// Check for invalid json
 	if (document.Parse(jsonString.c_str()).HasParseError()) {
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error in parsing " + std::string(fileName)));
 	}
@@ -49,7 +50,7 @@ std::string toUpperCase(std::string str) {
 
 UCHAR isSpecialKey(std::string target) {
 	std::string strArr[] = { "UP", "DOWN", "LEFT", "RIGHT" };
-	std::map<std::string, UCHAR> strUcharMap;
+	std::map<std::string, UCHAR> strUcharMap;	// a map of special keys to UCHAR
 	
 	strUcharMap["UP"] = UP_KEY;
 	strUcharMap["DOWN"] = DOWN_KEY;
@@ -70,6 +71,7 @@ PaddleControls getPaddleControls(Value val) {
 	std::string downStr = toUpperCase(val["down"].GetString());
 
 	// casting and de-referencing only gives the first letter
+	// string needs to be converted to CHAR* then to UCHAR
 	upChar = isSpecialKey(upStr) == 0 ? (UCHAR)*strToCharArr(upStr) : isSpecialKey(upStr);
 	downChar = isSpecialKey(downStr) == 0 ? (UCHAR)*strToCharArr(downStr) : isSpecialKey(downStr);
 
@@ -85,4 +87,35 @@ void DataManager::initControlData(const char* fileName) {
 		);
 
 	controlsJson = cj;
+}
+
+void DataManager::initPickupsData(const char* fileName) {
+	Document document = readFile(fileName);
+	Value val;
+	PickupData* pickupData;
+	
+	std::string name;
+	int frame;
+	float duration;
+	
+	for (auto& v : document.GetArray()) {
+		val = v.GetObjectA();
+
+		name = val["name"].GetString();
+		frame = val["frame"].GetInt();
+		duration = val["duration"].GetFloat();
+
+		pickupData = new PickupData(name, frame, duration);
+		pickupVec.push_back(pickupData);
+	}
+}
+
+void DataManager::logPickupsJson() {
+	PickupData* tempPtr = NULL;
+
+	for (size_t i = 0; i < pickupVec.size(); i++) {
+		tempPtr = pickupVec[i];
+		
+		printf("name: %s frame: %d duration: %f \n", tempPtr->name.c_str(), tempPtr->frame, tempPtr->duration);
+	}
 }
