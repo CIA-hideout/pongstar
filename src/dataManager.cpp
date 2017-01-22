@@ -93,7 +93,6 @@ void DataManager::initPickupsData(const char* fileName) {
 	Document document = readFile(fileName);
 	Value val;
 	PickupData* pickupData;
-	std::vector<PickupData*> pickups;
 	
 	std::string name;
 	int frame;
@@ -107,18 +106,15 @@ void DataManager::initPickupsData(const char* fileName) {
 		duration = val["duration"].GetFloat();
 
 		pickupData = new PickupData(name, frame, duration);
-		pickups.push_back(pickupData);
+		pickupVec.push_back(pickupData);
 	}
-
-	pickupJson = PickupJson(pickups);
 }
 
 void DataManager::logPickupsJson() {
-	std::vector<PickupData*> pickups = pickupJson.pickupDataVec;
 	PickupData* tempPtr = NULL;
 
-	for (size_t i = 0; i < pickups.size(); i++) {
-		tempPtr = pickups[i];
+	for (size_t i = 0; i < pickupVec.size(); i++) {
+		tempPtr = pickupVec[i];
 		
 		printf("name: %s frame: %d duration: %f \n", tempPtr->name.c_str(), tempPtr->frame, tempPtr->duration);
 	}

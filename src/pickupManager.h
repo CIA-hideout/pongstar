@@ -22,7 +22,7 @@ public:
 	PickupManager();
 	~PickupManager();
 
-	void initialize(Graphics* graphics, PickupJson pickupJson);
+	void initialize(Graphics* graphics, std::vector<PickupData*> pickupVec);
 	Pickup* createPickup(Game* game, pickupNS::EFFECT_TYPE effectType);
 };
 

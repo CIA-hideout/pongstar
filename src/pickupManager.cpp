@@ -10,14 +10,13 @@ PickupManager::PickupManager() {}
 
 PickupManager::~PickupManager() {}
 
-void PickupManager::initialize(Graphics* graphics, PickupJson pickupJson) {
-	std::vector<PickupData*> pickupDataVec = pickupJson.pickupDataVec;
+void PickupManager::initialize(Graphics* graphics, std::vector<PickupData*> pickupVec) {
 	PickupData* dataPtr = NULL;
 	pickupNS::EFFECT_TYPE effectType;
 
 	// store all pickup info into pickupManager
-	for (size_t i = 0; i < pickupDataVec.size(); i++) {
-		dataPtr = pickupDataVec[i];
+	for (size_t i = 0; i < pickupVec.size(); i++) {
+		dataPtr = pickupVec[i];
 		effectType = nameToEnum[dataPtr->name];
 
 		pickupDataMap.insert(pickupDataPair(effectType, dataPtr));
