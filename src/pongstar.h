@@ -5,6 +5,7 @@
 #include <vector>
 #include <random>
 #include <queue>
+#include <chrono>
 
 #include "game.h"
 #include "textureManager.h"
@@ -15,6 +16,8 @@
 
 #include "paddle.h"
 #include "ball.h"
+
+using namespace std::chrono;
 
 class Pongstar : public Game {
 private:
@@ -31,6 +34,10 @@ private:
 
 	std::vector<Entity*> entityVector;
 	std::queue<int> deleteEntityQueue;
+
+	steady_clock::time_point startTime;
+	int elapsedTime;
+	bool gameStarted;
 
 public:
 	// Constructor

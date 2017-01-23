@@ -1,6 +1,8 @@
 #ifndef _BALL_H
 #define _BALL_H
 
+#include <random>
+
 #include "entity.h"
 
 namespace ballNS {
