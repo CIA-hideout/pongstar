@@ -99,10 +99,14 @@ void Pongstar::initializeEntities() {
 	// randomly generate basic set of pickups
 	Pickup* pickup = pickupManager->randomPickup(this);
 
+<<<<<<< HEAD
 	pickup->setX(GAME_WIDTH / 4);
 	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
 
 	//entityVector.push_back(pickup);
+=======
+	entityVector.push_back(pickup);
+>>>>>>> Make pickup spawn at a random location along the middle
 }
 
 //=============================================================================

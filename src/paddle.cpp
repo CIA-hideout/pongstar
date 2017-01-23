@@ -6,10 +6,10 @@ Paddle::Paddle(PaddleControls pc) : Entity() {
 	entityType = entityNS::PADDLE;
 	spriteData.width = paddleNS::WIDTH;
 	spriteData.height = paddleNS::HEIGHT;
-	edge.top = -paddleNS::HEIGHT * spriteData.scale / 2;
-	edge.bottom = paddleNS::HEIGHT * spriteData.scale / 2;
-	edge.left = -paddleNS::WIDTH * spriteData.scale / 2;
-	edge.right = paddleNS::WIDTH * spriteData.scale / 2;
+	edge.top = -(long)(paddleNS::HEIGHT * spriteData.scale / 2);
+	edge.bottom = (long)(paddleNS::HEIGHT * spriteData.scale / 2);
+	edge.left = -(long)(paddleNS::WIDTH * spriteData.scale / 2);
+	edge.right = (long)(paddleNS::WIDTH * spriteData.scale / 2);
 
 	controls = pc;
 }
