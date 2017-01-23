@@ -111,7 +111,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\controls.json" />
-    <None Include="config\pickups.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

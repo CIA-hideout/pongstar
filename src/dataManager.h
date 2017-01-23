@@ -38,19 +38,9 @@ struct ControlsJson {
 		p2(p2) {}
 };
 
-struct PickupData {
-	std::string name;
-	int frame;
-	float duration;
-
-	PickupData() {}
-	PickupData(std::string n, int f, float d) : name(n), frame(f), duration(d) {}
-};
-
 class DataManager {
 private:
 	ControlsJson controlsJson;
-	std::vector<PickupData*> pickupVec;
 
 public:
 	DataManager();
@@ -58,18 +48,12 @@ public:
 
 	// getters
 	ControlsJson getControlsJson() { return controlsJson; };
-	std::vector<PickupData*> getPickupVec() { return pickupVec; }
 	
 	// setters
 	void setControlsJson(ControlsJson cj) { controlsJson = cj; }
-	void setPickupVec(std::vector<PickupData*> pv) { pickupVec = pv; }
 
 	Document readFile(const char* fileName);	// Takes in a pointer to a char array
 	void initControlData(const char* fileName);
-	void initPickupsData(const char* fileName);
-
-	// Logging
-	void logPickupsJson();
 };
 
 #endif

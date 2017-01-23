@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <random>
+#include <queue>
 
 #include "game.h"
 #include "textureManager.h"
@@ -18,7 +19,7 @@
 class Pongstar : public Game {
 private:
 	// Game items
-	DataManager *dataManager;
+	DataManager* dataManager;
 	FontManager* fontManager;
 	PickupManager* pickupManager;
 
@@ -29,6 +30,7 @@ private:
 	Image divider;
 
 	std::vector<Entity*> entityVector;
+	std::queue<int> deleteEntityQueue;
 
 public:
 	// Constructor

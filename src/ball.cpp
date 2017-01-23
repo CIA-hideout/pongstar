@@ -4,10 +4,10 @@ Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
 	spriteData.width = ballNS::WIDTH;
 	spriteData.height = ballNS::HEIGHT;
-	edge.top = -ballNS::HEIGHT / 2;
-	edge.bottom = ballNS::HEIGHT / 2;
-	edge.left = -ballNS::WIDTH / 2;
-	edge.right = ballNS::WIDTH / 2;
+	edge.top = -ballNS::HEIGHT * spriteData.scale / 2;
+	edge.bottom = ballNS::HEIGHT * spriteData.scale / 2;
+	edge.left = -ballNS::WIDTH * spriteData.scale / 2;
+	edge.right = ballNS::WIDTH * spriteData.scale / 2;
 }
 
 Ball::~Ball() {}
@@ -38,4 +38,16 @@ void Ball::wallCollision() {
 		spriteData.y = 0;
 		velocity.y = -velocity.y;
 	}
+}
+
+bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
+		switch (ent.getEntityType()) {
+		case entityNS::PADDLE:
+			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+			break;
+		}
+	}
+
+	return true;
 }

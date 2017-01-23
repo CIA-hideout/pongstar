@@ -88,34 +88,3 @@ void DataManager::initControlData(const char* fileName) {
 
 	controlsJson = cj;
 }
-
-void DataManager::initPickupsData(const char* fileName) {
-	Document document = readFile(fileName);
-	Value val;
-	PickupData* pickupData;
-	
-	std::string name;
-	int frame;
-	float duration;
-	
-	for (auto& v : document.GetArray()) {
-		val = v.GetObjectA();
-
-		name = val["name"].GetString();
-		frame = val["frame"].GetInt();
-		duration = val["duration"].GetFloat();
-
-		pickupData = new PickupData(name, frame, duration);
-		pickupVec.push_back(pickupData);
-	}
-}
-
-void DataManager::logPickupsJson() {
-	PickupData* tempPtr = NULL;
-
-	for (size_t i = 0; i < pickupVec.size(); i++) {
-		tempPtr = pickupVec[i];
-		
-		printf("name: %s frame: %d duration: %f \n", tempPtr->name.c_str(), tempPtr->frame, tempPtr->duration);
-	}
-}

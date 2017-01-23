@@ -22,6 +22,7 @@ public:
 	~Paddle();
 
 	void update(float frameTime);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 };
 
 #endif

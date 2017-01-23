@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include <string>
+#include <random>
 
 #include "graphics.h"
 #include "gameError.h"
@@ -12,18 +13,26 @@
 #include "pickup.h"
 #include "game.h"
 
-typedef std::pair<pickupNS::EFFECT_TYPE, PickupData*> pickupDataPair;
+namespace effectDataNS {
+	const effectNS::EffectData effectArray[] = {
+		effectNS::EffectData(effectNS::MAGNET, 0, 1.0f),
+		effectNS::EffectData(effectNS::INVERT, 1, 1.0f)
+	};
+
+	const int EFFECT_ARR_SIZE = 2;
+}
 
 class PickupManager {
 private:
 	TextureManager pickupTexture;
-	std::unordered_map<pickupNS::EFFECT_TYPE, PickupData*> pickupDataMap;
+
 public:
 	PickupManager();
+	PickupManager(Graphics* graphics);
+
 	~PickupManager();
 
-	void initialize(Graphics* graphics, std::vector<PickupData*> pickupVec);
-	Pickup* createPickup(Game* game, pickupNS::EFFECT_TYPE effectType);
+	Pickup* randomPickup(Game* game);
 };
 
 #endif
