@@ -8,16 +8,16 @@ Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d) : Entity() {
 	duration = d;
 
 	// entity
+	spriteData.scale = pickupNS::SCALE;
 	spriteData.width = pickupNS::WIDTH;
 	spriteData.height = pickupNS::HEIGHT;
-	edge.top = -pickupNS::HEIGHT / 2;
-	edge.bottom = pickupNS::HEIGHT / 2;
-	edge.left = -pickupNS::WIDTH / 2;
-	edge.right = pickupNS::WIDTH / 2;
+	edge.top = -pickupNS::HEIGHT * spriteData.scale / 2;
+	edge.bottom = pickupNS::HEIGHT * spriteData.scale / 2;
+	edge.left = -pickupNS::WIDTH * spriteData.scale / 2;
+	edge.right = pickupNS::WIDTH * spriteData.scale / 2;
 
 	currentFrame = f;
 	loop = false; 
-	spriteData.scale = pickupNS::SCALE;
 }
 
 Pickup::~Pickup() {}

@@ -4,10 +4,10 @@ Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
 	spriteData.width = ballNS::WIDTH;
 	spriteData.height = ballNS::HEIGHT;
-	edge.top = -ballNS::HEIGHT / 2;
-	edge.bottom = ballNS::HEIGHT / 2;
-	edge.left = -ballNS::WIDTH / 2;
-	edge.right = ballNS::WIDTH / 2;
+	edge.top = -ballNS::HEIGHT * spriteData.scale / 2;
+	edge.bottom = ballNS::HEIGHT * spriteData.scale / 2;
+	edge.left = -ballNS::WIDTH * spriteData.scale / 2;
+	edge.right = ballNS::WIDTH * spriteData.scale / 2;
 }
 
 Ball::~Ball() {}
