@@ -1,9 +1,8 @@
 #include "pickup.h"
 
-Pickup::Pickup() : Entity() {
-}
+Pickup::Pickup() : Entity() {}
 
-Pickup::Pickup(pickupNS::EFFECT_TYPE et, int f, float d) : Entity() {
+Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d) : Entity() {
 	entityType = entityNS::PICKUP;
 	effectType = et;
 	duration = d;
@@ -18,9 +17,31 @@ Pickup::Pickup(pickupNS::EFFECT_TYPE et, int f, float d) : Entity() {
 
 	currentFrame = f;
 	loop = false; 
-	spriteData.scale = 0.4f;
+	spriteData.scale = pickupNS::SCALE;
 }
 
 Pickup::~Pickup() {}
 
 void Pickup::update(float frameTime) {}
+
+bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
+		switch (ent.getEntityType()) {
+		case entityNS::BALL:
+			setActive(false);
+
+			switch (effectType) {
+			case effectNS::MAGNET:
+				printf("magnet\n");
+				break;
+
+			case effectNS::INVERT:
+				printf("invert\n");
+				break;
+			}
+			break;
+		}
+	}
+
+	return true;
+}

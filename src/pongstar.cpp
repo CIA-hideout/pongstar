@@ -22,13 +22,11 @@ void Pongstar::initialize(HWND hwnd) {
 
 	dataManager = new DataManager();
 	dataManager->initControlData(CONTROLS_JSON);
-	dataManager->initPickupsData(PICKUPS_JSON);
 
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
 
-	pickupManager = new PickupManager();
-	pickupManager->initialize(graphics, dataManager->getPickupVec());
+	pickupManager = new PickupManager(graphics);
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
@@ -78,10 +76,10 @@ void Pongstar::initializeEntities() {
 	entityVector.push_back(ball);
 
 	// randomly generate basic set of pickups
-	Pickup* pickup = pickupManager->createPickup(this, pickupNS::MAGNET);
+	Pickup* pickup = pickupManager->randomPickup(this);
 
-	pickup->setX(100);
-	pickup->setY(100);
+	pickup->setX(GAME_WIDTH / 4);
+	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
 
 	entityVector.push_back(pickup);
 }
@@ -110,8 +108,17 @@ void Pongstar::update() {
 				}
 			}
 		}
+
+		if (!entityVector[i]->getActive()) {
+			deleteEntityQueue.push(i);
+		}
 	}
-	
+
+	while (deleteEntityQueue.size() > 0) {
+		int indexToRemove = deleteEntityQueue.front();
+		entityVector.erase(entityVector.begin() + indexToRemove);
+		deleteEntityQueue.pop();
+	}
 }
 
 //=============================================================================
@@ -125,22 +132,17 @@ void Pongstar::ai() {}
 void Pongstar::collisions() {
 	VECTOR2 collisionVector;
 
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		for (size_t j = 0; j < entityVector.size(); ++j) {
 			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				switch (entityVector[i]->getEntityType()) {
-				case entityNS::BALL:
-					if (entityVector[i]->collidesWith(*entityVector[j], collisionVector)) {
-						entityVector[i]->paddleBounce(collisionVector, *entityVector[j], ballNS::VELOCITY);
-					}
-					break;
-				}
+				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
 			}
 		}
 	}
 }
 
-//==========================================================i]===================
+//=============================================================================
 // Render game items
 //=============================================================================
 void Pongstar::render() {
@@ -157,7 +159,7 @@ void Pongstar::render() {
 		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") /2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
 		"60"
-		);
+	);
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

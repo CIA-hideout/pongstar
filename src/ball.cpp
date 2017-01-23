@@ -39,3 +39,15 @@ void Ball::wallCollision() {
 		velocity.y = -velocity.y;
 	}
 }
+
+bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
+		switch (ent.getEntityType()) {
+		case entityNS::PADDLE:
+			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+			break;
+		}
+	}
+
+	return true;
+}
