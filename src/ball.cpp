@@ -52,8 +52,27 @@ void Ball::wallCollision() {
 	}
 }
 
-bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-	if (Entity::collidesWith(ent, collisionVector)) {
+void Ball::runEffects(EffectManager &effectManager) {
+	if (effectManager.getCurrentEffects(id).size() > 0) {
+		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager.getCurrentEffects(id)) {
+			switch (currentEffect.first) {
+			case effectNS::ENLARGE:
+				float scale = 2.0f;
+
+				if (currentEffect.second == 0) {
+					scale = 1.0f;
+					effectManager.removeEffect(id, currentEffect.first);
+				}
+
+				spriteData.scale = scale;
+				break;
+			}
+		}
+	}
+}
+
+bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
+	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
 		switch (ent.getEntityType()) {
 		case entityNS::PADDLE:
 			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);

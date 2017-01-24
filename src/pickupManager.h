@@ -1,7 +1,6 @@
 #ifndef _PICKUPMANAGER_H
 #define _PICKUPMANAGER_H
 
-#include <unordered_map>
 #include <vector>
 #include <string>
 #include <random>
@@ -16,7 +15,8 @@
 namespace effectDataNS {
 	const effectNS::EffectData effectArray[] = {
 		effectNS::EffectData(effectNS::MAGNET, 0, 1.0f),
-		effectNS::EffectData(effectNS::INVERT, 1, 1.0f)
+		effectNS::EffectData(effectNS::INVERT, 1, 1.0f),
+		effectNS::EffectData(effectNS::ENLARGE, 7, 5.0f)
 	};
 
 	const int EFFECT_ARR_SIZE = 2;

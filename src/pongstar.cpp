@@ -31,6 +31,8 @@ void Pongstar::initialize(HWND hwnd) {
 
 	pickupManager = new PickupManager(graphics);
 
+	effectManager = new EffectManager();
+
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
@@ -113,8 +115,11 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
+	effectManager->update(frameTime);
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
+		entityVector[i]->runEffects(*effectManager);
 
 		if (!entityVector[i]->getActive()) {
 			deleteEntityQueue.push(i);
@@ -152,7 +157,7 @@ void Pongstar::collisions() {
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		for (size_t j = 0; j < entityVector.size(); ++j) {
 			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
+				entityVector[i]->collidesWith(*entityVector[j], collisionVector, *effectManager);
 			}
 		}
 	}

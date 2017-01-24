@@ -40,8 +40,8 @@ void Paddle::update(float frameTime) {
 }
 
 
-bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-	if (Entity::collidesWith(ent, collisionVector)) {
+bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
+	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
 		switch (ent.getEntityType()) {
 			
 		}

@@ -24,8 +24,8 @@ Pickup::~Pickup() {}
 
 void Pickup::update(float frameTime) {}
 
-bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-	if (Entity::collidesWith(ent, collisionVector)) {
+bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
+	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
 		switch (ent.getEntityType()) {
 		case entityNS::BALL:
 			setActive(false);
@@ -37,6 +37,11 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 			case effectNS::INVERT:
 				printf("invert\n");
+				break;
+
+			case effectNS::ENLARGE:
+				printf("enlarge\n");
+				effectManager.addEffect(ent.getId(), effectType, duration);
 				break;
 			}
 			break;
