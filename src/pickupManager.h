@@ -13,10 +13,10 @@
 #include "game.h"
 
 namespace effectDataNS {
-	const effectNS::EffectData effectArray[] = {
-		effectNS::EffectData(effectNS::MAGNET, 0, 1.0f),
-		effectNS::EffectData(effectNS::INVERT, 1, 1.0f),
-		effectNS::EffectData(effectNS::ENLARGE, 7, 5.0f)
+	const EffectData effectArray[] = {
+		EffectData(effectNS::MAGNET, 0, 1.0f),
+		EffectData(effectNS::INVERT, 1, 1.0f)
+		EffectData(effectNS::ENLARGE, 7, 5.0f)
 	};
 
 	const int EFFECT_ARR_SIZE = 2;
@@ -26,6 +26,7 @@ class PickupManager {
 private:
 	TextureManager pickupTexture;
 
+	EffectData getPickupData(effectNS::EFFECT_TYPE et);
 public:
 	PickupManager();
 	PickupManager(Graphics* graphics);
@@ -33,6 +34,8 @@ public:
 	~PickupManager();
 
 	Pickup* randomPickup(Game* game);
+	Pickup* createPickup(Game* game, effectNS::EFFECT_TYPE et);
+
 };
 
 #endif

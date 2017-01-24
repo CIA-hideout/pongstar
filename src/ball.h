@@ -3,6 +3,8 @@
 
 #include "entity.h"
 #include "message.h"
+#include "effectTimer.h"
+#include "pickup.h"
 
 namespace ballNS {
 	const int HEIGHT = 20;
@@ -13,6 +15,7 @@ namespace ballNS {
 
 class Ball : public Entity {
 private:
+	EffectTimer* effectTimer;
 public:
 	Ball();
 	~Ball();
@@ -22,6 +25,9 @@ public:
 	void wallCollision();
 	void runEffects(EffectManager &effectManager);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	// bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+
+	void triggerEffect(effectNS::EFFECT_TYPE et);
 };
 
 #endif

@@ -17,7 +17,7 @@ Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d) : Entity() {
 	edge.right = (long)(pickupNS::WIDTH * spriteData.scale / 2);
 
 	currentFrame = f;
-	loop = false; 
+	loop = false;
 }
 
 Pickup::~Pickup() {}
@@ -26,8 +26,12 @@ void Pickup::update(float frameTime) {}
 
 bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
 	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
+// bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+//	Message* msgPtr = NULL;
+
+//	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
-		case entityNS::BALL:
+		case entityNS::BALL: {
 			setActive(false);
 
 			switch (effectType) {
@@ -45,6 +49,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &
 				break;
 			}
 			break;
+			// msgPtr = new Message(messageNS::EFFECT, messageNS::BALL, effectType);
+			// setMessage(msgPtr);
+		}	break;
 		}
 	}
 

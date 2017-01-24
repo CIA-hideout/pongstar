@@ -15,13 +15,21 @@ Paddle* MessageManager::getPaddle(paddleNS::SIDE side) {
 		if ((*entityVector)[i]->getEntityType() == entityNS::PADDLE) {
 			paddlePtr = (Paddle*)(*entityVector)[i];
 			
-			if (paddlePtr->getSide() == side) {
+			if (paddlePtr->getSide() == side)
 				return paddlePtr;
-			}
 		}
 	}
 
 	return new Paddle();
+}
+
+Ball* MessageManager::getBall() {
+	for (size_t i = 0; i < entityVector->size(); i++) {
+		if ((*entityVector)[i]->getEntityType() == entityNS::BALL)
+			return (Ball*)(*entityVector)[i];
+	}
+
+	return new Ball();
 }
 
 void MessageManager::push(Message* msg) {
@@ -43,6 +51,9 @@ void MessageManager::dispatch(Message* msg) {
 		case messageNS::SCORE: {
 			dispatchScore(msg);
 		} break;
+		case messageNS::EFFECT: {
+			dispatchEffect(msg);
+		} break;
 	}
 }
 
@@ -52,5 +63,13 @@ void MessageManager::dispatchScore(Message* msg) {
 			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ? getPaddle(paddleNS::LEFT) : getPaddle(paddleNS::RIGHT);
 			paddlePtr->setScore(paddlePtr->getScore() + 1);
 		} break;
+	}
+}
+
+void MessageManager::dispatchEffect(Message *msg) {
+	switch (msg->getTargetType()) {
+		case messageNS::BALL: {
+			getBall()->triggerEffect(msg->getEffectType());
+		}
 	}
 }

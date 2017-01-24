@@ -7,11 +7,8 @@
 #include "image.h"
 #include "input.h"
 #include "game.h"
-<<<<<<< HEAD
 #include "effectManager.h"
-=======
 #include "message.h"
->>>>>>> Naive implementation of message system
 
 namespace entityNS {
 	enum ENTITY_TYPE { BALL, PADDLE, PICKUP, BUMPER };

@@ -11,6 +11,15 @@ namespace pickupNS {
 	const float SCALE = 0.4f;
 }
 
+struct EffectData {
+	effectNS::EFFECT_TYPE effectType;
+	int frame;
+	float duration;
+
+	EffectData() {}
+	EffectData(effectNS::EFFECT_TYPE et, int f, float d) : effectType(et), frame(f), duration(d) {}
+};
+
 class Pickup : public Entity {
 private:
 	effectNS::EFFECT_TYPE effectType;

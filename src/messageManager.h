@@ -8,6 +8,7 @@
 #include "message.h"
 #include "entity.h"
 #include "paddle.h"
+#include "ball.h"
 
 class MessageManager {
 private:
@@ -23,10 +24,12 @@ public:
 	void dispatch(Message* msg);
 
 	void dispatchScore(Message *msg);
+	void dispatchEffect(Message *msg);
 
 	void resolve();
 
 	Paddle* getPaddle(paddleNS::SIDE s);
+	Ball* getBall();
 };
 
 #endif

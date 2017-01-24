@@ -13,6 +13,8 @@ Ball::Ball() : Entity() {
 	edge.bottom = (long)(ballNS::HEIGHT * spriteData.scale / 2);
 	edge.left = -(long)(ballNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(ballNS::WIDTH * spriteData.scale / 2);
+
+	effectTimer = new EffectTimer();
 }
 
 Ball::~Ball() {}
@@ -101,4 +103,16 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &ef
 	}
 
 	return true;
+}
+
+void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType) {
+	switch (effectType) {
+		case effectNS::MAGNET: {
+			printf("ball magnet");
+		} break;
+		case effectNS::INVERT: {
+			printf("ball invert");
+			velocity = VECTOR2(-velocity.x, -velocity.y);
+		} break;
+	}
 }
