@@ -32,6 +32,7 @@ void Pongstar::initialize(HWND hwnd) {
 	pickupManager = new PickupManager(graphics);
 
 	effectManager = new EffectManager();
+	messageManager = new MessageManager(&entityVector);
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
@@ -49,7 +50,7 @@ void Pongstar::initialize(HWND hwnd) {
 	// Images
 	if (!divider.initialize(graphics, 0, 0, 0, &dividerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
-	
+
 	this->initializeEntities();
 
 	return;
@@ -58,8 +59,8 @@ void Pongstar::initialize(HWND hwnd) {
 void Pongstar::initializeEntities() {
 	ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle* paddle1 = new Paddle(controls.p1);
-	Paddle* paddle2 = new Paddle(controls.p2);
+	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
+	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
 	Ball* ball = new Ball();
 	Bumper* bumper = new Bumper();
 
@@ -107,6 +108,11 @@ void Pongstar::update() {
 		if (!entityVector[i]->getActive()) {
 			deleteEntityQueue.push(i);
 		}
+
+		if (entityVector[i]->getMessage() != NULL) {
+			messageManager->push(entityVector[i]->getMessage());
+			entityVector[i]->setMessage(NULL);
+		}
 	}
 
 	while (deleteEntityQueue.size() > 0) {
@@ -114,6 +120,8 @@ void Pongstar::update() {
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
 	}
+
+	messageManager->resolve();
 
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();
@@ -158,12 +166,32 @@ void Pongstar::render() {
 		entityVector[i]->draw();
 	}
 
+	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
+	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
+	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
+
 	fontManager->print(
 		fontNS::SABO_FILLED,
-		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") / 2 - fontNS::CENTER_OFFSET,
+		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
-		std::to_string(TIME_PER_GAME - elapsedTime)
+		timeLeft
 	);
+
+	fontManager->print(
+		fontNS::SABO_FILLED,
+		GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+		HUD_Y_POS,
+		leftPaddleScore
+	);
+
+	fontManager->print(
+		fontNS::SABO_FILLED,
+		GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+		HUD_Y_POS,
+		rightPaddleScore
+	);
+
+	printf("P1: %i   P2: %i\n", messageManager->getPaddle(paddleNS::LEFT)->getScore(), messageManager->getPaddle(paddleNS::RIGHT)->getScore());
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

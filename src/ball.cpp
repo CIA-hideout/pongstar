@@ -32,15 +32,35 @@ void Ball::update(float frameTime) {
 	wallCollision();
 }
 
+void Ball::resetBall() {
+	velocity = VECTOR2(0, 0);
+
+	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
+	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
+}
+
 void Ball::wallCollision() {
+	Message* msgPtr = NULL;
+
 	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {
-		spriteData.x = GAME_WIDTH - ballNS::WIDTH * spriteData.scale;
-		velocity.x = -velocity.x;
+		// hit right wall
+		//spriteData.x = GAME_WIDTH - ballNS::WIDTH;
+		//velocity.x = -velocity.x;
+
+		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, 1);
+		setMessage(msgPtr);
+		resetBall();
 	}
 	else if (spriteData.x < 0) {
-		spriteData.x = 0;
-		velocity.x = -velocity.x;
+		// hit left wall
+		// spriteData.x = 0;
+		// velocity.x = -velocity.x;
+
+		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, 1);
+		setMessage(msgPtr);
+		resetBall();
 	}
+
 	if (spriteData.y > GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale) {
 		spriteData.y = GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale;
 		velocity.y = -velocity.y;

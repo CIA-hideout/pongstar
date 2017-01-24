@@ -19,8 +19,8 @@ Entity::Entity() : Image() {
 	active = true;                  // the entity is active
 	rotatedBoxReady = false;
 	collisionType = entityNS::BOX;
-	health = 100;
 	gravity = entityNS::GRAVITY;
+	message = NULL;
 }
 
 //=============================================================================

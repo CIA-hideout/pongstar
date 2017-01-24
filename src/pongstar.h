@@ -13,7 +13,7 @@
 #include "pickupManager.h"
 #include "effectManager.h"
 #include "textureManager.h"
-
+#include "messageManager.h"
 #include "image.h"
 
 #include "paddle.h"
@@ -29,6 +29,7 @@ private:
 	FontManager* fontManager;
 	PickupManager* pickupManager;
 	EffectManager* effectManager;
+	MessageManager* messageManager;
 
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;
@@ -61,6 +62,9 @@ public:
 	void render();      // "
 	void releaseAll();
 	void resetAll();
+
+	Paddle* getPaddle(paddleNS::SIDE s);
+
 };
 
 #endif

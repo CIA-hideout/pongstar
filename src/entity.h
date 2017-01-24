@@ -7,7 +7,11 @@
 #include "image.h"
 #include "input.h"
 #include "game.h"
+<<<<<<< HEAD
 #include "effectManager.h"
+=======
+#include "message.h"
+>>>>>>> Naive implementation of message system
 
 namespace entityNS {
 	enum ENTITY_TYPE { BALL, PADDLE, PICKUP, BUMPER };
@@ -33,7 +37,6 @@ protected:
 	VECTOR2 velocity;       // velocity
 	VECTOR2 deltaV;         // added to velocity during next call to update()
 	float   mass;           // Mass of entity
-	float   health;         // health 0 to 100
 	float   rr;             // Radius squared variable
 	float   force;          // Force of gravity
 	float   gravity;        // gravitational constant of the game universe
@@ -42,7 +45,7 @@ protected:
 	bool    active;         // only active entities may collide
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
 	entityNS::ENTITY_TYPE entityType;
-
+	Message* message;
 
 	// --- The following functions are protected because they are not intended to be
 	// --- called from outside the class.
@@ -111,14 +114,14 @@ public:
 	// Return gravitational constant.
 	virtual float getGravity()        const { return gravity; }
 
-	// Return health;
-	virtual float getHealth()         const { return health; }
-
 	// Return collision type (NONE, CIRCLE, BOX, ROTATED_BOX)
 	virtual entityNS::COLLISION_TYPE getCollisionType() { return collisionType; }
 
 	// Return entity type (BALL, PADDLE, PICKUP,  BUMPER)
 	virtual entityNS::ENTITY_TYPE getEntityType() { return entityType; }
+
+	// Return message
+	virtual Message* getMessage() { return message; }
 
 	////////////////////////////////////////
 	//           Set functions            //
@@ -136,9 +139,6 @@ public:
 	// Set active.
 	virtual void  setActive(bool a)         { active = a; }
 
-	// Set health.
-	virtual void setHealth(float h)         { health = h; }
-
 	// Set mass.
 	virtual void  setMass(float m)          { mass = m; }
 
@@ -147,6 +147,9 @@ public:
 
 	// Set radius of collision circle.
 	virtual void setCollisionRadius(float r)    { radius = r; }
+
+	// Set message
+	virtual void setMessage(Message* m) { message = m; }
 
 	////////////////////////////////////////
 	//         Other functions            //
