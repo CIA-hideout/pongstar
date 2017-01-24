@@ -4,7 +4,10 @@
 //=============================================================================
 // Constructor
 //=============================================================================
-Pongstar::Pongstar() {}
+Pongstar::Pongstar() {
+	elapsedTime = 0;
+	gameStarted = false;
+}
 
 //=============================================================================
 // Destructor
@@ -88,26 +91,8 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
-	// RNG
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> randomBool(0, 1);
-
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
-
-		if (entityVector[i]->getEntityType() == entityNS::BALL) {
-			VECTOR2 ballVelocity = entityVector[i]->getVelocity();
-
-			// If ball is stationary
-			if (ballVelocity.x == 0 && ballVelocity.y == 0) {
-				if (input->wasKeyPressed(SPACE_KEY)) {
-					// Randomize initial ball direction (left or right)
-					float startingVelocity = (randomBool(rng) == 1) ? ballNS::VELOCITY : -ballNS::VELOCITY;
-					entityVector[i]->setVelocity(VECTOR2(startingVelocity, 0));
-				}
-			}
-		}
 
 		if (!entityVector[i]->getActive()) {
 			deleteEntityQueue.push(i);
@@ -118,6 +103,16 @@ void Pongstar::update() {
 		int indexToRemove = deleteEntityQueue.front();
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
+	}
+
+	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
+		startTime = steady_clock::now();
+		gameStarted = true;
+	}
+
+	if (gameStarted) {
+		steady_clock::time_point presentTime = steady_clock::now();
+		elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
 	}
 }
 
@@ -131,7 +126,6 @@ void Pongstar::ai() {}
 //=============================================================================
 void Pongstar::collisions() {
 	VECTOR2 collisionVector;
-
 
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		for (size_t j = 0; j < entityVector.size(); ++j) {
@@ -156,9 +150,9 @@ void Pongstar::render() {
 
 	fontManager->print(
 		fontNS::SABO_FILLED,
-		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") /2 - fontNS::CENTER_OFFSET,
+		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
-		"60"
+		std::to_string(TIME_PER_GAME - elapsedTime)
 	);
 
 	graphics->spriteEnd();                  // end drawing sprites

@@ -36,6 +36,7 @@ const float FRAME_RATE = 500.0f;
 const float MIN_FRAME_RATE = 10.0f;
 const float MIN_FRAME_TIME = 1.0f / FRAME_RATE;
 const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE;
+const int TIME_PER_GAME = 60;
 
 // Key Mappings
 const UCHAR ESC_KEY = VK_ESCAPE;
