@@ -69,6 +69,9 @@
     <ClInclude Include="src\pickupManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\bumper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\winmain.cpp">
@@ -114,6 +117,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pickupManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\bumper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

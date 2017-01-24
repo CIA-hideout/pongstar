@@ -5,6 +5,7 @@
 #include "image.h"
 #include "input.h"
 #include "game.h"
+#include <random>
 
 namespace entityNS {
 	enum ENTITY_TYPE { BALL, PADDLE, PICKUP, BUMPER };

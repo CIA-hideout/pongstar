@@ -58,6 +58,9 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		case entityNS::PADDLE:
 			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 			break;
+		case entityNS::BUMPER:
+			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+			break;
 		}
 	}
 

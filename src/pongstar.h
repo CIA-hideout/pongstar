@@ -16,6 +16,7 @@
 
 #include "paddle.h"
 #include "ball.h"
+#include "bumper.h"
 
 using namespace std::chrono;
 
@@ -29,6 +30,7 @@ private:
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;
 	TextureManager ballTexture;
+	TextureManager bumperTexture;
 
 	Image divider;
 
