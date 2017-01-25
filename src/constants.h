@@ -53,6 +53,7 @@ const char BALL_IMAGE[] = "sprites\\Ball.png";
 const char PADDLE_IMAGE[] = "sprites\\Paddle.png";
 const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
 const char PICKUP_IMAGE[] = "sprites\\Pickups.png";
+const char BUMPER_IMAGE[] = "sprites\\Bumper.png";
 
 const int HUD_Y_POS = 12;
 

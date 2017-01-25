@@ -41,6 +41,9 @@ void Pongstar::initialize(HWND hwnd) {
 	if (!ballTexture.initialize(graphics, BALL_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
 
+	if (!bumperTexture.initialize(graphics, BUMPER_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper texture"));
+
 	// Images
 	if (!divider.initialize(graphics, 0, 0, 0, &dividerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
@@ -51,11 +54,18 @@ void Pongstar::initialize(HWND hwnd) {
 }
 
 void Pongstar::initializeEntities() {
+	// RNG
+	std::random_device rd;     // only used once to initialise (seed) engine
+	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
+	std::uniform_int_distribution<int> randomBumperX(0, 240);
+	std::uniform_int_distribution<int> randomBumperY(0, 640);
+
 	ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle *paddle1 = new Paddle(controls.p1);
-	Paddle *paddle2 = new Paddle(controls.p2);
+	Paddle* paddle1 = new Paddle(controls.p1);
+	Paddle* paddle2 = new Paddle(controls.p2);
 	Ball* ball = new Ball();
+	Bumper* bumper = new Bumper();
 
 	if (!paddle1->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle1"));
@@ -66,6 +76,9 @@ void Pongstar::initializeEntities() {
 	if (!ball->initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, &ballTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
+	if (!bumper->initialize(this, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, &bumperTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
+
 	paddle1->setX((float)paddleNS::SIDE_SPACE);
 	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
@@ -74,9 +87,14 @@ void Pongstar::initializeEntities() {
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
+	
+	bumper->setX(randomBumperX(rng) + GAME_WIDTH / 4);
+	bumper->setY(randomBumperY(rng));
+
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
+	entityVector.push_back(bumper);
 
 	// randomly generate basic set of pickups
 	Pickup* pickup = pickupManager->randomPickup(this);
@@ -84,7 +102,7 @@ void Pongstar::initializeEntities() {
 	pickup->setX(GAME_WIDTH / 4);
 	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
 
-	entityVector.push_back(pickup);
+	//entityVector.push_back(pickup);
 }
 
 //=============================================================================
@@ -166,6 +184,7 @@ void Pongstar::releaseAll() {
 	dividerTexture.onLostDevice();
 	paddleTexture.onLostDevice();
 	ballTexture.onLostDevice();
+	bumperTexture.onLostDevice();
 
 	fontManager->releaseAll();
 
@@ -181,6 +200,7 @@ void Pongstar::resetAll() {
 	dividerTexture.onResetDevice();
 	paddleTexture.onResetDevice();
 	ballTexture.onResetDevice();
+	bumperTexture.onResetDevice();
 
 	fontManager->resetAll();
 
