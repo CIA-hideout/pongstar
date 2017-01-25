@@ -34,7 +34,7 @@ public:
 	void setSide(paddleNS::SIDE s) { side = s; }
 
 	void update(float frameTime);
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	//bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 };
 
 #endif

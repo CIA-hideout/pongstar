@@ -31,7 +31,6 @@ void Pongstar::initialize(HWND hwnd) {
 
 	pickupManager = new PickupManager(graphics);
 
-	effectManager = new EffectManager();
 	messageManager = new MessageManager(&entityVector);
 
 	// Textures
@@ -91,7 +90,11 @@ void Pongstar::initializeEntities() {
 
 	// randomly generate basic set of pickups
 	//Pickup* pickup = pickupManager->randomPickup(this);
-	Pickup* pickup = pickupManager->createPickup(this, effectNS::INVERT);
+	Pickup* pickup = pickupManager->createPickup(this, effectNS::ENLARGE);
+
+	pickup->setX(GAME_WIDTH / 4);
+	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
+	
 
 	entityVector.push_back(pickup);
 }
@@ -100,11 +103,8 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
-	effectManager->update(frameTime);
-
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
-		entityVector[i]->runEffects(*effectManager);
 
 		if (!entityVector[i]->getActive()) {
 			deleteEntityQueue.push(i);
@@ -149,7 +149,7 @@ void Pongstar::collisions() {
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		for (size_t j = 0; j < entityVector.size(); ++j) {
 			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				entityVector[i]->collidesWith(*entityVector[j], collisionVector, *effectManager);
+				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
 			}
 		}
 	}

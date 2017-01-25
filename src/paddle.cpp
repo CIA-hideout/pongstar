@@ -21,7 +21,7 @@ void Paddle::update(float frameTime) {
 	Entity::update(frameTime);
 
 	float yVelocity = 0.0f;
-
+	
 	if (input->isKeyDown(controls.up)) {
 		if (getY() > 0) {
 			yVelocity = -paddleNS::VELOCITY;
@@ -41,12 +41,12 @@ void Paddle::update(float frameTime) {
 }
 
 
-bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
-		switch (ent.getEntityType()) {
-			
-		}
-	}
-
-	return true;
-}
+//bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
+//	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
+//		switch (ent.getEntityType()) {
+//			
+//		}
+//	}
+//
+//	return true;
+//}

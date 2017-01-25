@@ -69,7 +69,7 @@ void MessageManager::dispatchScore(Message* msg) {
 void MessageManager::dispatchEffect(Message *msg) {
 	switch (msg->getTargetType()) {
 		case messageNS::BALL: {
-			getBall()->triggerEffect(msg->getEffectType());
+			getBall()->triggerEffect(msg->getEffectType(), msg->getDuration());
 		}
 	}
 }

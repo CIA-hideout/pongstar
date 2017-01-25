@@ -24,33 +24,15 @@ Pickup::~Pickup() {}
 
 void Pickup::update(float frameTime) {}
 
-bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
-// bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-//	Message* msgPtr = NULL;
+bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	Message* msgPtr = NULL;
 
-//	if (Entity::collidesWith(ent, collisionVector)) {
+	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 		case entityNS::BALL: {
 			setActive(false);
-
-			switch (effectType) {
-			case effectNS::MAGNET:
-				printf("magnet\n");
-				break;
-
-			case effectNS::INVERT:
-				printf("invert\n");
-				break;
-
-			case effectNS::ENLARGE:
-				printf("enlarge\n");
-				effectManager.addEffect(ent.getId(), effectType, duration);
-				break;
-			}
-			break;
-			// msgPtr = new Message(messageNS::EFFECT, messageNS::BALL, effectType);
-			// setMessage(msgPtr);
+			msgPtr = new Message(messageNS::EFFECT, messageNS::BALL, effectType, duration);
+			setMessage(msgPtr);
 		}	break;
 		}
 	}

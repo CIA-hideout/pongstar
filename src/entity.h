@@ -43,6 +43,7 @@ protected:
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
 	entityNS::ENTITY_TYPE entityType;
 	Message* message;
+	EffectManager* effectManager;
 
 	// --- The following functions are protected because they are not intended to be
 	// --- called from outside the class.
@@ -175,7 +176,7 @@ public:
 	virtual bool outsideRect(RECT rect);
 
 	// Does this entity collide with ent?
-	virtual bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	virtual bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 
 	// Entity bounces after collision with other Entity
 	void bounce(VECTOR2 &collisionVector, Entity &ent);
@@ -185,7 +186,7 @@ public:
 	// Adds the gravitational force to the velocity vector of this entity
 	void gravityForce(Entity *other, float frameTime);
 
-	virtual void runEffects(EffectManager& effectManager);
+	virtual void runEffects();
 };
 
 #endif

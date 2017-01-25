@@ -84,15 +84,6 @@
     <ClInclude Include="src\messageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\effectTimer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\msgEntity.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\winmain.cpp">
@@ -150,9 +141,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\messageManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\effectTimer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

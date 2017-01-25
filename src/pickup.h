@@ -11,15 +11,6 @@ namespace pickupNS {
 	const float SCALE = 0.4f;
 }
 
-struct EffectData {
-	effectNS::EFFECT_TYPE effectType;
-	int frame;
-	float duration;
-
-	EffectData() {}
-	EffectData(effectNS::EFFECT_TYPE et, int f, float d) : effectType(et), frame(f), duration(d) {}
-};
-
 class Pickup : public Entity {
 private:
 	effectNS::EFFECT_TYPE effectType;
@@ -40,7 +31,7 @@ public:
 	void setDuration(float d) { duration = d; }
 
 	void update(float frameTime);
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 };
 
 #endif

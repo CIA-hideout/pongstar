@@ -13,8 +13,6 @@ Ball::Ball() : Entity() {
 	edge.bottom = (long)(ballNS::HEIGHT * spriteData.scale / 2);
 	edge.left = -(long)(ballNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(ballNS::WIDTH * spriteData.scale / 2);
-
-	effectTimer = new EffectTimer();
 }
 
 Ball::~Ball() {}
@@ -73,16 +71,16 @@ void Ball::wallCollision() {
 	}
 }
 
-void Ball::runEffects(EffectManager &effectManager) {
-	if (effectManager.getCurrentEffects(id).size() > 0) {
-		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager.getCurrentEffects(id)) {
+void Ball::runEffects() {
+	if (effectManager->getEffects().size() > 0) {
+		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager->getEffects()) {
 			switch (currentEffect.first) {
 			case effectNS::ENLARGE:
 				float scale = 2.0f;
 
 				if (currentEffect.second == 0) {
 					scale = 1.0f;
-					effectManager.removeEffect(id, currentEffect.first);
+					effectManager->removeEffect(currentEffect.first);
 				}
 
 				spriteData.scale = scale;
@@ -92,8 +90,8 @@ void Ball::runEffects(EffectManager &effectManager) {
 	}
 }
 
-bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
+bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 		case entityNS::PADDLE:
 		case entityNS::BUMPER:
@@ -105,7 +103,7 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &ef
 	return true;
 }
 
-void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType) {
+void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 	switch (effectType) {
 		case effectNS::MAGNET: {
 			printf("ball magnet");
@@ -114,5 +112,9 @@ void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType) {
 			printf("ball invert");
 			velocity = VECTOR2(-velocity.x, -velocity.y);
 		} break;
+		case effectNS::ENLARGE: {
+			effectManager->addEffect(effectType, duration);
+			printf("ball enlarge");
+		}
 	}
 }

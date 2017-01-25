@@ -10,10 +10,11 @@ Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, int cn) 
 }
 
 // constructor for effects
-Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et) {
+Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et, float d) {
 	messageType = mt;
 	targetType = tt;
 	effectType = et;
+	duration = d;
 }
 
 Message::~Message() {}
