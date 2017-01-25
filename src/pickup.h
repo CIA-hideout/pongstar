@@ -31,7 +31,7 @@ public:
 	void setDuration(float d) { duration = d; }
 
 	void update(float frameTime);
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 };
 
 #endif

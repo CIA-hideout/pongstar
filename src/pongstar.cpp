@@ -31,7 +31,7 @@ void Pongstar::initialize(HWND hwnd) {
 
 	pickupManager = new PickupManager(graphics);
 
-	effectManager = new EffectManager();
+	messageManager = new MessageManager(&entityVector);
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
@@ -49,7 +49,7 @@ void Pongstar::initialize(HWND hwnd) {
 	// Images
 	if (!divider.initialize(graphics, 0, 0, 0, &dividerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
-	
+
 	this->initializeEntities();
 
 	return;
@@ -58,8 +58,8 @@ void Pongstar::initialize(HWND hwnd) {
 void Pongstar::initializeEntities() {
 	ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle* paddle1 = new Paddle(controls.p1);
-	Paddle* paddle2 = new Paddle(controls.p2);
+	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
+	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
 	Ball* ball = new Ball();
 	Bumper* bumper = new Bumper();
 
@@ -89,7 +89,8 @@ void Pongstar::initializeEntities() {
 	entityVector.push_back(bumper);
 
 	// randomly generate basic set of pickups
-	Pickup* pickup = pickupManager->randomPickup(this);
+	//Pickup* pickup = pickupManager->randomPickup(this);
+	Pickup* pickup = pickupManager->createPickup(this, effectNS::ENLARGE);
 
 	entityVector.push_back(pickup);
 }
@@ -98,14 +99,16 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
-	effectManager->update(frameTime);
-
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
-		entityVector[i]->runEffects(*effectManager);
 
 		if (!entityVector[i]->getActive()) {
 			deleteEntityQueue.push(i);
+		}
+
+		if (entityVector[i]->getMessage() != NULL) {
+			messageManager->push(entityVector[i]->getMessage());
+			entityVector[i]->setMessage(NULL);
 		}
 	}
 
@@ -114,6 +117,8 @@ void Pongstar::update() {
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
 	}
+
+	messageManager->resolve();
 
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();
@@ -140,7 +145,7 @@ void Pongstar::collisions() {
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		for (size_t j = 0; j < entityVector.size(); ++j) {
 			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				entityVector[i]->collidesWith(*entityVector[j], collisionVector, *effectManager);
+				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
 			}
 		}
 	}
@@ -158,11 +163,29 @@ void Pongstar::render() {
 		entityVector[i]->draw();
 	}
 
+	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
+	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
+	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
+
 	fontManager->print(
 		fontNS::SABO_FILLED,
-		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, "60") / 2 - fontNS::CENTER_OFFSET,
+		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
-		std::to_string(TIME_PER_GAME - elapsedTime)
+		timeLeft
+	);
+
+	fontManager->print(
+		fontNS::SABO_FILLED,
+		GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+		HUD_Y_POS,
+		leftPaddleScore
+	);
+
+	fontManager->print(
+		fontNS::SABO_FILLED,
+		GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+		HUD_Y_POS,
+		rightPaddleScore
 	);
 
 	graphics->spriteEnd();                  // end drawing sprites

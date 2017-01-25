@@ -18,7 +18,7 @@ public:
 	Bumper();
 	~Bumper();
 
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 	void randomLocationBumper();
 };
 

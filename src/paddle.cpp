@@ -2,7 +2,7 @@
 
 Paddle::Paddle() : Entity() {}
 
-Paddle::Paddle(PaddleControls pc) : Entity() {
+Paddle::Paddle(PaddleControls pc, paddleNS::SIDE s) : Entity() {
 	entityType = entityNS::PADDLE;
 	spriteData.width = paddleNS::WIDTH;
 	spriteData.height = paddleNS::HEIGHT;
@@ -12,6 +12,7 @@ Paddle::Paddle(PaddleControls pc) : Entity() {
 	edge.right = (long)(paddleNS::WIDTH * spriteData.scale / 2);
 
 	controls = pc;
+	side = s;
 }
 
 Paddle::~Paddle() {}
@@ -20,7 +21,7 @@ void Paddle::update(float frameTime) {
 	Entity::update(frameTime);
 
 	float yVelocity = 0.0f;
-
+	
 	if (input->isKeyDown(controls.up)) {
 		if (getY() > 0) {
 			yVelocity = -paddleNS::VELOCITY;
@@ -39,11 +40,9 @@ void Paddle::update(float frameTime) {
 	spriteData.y += frameTime * velocity.y;
 }
 
-
-bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
+bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
-			
 		}
 	}
 

@@ -16,18 +16,26 @@ namespace effectNS {
 	};
 }
 
+typedef std::unordered_map<effectNS::EFFECT_TYPE, float> effectDurations;
+typedef std::pair<effectNS::EFFECT_TYPE, float> effectDurationPair;
+
 class EffectManager {
 private:
-	std::unordered_map<int, std::unordered_map<effectNS::EFFECT_TYPE, float>> entityEffects;
+	effectDurations entityEffects;
 
 public:
 	EffectManager();
 	~EffectManager();
 
+	// getters
+	effectDurations getEffects() { return entityEffects; }
+	
+	// setters
+	void setEffects(effectDurations ed) { entityEffects = ed; }
+
 	void update(float frameTime);
-	void addEffect(int entityId, effectNS::EFFECT_TYPE effectType, float duration);
-	void removeEffect(int entityId, effectNS::EFFECT_TYPE effectType);
-	std::unordered_map<effectNS::EFFECT_TYPE, float> getCurrentEffects(int entityId);
+	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);
+	void removeEffect(effectNS::EFFECT_TYPE effectType);
 };
 
 #endif

@@ -11,9 +11,8 @@
 #include "dataManager.h"
 #include "fontManager.h"
 #include "pickupManager.h"
-#include "effectManager.h"
 #include "textureManager.h"
-
+#include "messageManager.h"
 #include "image.h"
 
 #include "paddle.h"
@@ -28,7 +27,7 @@ private:
 	DataManager* dataManager;
 	FontManager* fontManager;
 	PickupManager* pickupManager;
-	EffectManager* effectManager;
+	MessageManager* messageManager;
 
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;

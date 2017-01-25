@@ -19,8 +19,9 @@ Entity::Entity() : Image() {
 	active = true;                  // the entity is active
 	rotatedBoxReady = false;
 	collisionType = entityNS::BOX;
-	health = 100;
 	gravity = entityNS::GRAVITY;
+	message = NULL;
+	effectManager = new EffectManager();
 }
 
 //=============================================================================
@@ -59,6 +60,9 @@ void Entity::update(float frameTime) {
 	deltaV.y = 0;
 	Image::update(frameTime);
 	rotatedBoxReady = false;    // for rotatedBox collision detection
+
+	effectManager->update(frameTime);
+	runEffects();
 }
 
 //=============================================================================
@@ -78,7 +82,7 @@ void Entity::ai(float frameTime, Entity &ent) {}
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
+bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	// if either entity is not active then no collision may occcur
 	if (!active || !ent.getActive())
 		return false;
@@ -435,4 +439,4 @@ void Entity::gravityForce(Entity *ent, float frameTime) {
 	velocity += gravityV;
 }
 
-void Entity::runEffects(EffectManager &effectManager) {}
+void Entity::runEffects() {}

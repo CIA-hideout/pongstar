@@ -32,15 +32,27 @@ void Ball::update(float frameTime) {
 	wallCollision();
 }
 
+void Ball::resetBall() {
+	velocity = VECTOR2(0, 0);
+
+	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
+	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
+}
+
 void Ball::wallCollision() {
-	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {
-		spriteData.x = GAME_WIDTH - ballNS::WIDTH * spriteData.scale;
-		velocity.x = -velocity.x;
+	Message* msgPtr = NULL;
+
+	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {	// hit right wall
+		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT);
+		setMessage(msgPtr);
+		resetBall();
 	}
-	else if (spriteData.x < 0) {
-		spriteData.x = 0;
-		velocity.x = -velocity.x;
+	else if (spriteData.x < 0) {	// hit left wall
+		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT);
+		setMessage(msgPtr);
+		resetBall();
 	}
+
 	if (spriteData.y > GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale) {
 		spriteData.y = GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale;
 		velocity.y = -velocity.y;
@@ -51,16 +63,16 @@ void Ball::wallCollision() {
 	}
 }
 
-void Ball::runEffects(EffectManager &effectManager) {
-	if (effectManager.getCurrentEffects(id).size() > 0) {
-		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager.getCurrentEffects(id)) {
+void Ball::runEffects() {
+	if (effectManager->getEffects().size() > 0) {
+		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager->getEffects()) {
 			switch (currentEffect.first) {
 			case effectNS::ENLARGE:
 				float scale = 2.0f;
 
 				if (currentEffect.second == 0) {
 					scale = 1.0f;
-					effectManager.removeEffect(id, currentEffect.first);
+					effectManager->removeEffect(currentEffect.first);
 				}
 
 				spriteData.scale = scale;
@@ -70,8 +82,8 @@ void Ball::runEffects(EffectManager &effectManager) {
 	}
 }
 
-bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
+bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 		case entityNS::PADDLE:
 		case entityNS::BUMPER:
@@ -81,4 +93,8 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &ef
 	}
 
 	return true;
+}
+
+void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType, float duration) {
+	effectManager->addEffect(effectType, duration);
 }
