@@ -18,7 +18,8 @@ public:
 
 	void update(float frameTime);
 	void wallCollision();
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+	void runEffects(EffectManager &effectManager);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
 };
 
 #endif

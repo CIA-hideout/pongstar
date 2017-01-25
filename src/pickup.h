@@ -1,8 +1,6 @@
 #ifndef _PICKUP_H
 #define _PICKUP_H
 
-#include <unordered_map>
-
 #include "entity.h"
 
 namespace pickupNS {
@@ -11,19 +9,6 @@ namespace pickupNS {
 	const int NCOLS = 9;
 	const float VELOCITY = 1000.0f;
 	const float SCALE = 0.4f;
-}
-
-namespace effectNS {
-	const enum EFFECT_TYPE { MAGNET, INVERT };
-
-	struct EffectData {
-		effectNS::EFFECT_TYPE effectType;
-		int frame;
-		float duration;
-
-		EffectData() {}
-		EffectData(effectNS::EFFECT_TYPE et, int f, float d) : effectType(et), frame(f), duration(d) {}
-	};
 }
 
 class Pickup : public Entity {
@@ -46,7 +31,7 @@ public:
 	void setDuration(float d) { duration = d; }
 
 	void update(float frameTime);
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
 };
 
 #endif

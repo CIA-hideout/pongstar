@@ -8,10 +8,12 @@
 #include <chrono>
 
 #include "game.h"
-#include "textureManager.h"
 #include "dataManager.h"
 #include "fontManager.h"
 #include "pickupManager.h"
+#include "effectManager.h"
+#include "textureManager.h"
+
 #include "image.h"
 
 #include "paddle.h"
@@ -26,6 +28,7 @@ private:
 	DataManager* dataManager;
 	FontManager* fontManager;
 	PickupManager* pickupManager;
+	EffectManager* effectManager;
 
 	TextureManager dividerTexture;
 	TextureManager paddleTexture;

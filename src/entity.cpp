@@ -78,7 +78,7 @@ void Entity::ai(float frameTime, Entity &ent) {}
 // Post: returns true if collision, false otherwise
 //       sets collisionVector if collision
 //=============================================================================
-bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+bool Entity::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
 	// if either entity is not active then no collision may occcur
 	if (!active || !ent.getActive())
 		return false;
@@ -434,3 +434,5 @@ void Entity::gravityForce(Entity *ent, float frameTime) {
 	// Add gravity vector to moving velocity vector to change direction
 	velocity += gravityV;
 }
+
+void Entity::runEffects(EffectManager &effectManager) {}

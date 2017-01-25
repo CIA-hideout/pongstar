@@ -6,10 +6,10 @@ Paddle::Paddle(PaddleControls pc) : Entity() {
 	entityType = entityNS::PADDLE;
 	spriteData.width = paddleNS::WIDTH;
 	spriteData.height = paddleNS::HEIGHT;
-	edge.top = -paddleNS::HEIGHT * spriteData.scale / 2;
-	edge.bottom = paddleNS::HEIGHT * spriteData.scale / 2;
-	edge.left = -paddleNS::WIDTH * spriteData.scale / 2;
-	edge.right = paddleNS::WIDTH * spriteData.scale / 2;
+	edge.top = -(long)(paddleNS::HEIGHT * spriteData.scale / 2);
+	edge.bottom = (long)(paddleNS::HEIGHT * spriteData.scale / 2);
+	edge.left = -(long)(paddleNS::WIDTH * spriteData.scale / 2);
+	edge.right = (long)(paddleNS::WIDTH * spriteData.scale / 2);
 
 	controls = pc;
 }
@@ -40,8 +40,8 @@ void Paddle::update(float frameTime) {
 }
 
 
-bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-	if (Entity::collidesWith(ent, collisionVector)) {
+bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
+	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
 		switch (ent.getEntityType()) {
 			
 		}

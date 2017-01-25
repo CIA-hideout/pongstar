@@ -2,10 +2,12 @@
 #define _ENTITY_H
 #define WIN32_LEAN_AND_MEAN
 
+#include <random>
+
 #include "image.h"
 #include "input.h"
 #include "game.h"
-#include <random>
+#include "effectManager.h"
 
 namespace entityNS {
 	enum ENTITY_TYPE { BALL, PADDLE, PICKUP, BUMPER };
@@ -173,7 +175,7 @@ public:
 	virtual bool outsideRect(RECT rect);
 
 	// Does this entity collide with ent?
-	virtual bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+	virtual bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
 
 	// Entity bounces after collision with other Entity
 	void bounce(VECTOR2 &collisionVector, Entity &ent);
@@ -182,6 +184,8 @@ public:
 
 	// Adds the gravitational force to the velocity vector of this entity
 	void gravityForce(Entity *other, float frameTime);
+
+	virtual void runEffects(EffectManager& effectManager);
 };
 
 #endif

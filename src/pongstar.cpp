@@ -31,6 +31,8 @@ void Pongstar::initialize(HWND hwnd) {
 
 	pickupManager = new PickupManager(graphics);
 
+	effectManager = new EffectManager();
+
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
@@ -54,12 +56,6 @@ void Pongstar::initialize(HWND hwnd) {
 }
 
 void Pongstar::initializeEntities() {
-	// RNG
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> randomBumperX(0, 240);
-	std::uniform_int_distribution<int> randomBumperY(0, 640);
-
 	ControlsJson controls = dataManager->getControlsJson();
 
 	Paddle* paddle1 = new Paddle(controls.p1);
@@ -87,10 +83,6 @@ void Pongstar::initializeEntities() {
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
-	
-	bumper->setX(randomBumperX(rng) + GAME_WIDTH / 4);
-	bumper->setY(randomBumperY(rng));
-
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
@@ -99,18 +91,18 @@ void Pongstar::initializeEntities() {
 	// randomly generate basic set of pickups
 	Pickup* pickup = pickupManager->randomPickup(this);
 
-	pickup->setX(GAME_WIDTH / 4);
-	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
-
-	//entityVector.push_back(pickup);
+	entityVector.push_back(pickup);
 }
 
 //=============================================================================
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
+	effectManager->update(frameTime);
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
+		entityVector[i]->runEffects(*effectManager);
 
 		if (!entityVector[i]->getActive()) {
 			deleteEntityQueue.push(i);
@@ -148,7 +140,7 @@ void Pongstar::collisions() {
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		for (size_t j = 0; j < entityVector.size(); ++j) {
 			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
+				entityVector[i]->collidesWith(*entityVector[j], collisionVector, *effectManager);
 			}
 		}
 	}
