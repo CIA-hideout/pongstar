@@ -92,10 +92,6 @@ void Pongstar::initializeEntities() {
 	//Pickup* pickup = pickupManager->randomPickup(this);
 	Pickup* pickup = pickupManager->createPickup(this, effectNS::ENLARGE);
 
-	pickup->setX(GAME_WIDTH / 4);
-	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
-	
-
 	entityVector.push_back(pickup);
 }
 
@@ -191,8 +187,6 @@ void Pongstar::render() {
 		HUD_Y_POS,
 		rightPaddleScore
 	);
-
-	//printf("P1: %i   P2: %i\n", messageManager->getPaddle(paddleNS::LEFT)->getScore(), messageManager->getPaddle(paddleNS::RIGHT)->getScore());
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

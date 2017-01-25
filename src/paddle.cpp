@@ -40,13 +40,11 @@ void Paddle::update(float frameTime) {
 	spriteData.y += frameTime * velocity.y;
 }
 
+bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
+		switch (ent.getEntityType()) {
+		}
+	}
 
-//bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-//	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
-//		switch (ent.getEntityType()) {
-//			
-//		}
-//	}
-//
-//	return true;
-//}
+	return true;
+}

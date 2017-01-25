@@ -60,9 +60,6 @@ public:
 	void render();      // "
 	void releaseAll();
 	void resetAll();
-
-	Paddle* getPaddle(paddleNS::SIDE s);
-
 };
 
 #endif

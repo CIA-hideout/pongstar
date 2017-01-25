@@ -58,8 +58,8 @@ void MessageManager::dispatch(Message* msg) {
 }
 
 void MessageManager::dispatchScore(Message* msg) {
-	switch (msg->getCmdNo()) {
-		case 1: {
+	switch (msg->getScoreCmd()) {
+		case messageNS::INCREMENT: {
 			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ? getPaddle(paddleNS::LEFT) : getPaddle(paddleNS::RIGHT);
 			paddlePtr->setScore(paddlePtr->getScore() + 1);
 		} break;
@@ -70,6 +70,6 @@ void MessageManager::dispatchEffect(Message *msg) {
 	switch (msg->getTargetType()) {
 		case messageNS::BALL: {
 			getBall()->triggerEffect(msg->getEffectType(), msg->getDuration());
-		}
+		} break;
 	}
 }

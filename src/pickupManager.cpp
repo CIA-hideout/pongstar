@@ -22,11 +22,8 @@ Pickup* PickupManager::randomPickup(Game* game) {
 	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, &pickupTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pickup"));
 
-	/*pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE) / 2);
-	pickup->setY((float)randomYcoord(rng));*/
-
-	pickup->setX(GAME_WIDTH / 4);
-	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
+	pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE) / 2);
+	pickup->setY((float)randomYcoord(rng));
 
 	return pickup;
 }
@@ -37,6 +34,9 @@ Pickup* PickupManager::createPickup(Game* game, effectNS::EFFECT_TYPE et) {
 
 	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, &pickupTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pickup"));
+
+	pickup->setX(GAME_WIDTH / 4);
+	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
 
 	return pickup;
 }

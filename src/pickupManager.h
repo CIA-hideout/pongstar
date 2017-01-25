@@ -25,8 +25,6 @@ namespace effectDataNS {
 class PickupManager {
 private:
 	TextureManager pickupTexture;
-
-	effectNS::EffectData getPickupData(effectNS::EFFECT_TYPE et);
 public:
 	PickupManager();
 	PickupManager(Graphics* graphics);
@@ -36,6 +34,7 @@ public:
 	Pickup* randomPickup(Game* game);
 	Pickup* createPickup(Game* game, effectNS::EFFECT_TYPE et);
 
+	effectNS::EffectData getPickupData(effectNS::EFFECT_TYPE et);
 };
 
 #endif

@@ -42,21 +42,13 @@ void Ball::resetBall() {
 void Ball::wallCollision() {
 	Message* msgPtr = NULL;
 
-	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {
-		// hit right wall
-		//spriteData.x = GAME_WIDTH - ballNS::WIDTH;
-		//velocity.x = -velocity.x;
-
-		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, 1);
+	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {	// hit right wall
+		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT);
 		setMessage(msgPtr);
 		resetBall();
 	}
-	else if (spriteData.x < 0) {
-		// hit left wall
-		// spriteData.x = 0;
-		// velocity.x = -velocity.x;
-
-		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, 1);
+	else if (spriteData.x < 0) {	// hit left wall
+		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT);
 		setMessage(msgPtr);
 		resetBall();
 	}
@@ -104,17 +96,5 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 }
 
 void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType, float duration) {
-	switch (effectType) {
-		case effectNS::MAGNET: {
-			printf("ball magnet");
-		} break;
-		case effectNS::INVERT: {
-			printf("ball invert");
-			velocity = VECTOR2(-velocity.x, -velocity.y);
-		} break;
-		case effectNS::ENLARGE: {
-			effectManager->addEffect(effectType, duration);
-			printf("ball enlarge");
-		}
-	}
+	effectManager->addEffect(effectType, duration);
 }

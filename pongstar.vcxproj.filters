@@ -69,12 +69,9 @@
     <ClInclude Include="src\pickupManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="src\bumper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-=======
->>>>>>> Implement effectManager class
     <ClInclude Include="src\effectManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -27,8 +27,8 @@ Bumper::Bumper() : Entity() {
 
 Bumper::~Bumper() {}
 
-bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager) {
-	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
+bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 		case entityNS::BALL:
 			randomLocationBumper();

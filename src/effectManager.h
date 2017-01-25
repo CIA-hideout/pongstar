@@ -21,7 +21,6 @@ typedef std::pair<effectNS::EFFECT_TYPE, float> effectDurationPair;
 
 class EffectManager {
 private:
-	//std::unordered_map<int, std::unordered_map<effectNS::EFFECT_TYPE, float>> entityEffects;
 	effectDurations entityEffects;
 
 public:

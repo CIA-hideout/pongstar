@@ -3,10 +3,10 @@
 Message::Message() {}
 
 // generic constructor for any messages
-Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, int cn) {
+Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, messageNS::SCORE_CMD sc) {
 	messageType = mt;
 	targetType = tt;
-	cmdNo = cn;
+	scoreCmd = sc;
 }
 
 // constructor for effects
