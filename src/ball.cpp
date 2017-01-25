@@ -5,7 +5,6 @@ std::random_device rd;     // only used once to initialise (seed) engine
 std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
 std::uniform_int_distribution<int> randomBool(0, 1);
 
-
 Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
 	spriteData.width = ballNS::WIDTH;
@@ -34,16 +33,16 @@ void Ball::update(float frameTime) {
 }
 
 void Ball::wallCollision() {
-	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH) {
-		spriteData.x = GAME_WIDTH - ballNS::WIDTH;
+	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {
+		spriteData.x = GAME_WIDTH - ballNS::WIDTH * spriteData.scale;
 		velocity.x = -velocity.x;
 	}
 	else if (spriteData.x < 0) {
 		spriteData.x = 0;
 		velocity.x = -velocity.x;
 	}
-	if (spriteData.y > GAME_HEIGHT - ballNS::HEIGHT) {
-		spriteData.y = GAME_HEIGHT - ballNS::HEIGHT;
+	if (spriteData.y > GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale) {
+		spriteData.y = GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale;
 		velocity.y = -velocity.y;
 	}
 	else if (spriteData.y < 0) {
@@ -75,8 +74,6 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &ef
 	if (Entity::collidesWith(ent, collisionVector, effectManager)) {
 		switch (ent.getEntityType()) {
 		case entityNS::PADDLE:
-			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-			break;
 		case entityNS::BUMPER:
 			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 			break;

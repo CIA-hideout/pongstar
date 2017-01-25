@@ -56,12 +56,6 @@ void Pongstar::initialize(HWND hwnd) {
 }
 
 void Pongstar::initializeEntities() {
-	// RNG
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> randomBumperX(0, 240);
-	std::uniform_int_distribution<int> randomBumperY(0, 640);
-
 	ControlsJson controls = dataManager->getControlsJson();
 
 	Paddle* paddle1 = new Paddle(controls.p1);
@@ -89,10 +83,6 @@ void Pongstar::initializeEntities() {
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
-	
-	bumper->setX(randomBumperX(rng) + GAME_WIDTH / 4);
-	bumper->setY(randomBumperY(rng));
-
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
@@ -101,14 +91,7 @@ void Pongstar::initializeEntities() {
 	// randomly generate basic set of pickups
 	Pickup* pickup = pickupManager->randomPickup(this);
 
-<<<<<<< HEAD
-	pickup->setX(GAME_WIDTH / 4);
-	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
-
-	//entityVector.push_back(pickup);
-=======
 	entityVector.push_back(pickup);
->>>>>>> Make pickup spawn at a random location along the middle
 }
 
 //=============================================================================

@@ -11,11 +11,15 @@ namespace bumperNS {
 
 class Bumper : public Entity {
 private:
+	std::uniform_int_distribution<int> randomBumperX;
+	std::uniform_int_distribution<int> randomBumperY;
+
 public:
 	Bumper();
 	~Bumper();
 
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+	bool collidesWith(Entity &ent, VECTOR2 &collisionVector, EffectManager &effectManager);
+	void randomLocationBumper();
 };
 
 #endif
