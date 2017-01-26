@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 namespace effectNS {
-	const enum EFFECT_TYPE { MAGNET, INVERT, ENLARGE };
+	const enum EFFECT_TYPE { MAGNET, INVERT, SHIELD, MULTIPLY, BOOST, SLOW, SHRINK, ENLARGE, MYSTERY };
 
 	struct EffectData {
 		effectNS::EFFECT_TYPE effectType;

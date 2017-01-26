@@ -7,7 +7,7 @@ namespace pickupNS {
 	const int HEIGHT = 100;
 	const int WIDTH = 100;
 	const int NCOLS = 9;
-	const float VELOCITY = 1000.0f;
+	const float VELOCITY = 100.0f;
 	const float SCALE = 0.4f;
 }
 
@@ -32,6 +32,8 @@ public:
 
 	void update(float frameTime);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+
+	void checkWithinView();
 };
 
 #endif

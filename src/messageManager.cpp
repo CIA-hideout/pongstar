@@ -2,8 +2,11 @@
 
 MessageManager::MessageManager() {}
 
-MessageManager::MessageManager(std::vector<Entity*>* ev) {
+MessageManager::MessageManager(Game* g, Graphics* graphics, std::vector<Entity*>* ev) {
+	game = g;
 	entityVector = ev;
+
+	pickupManager = new PickupManager(graphics);
 }
 
 MessageManager::~MessageManager() {}
@@ -54,6 +57,9 @@ void MessageManager::dispatch(Message* msg) {
 		case messageNS::EFFECT: {
 			dispatchEffect(msg);
 		} break;
+		case messageNS::PICKUP: {
+			dispatchPickup(msg);
+		}
 	}
 }
 
@@ -66,10 +72,23 @@ void MessageManager::dispatchScore(Message* msg) {
 	}
 }
 
-void MessageManager::dispatchEffect(Message *msg) {
+void MessageManager::dispatchEffect(Message* msg) {
 	switch (msg->getTargetType()) {
 		case messageNS::BALL: {
 			getBall()->triggerEffect(msg->getEffectType(), msg->getDuration());
 		} break;
 	}
+}
+
+void MessageManager::dispatchPickup(Message* msg) {
+	Pickup* pickup = pickupManager->randomPickup(game);
+
+	if (msg->getPickupCmd() == messageNS::MOVE_LEFT) {
+		pickup->setVelocity(VECTOR2(-pickupNS::VELOCITY, 0));
+	}
+	else {
+		pickup->setVelocity(VECTOR2(pickupNS::VELOCITY, 0));
+	}
+
+	entityVector->push_back(pickup);
 }

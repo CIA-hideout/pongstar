@@ -1,8 +1,5 @@
 #include "bumper.h"
 
-// RNG
-
-
 Bumper::Bumper() : Entity() {
 	entityType = entityNS::BUMPER;
 	spriteData.width = bumperNS::WIDTH;
@@ -19,7 +16,18 @@ Bumper::Bumper() : Entity() {
 	randomBumperX = std::uniform_int_distribution<int>(0, GAME_WIDTH / 4 - spriteData.width * spriteData.scale);
 	randomBumperY = std::uniform_int_distribution<int>(0, GAME_HEIGHT - spriteData.height * spriteData.scale);
 
-	float xCoord = randomBool(rng) == 0 ? randomBumperX(rng) + GAME_WIDTH / 2 : randomBumperX(rng) + GAME_WIDTH / 4;
+	float xCoord = randomBumperX(rng);
+
+	if (randomBool(rng) == 0) {
+		// Spawn bumper on right side;
+		xCoord += GAME_WIDTH / 2;
+		side = bumperNS::RIGHT;
+	}
+	else {
+		// Spawn bumper on left side
+		xCoord += GAME_WIDTH / 4;
+		side = bumperNS::LEFT;
+	}
 
 	setX(xCoord);
 	setY(randomBumperY(rng));
@@ -28,9 +36,17 @@ Bumper::Bumper() : Entity() {
 Bumper::~Bumper() {}
 
 bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
+	Message* msgPtr = NULL;
+
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 		case entityNS::BALL:
+			// Set message to spawn pickup
+			messageNS::PICKUP_CMD direction = (side == bumperNS::LEFT) ? messageNS::MOVE_RIGHT : messageNS::MOVE_LEFT;
+			msgPtr = new Message(messageNS::PICKUP, direction);
+			setMessage(msgPtr);
+
+			// Move bumper
 			randomLocationBumper();
 			break;
 		}
@@ -43,12 +59,18 @@ void Bumper::randomLocationBumper() {
 	std::random_device rd;     // only used once to initialise (seed) engine
 	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
 
-	float xCoord;
+	float xCoord = randomBumperX(rng);
 
-	if (getX() < GAME_WIDTH / 2)
-		xCoord = randomBumperX(rng) + GAME_WIDTH / 2;
-	else
-		xCoord = randomBumperX(rng) + GAME_WIDTH / 4;
+	if (side == bumperNS::LEFT) {
+		// Spawn bumper on right side;
+		xCoord += GAME_WIDTH / 2;
+		side = bumperNS::RIGHT;
+	}
+	else {
+		// Spawn bumper on left side
+		xCoord += GAME_WIDTH / 4;
+		side = bumperNS::LEFT;
+	}
 
 	setX(xCoord);
 	setY(randomBumperY(rng));

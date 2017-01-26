@@ -22,7 +22,14 @@ Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d) : Entity() {
 
 Pickup::~Pickup() {}
 
-void Pickup::update(float frameTime) {}
+void Pickup::update(float frameTime) {
+	Entity::update(frameTime);
+
+	spriteData.x += frameTime * velocity.x;
+	spriteData.y += frameTime * velocity.y;
+
+	checkWithinView();
+}
 
 bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	Message* msgPtr = NULL;
@@ -38,4 +45,10 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	}
 
 	return true;
+}
+
+void Pickup::checkWithinView() {
+	if (spriteData.x < -spriteData.width * spriteData.scale || spriteData.x > GAME_WIDTH) {
+		setActive(false);
+	}
 }
