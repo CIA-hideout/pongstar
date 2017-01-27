@@ -5,26 +5,31 @@
 
 #include <queue>
 
+#include "game.h"
 #include "message.h"
 #include "entity.h"
 #include "paddle.h"
 #include "ball.h"
+#include "pickupManager.h"
 
 class MessageManager {
 private:
+	Game* game;
+	PickupManager* pickupManager;
 	std::queue<Message*> messageQueue;
 	std::vector<Entity*>* entityVector;
 
 public:
 	MessageManager();
-	MessageManager(std::vector<Entity*>* ev);
+	MessageManager(Game* g, Graphics* graphics, std::vector<Entity*>* ev);
 	~MessageManager();
 
 	void push(Message* msg);
 	void dispatch(Message* msg);
 
-	void dispatchScore(Message *msg);
-	void dispatchEffect(Message *msg);
+	void dispatchScore(Message* msg);
+	void dispatchEffect(Message* msg);
+	void dispatchPickup(Message* msg);
 
 	void resolve();
 
