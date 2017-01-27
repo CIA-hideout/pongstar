@@ -42,23 +42,27 @@ void Ball::resetBall() {
 void Ball::wallCollision() {
 	Message* msgPtr = NULL;
 
-	if (spriteData.x > GAME_WIDTH - ballNS::WIDTH * spriteData.scale) {	// hit right wall
+	// Collision with right wall
+	if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT);
 		setMessage(msgPtr);
 		resetBall();
 	}
-	else if (spriteData.x < 0) {	// hit left wall
+	// Collision with left wall
+	else if (spriteData.x < LEFT_WALL) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT);
 		setMessage(msgPtr);
 		resetBall();
 	}
 
-	if (spriteData.y > GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale) {
-		spriteData.y = GAME_HEIGHT - ballNS::HEIGHT * spriteData.scale;
+	// Collision with bottom wall
+	if (spriteData.y > BOTTOM_WALL - ballNS::HEIGHT * spriteData.scale) {
+		spriteData.y = BOTTOM_WALL - ballNS::HEIGHT * spriteData.scale;
 		velocity.y = -velocity.y;
 	}
-	else if (spriteData.y < 0) {
-		spriteData.y = 0;
+	// Collision with top wall
+	else if (spriteData.y < TOP_WALL) {
+		spriteData.y = TOP_WALL;
 		velocity.y = -velocity.y;
 	}
 }

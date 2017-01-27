@@ -4,9 +4,9 @@
 #include <map>
 #include <string>
 
-#include "textureManager.h"
 #include "font.h"
 #include "graphics.h"
+#include "textureManager.h"
 
 namespace fontNS {
 	const char SABO_FONT_TEXTURE[] = "resources\\font\\sabo.png";
@@ -33,7 +33,7 @@ private:
 	std::map<fontNS::FONT_NAME, Font*> fonts;
 	
 public:
-	FontManager(Graphics *graphics);
+	FontManager(Graphics* graphics);
 	~FontManager();
 
 	void initialize();

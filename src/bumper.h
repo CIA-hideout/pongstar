@@ -4,8 +4,8 @@
 #include "entity.h"
 
 namespace bumperNS {
-	const int HEIGHT = 200;
-	const int WIDTH = 200;
+	const int HEIGHT = 100;
+	const int WIDTH = 100;
 	const int NCOLS = 1;
 	const enum SIDE { LEFT, RIGHT };
 }

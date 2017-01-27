@@ -14,7 +14,7 @@ Pickup* PickupManager::randomPickup(Game* game) {
 	std::random_device rd;     // only used once to initialise (seed) engine
 	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
 	std::uniform_int_distribution<int> randomInt(0, effectDataNS::EFFECT_ARR_SIZE);
-	std::uniform_int_distribution<int> randomYcoord(0, GAME_HEIGHT - (int)(pickupNS::HEIGHT * pickupNS::SCALE));
+	std::uniform_int_distribution<int> randomYcoord(TOP_WALL, BOTTOM_WALL - (int)(pickupNS::HEIGHT * pickupNS::SCALE));
 
 	effectNS::EffectData data = effectDataNS::effectArray[randomInt(rng)];
 	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration);
@@ -28,6 +28,7 @@ Pickup* PickupManager::randomPickup(Game* game) {
 	return pickup;
 }
 
+// For testing
 Pickup* PickupManager::createPickup(Game* game, effectNS::EFFECT_TYPE et) {
 	effectNS::EffectData data = getPickupData(et);
 	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration);

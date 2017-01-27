@@ -13,6 +13,9 @@ Paddle::Paddle(PaddleControls pc, paddleNS::SIDE s) : Entity() {
 
 	controls = pc;
 	side = s;
+
+	currentFrame = (side == paddleNS::LEFT) ? 0 : 1;
+	loop = false;
 }
 
 Paddle::~Paddle() {}
@@ -23,13 +26,13 @@ void Paddle::update(float frameTime) {
 	float yVelocity = 0.0f;
 	
 	if (input->isKeyDown(controls.up)) {
-		if (getY() > 0) {
+		if (getY() > TOP_WALL) {
 			yVelocity = -paddleNS::VELOCITY;
 		}
 	}
 
 	if (input->isKeyDown(controls.down)) {
-		if (getY() + paddleNS::HEIGHT < GAME_HEIGHT) {
+		if (getY() + paddleNS::HEIGHT < BOTTOM_WALL) {
 			yVelocity = paddleNS::VELOCITY;
 		}
 	}

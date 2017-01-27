@@ -7,7 +7,7 @@
 namespace paddleNS {
 	const int HEIGHT = 120;
 	const int WIDTH = 20;
-	const int NCOLS = 1;
+	const int NCOLS = 2;
 	const int SIDE_SPACE = 60;
 	const float VELOCITY = 400.0f;
 

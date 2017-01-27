@@ -8,15 +8,14 @@ Bumper::Bumper() : Entity() {
 	edge.bottom = (long)(bumperNS::HEIGHT  * spriteData.scale / 2);
 	edge.left = -(long)(bumperNS::WIDTH  * spriteData.scale / 2);
 	edge.right = (long)(bumperNS::WIDTH  * spriteData.scale / 2);
-	spriteData.scale = 0.5f;
 
 	std::random_device rd;     // only used once to initialise (seed) engine
 	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
 	std::uniform_int_distribution<int> randomBool(0, 1);
-	randomBumperX = std::uniform_int_distribution<int>(0, GAME_WIDTH / 4 - spriteData.width * spriteData.scale);
-	randomBumperY = std::uniform_int_distribution<int>(0, GAME_HEIGHT - spriteData.height * spriteData.scale);
+	randomBumperX = std::uniform_int_distribution<int>(0, GAME_WIDTH / 4 - (int)(spriteData.width * spriteData.scale));
+	randomBumperY = std::uniform_int_distribution<int>(TOP_WALL, BOTTOM_WALL - (int)(spriteData.height * spriteData.scale));
 
-	float xCoord = randomBumperX(rng);
+	int xCoord = randomBumperX(rng);
 
 	if (randomBool(rng) == 0) {
 		// Spawn bumper on right side;
@@ -29,8 +28,8 @@ Bumper::Bumper() : Entity() {
 		side = bumperNS::LEFT;
 	}
 
-	setX(xCoord);
-	setY(randomBumperY(rng));
+	setX((float)xCoord);
+	setY((float)randomBumperY(rng));
 }
 
 Bumper::~Bumper() {}
@@ -59,7 +58,7 @@ void Bumper::randomLocationBumper() {
 	std::random_device rd;     // only used once to initialise (seed) engine
 	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
 
-	float xCoord = randomBumperX(rng);
+	int xCoord = randomBumperX(rng);
 
 	if (side == bumperNS::LEFT) {
 		// Spawn bumper on right side;
@@ -72,6 +71,6 @@ void Bumper::randomLocationBumper() {
 		side = bumperNS::LEFT;
 	}
 
-	setX(xCoord);
-	setY(randomBumperY(rng));
+	setX((float)xCoord);
+	setY((float)randomBumperY(rng));
 }
