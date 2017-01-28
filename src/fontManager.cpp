@@ -12,6 +12,7 @@ const char* colorToString(fontNS::FONT_COLOR c) {
 		case fontNS::WHITE:			return "white";
 		case fontNS::BLUE:			return "blue";
 		case fontNS::ORANGE:		return "orange";
+		case fontNS::RED:			return "red";
 	}
 }
 
@@ -64,8 +65,8 @@ void FontManager::print(fontNS::FONT_NAME name, fontNS::FONT_COLOR color, int x,
 	(*fonts[name])[color]->print(x, y, text);
 }
 
-int FontManager::getTotalWidth(fontNS::FONT_NAME name, fontNS::FONT_COLOR color, std::string text) {
-	return (*fonts[name])[color]->getTotalWidth(text);
+int FontManager::getTotalWidth(fontNS::FONT_NAME name, std::string text) {
+	return fonts[name]->begin()->second->getTotalWidth(text);
 }
 
 void FontManager::releaseAll() {

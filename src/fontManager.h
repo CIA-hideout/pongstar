@@ -15,12 +15,12 @@ namespace fontNS {
 	const int NCOLS = 16;
 
 	enum FONT_NAME { SABO, SABO_FILLED };
-	enum FONT_COLOR { WHITE, BLUE, ORANGE };
+	enum FONT_COLOR { WHITE, BLUE, ORANGE, RED };
 	const int CENTER_OFFSET = 11;
 
 	const std::unordered_map<fontNS::FONT_NAME, std::vector<fontNS::FONT_COLOR>> initMap = {
 		{ fontNS::SABO, { fontNS::WHITE } },
-		{ fontNS::SABO_FILLED, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE } }
+		{ fontNS::SABO_FILLED, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED } }
 	};
 }
 
@@ -51,7 +51,7 @@ public:
 	void initialize();
 
 	void print(fontNS::FONT_NAME n, fontNS::FONT_COLOR c, int x, int y, std::string t);
-	int getTotalWidth(fontNS::FONT_NAME n, fontNS::FONT_COLOR c, std::string t);
+	int getTotalWidth(fontNS::FONT_NAME n, std::string t);
 
 	void releaseAll();
 	void resetAll();
