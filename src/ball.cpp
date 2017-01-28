@@ -1,10 +1,5 @@
 #include "ball.h"
 
-// RNG
-std::random_device rd;     // only used once to initialise (seed) engine
-std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-std::uniform_int_distribution<int> randomBool(0, 1);
-
 Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
 	spriteData.width = ballNS::WIDTH;
@@ -25,7 +20,7 @@ void Ball::update(float frameTime) {
 
 	if (velocity.x == 0 && velocity.y == 0) {
 		if (input->wasKeyPressed(SPACE_KEY)) {
-			velocity.x = (randomBool(rng) == 1) ? ballNS::VELOCITY : -ballNS::VELOCITY;
+			velocity.x = randBool() ? ballNS::VELOCITY : -ballNS::VELOCITY;
 		}
 	}
 

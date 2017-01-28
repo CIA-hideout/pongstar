@@ -9,21 +9,23 @@ PickupManager::PickupManager(Graphics* graphics) {
 
 PickupManager::~PickupManager() {}
 
-Pickup* PickupManager::randomPickup(Game* game) {
-	// RNG
-	std::random_device rd;     // only used once to initialise (seed) engine
-	std::mt19937 rng(rd());    // random-number engine used (Mersenne-Twister in this case)
-	std::uniform_int_distribution<int> randomInt(0, effectDataNS::EFFECT_ARR_SIZE);
-	std::uniform_int_distribution<int> randomYcoord(TOP_WALL, BOTTOM_WALL - (int)(pickupNS::HEIGHT * pickupNS::SCALE));
+int PickupManager::getRandYSpawn() {
+	return randInt(TOP_WALL, BOTTOM_WALL - (int)(pickupNS::HEIGHT * pickupNS::SCALE));
+}
 
-	effectNS::EffectData data = effectDataNS::effectArray[randomInt(rng)];
+int PickupManager::getRandEffectArrIndex() {
+	return randInt(0, effectDataNS::EFFECT_ARR_SIZE);
+}
+
+Pickup* PickupManager::randomPickup(Game* game) {
+	effectNS::EffectData data = effectDataNS::effectArray[getRandEffectArrIndex()];
 	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration);
 
 	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, &pickupTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pickup"));
 
 	pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE) / 2);
-	pickup->setY((float)randomYcoord(rng));
+	pickup->setY((float)getRandYSpawn());
 
 	return pickup;
 }
