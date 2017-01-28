@@ -1,7 +1,7 @@
 #ifndef _FONTMANAGER_H
 #define _FONTMANAGER_H
 
-#include <map>
+#include <vector>
 #include <unordered_map>
 #include <string>
 
@@ -28,20 +28,25 @@ namespace fontNS {
 	const int CENTER_OFFSET = 11;
 }
 
+/*
+	fonts is a map of names to a map of colors and its specific font pointers.
+	The nested map looks like
+	std::map<fontNS::FONT_NAME, std::map<fontNS::FONT_COLOR, Font*>>
+*/
+
+// color to font pointer
 typedef std::pair<fontNS::FONT_COLOR, Font*> colorFontPair;
 typedef std::unordered_map<fontNS::FONT_COLOR, Font*> colorFontMap;
 
+// name to colorMap pointer
+// colorMap contains color to font pointers
 typedef std::pair<fontNS::FONT_NAME, colorFontMap*> nameColorPair;
 typedef std::unordered_map<fontNS::FONT_NAME, colorFontMap*> nameColorMap;
 
 class FontManager {
 private:
 	Graphics* graphics;
-
-	TextureManager saboFontWhiteTexture;
-	TextureManager saboFilledFontWhiteTexture;
-
-	//std::map<fontNS::FONT_NAME, Font*> fonts;
+	std::vector<TextureManager*> textureManagers;
 	nameColorMap fonts;
 	
 public:
