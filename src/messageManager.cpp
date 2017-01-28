@@ -7,6 +7,8 @@ MessageManager::MessageManager(Game* g, Graphics* graphics, std::vector<Entity*>
 	entityVector = ev;
 
 	pickupManager = new PickupManager(graphics);
+
+	entityVector->push_back(pickupManager->createPickup(g, effectNS::BOOST));
 }
 
 MessageManager::~MessageManager() {}

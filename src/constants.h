@@ -38,6 +38,12 @@ const float MIN_FRAME_TIME = 1.0f / FRAME_RATE;
 const float MAX_FRAME_TIME = 1.0f / MIN_FRAME_RATE;
 const int TIME_PER_GAME = 60;
 
+const int WALL_PADDING = 10;
+const int TOP_WALL = WALL_PADDING;
+const int BOTTOM_WALL = GAME_HEIGHT - WALL_PADDING;
+const int LEFT_WALL = WALL_PADDING;
+const int RIGHT_WALL = GAME_WIDTH - WALL_PADDING;
+
 // Key Mappings
 const UCHAR ESC_KEY = VK_ESCAPE;
 const UCHAR ALT_KEY = VK_MENU;

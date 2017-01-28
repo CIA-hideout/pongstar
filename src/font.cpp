@@ -2,7 +2,6 @@
 #include "font.h"
 
 Font::Font() {
-
 	memset(&this->widths, 0, sizeof(widths));
 
 	spriteData.width = 128;
