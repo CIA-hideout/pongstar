@@ -169,16 +169,16 @@ void Pongstar::render() {
 
 	fontManager->print(
 		fontNS::SABO_FILLED,
-		fontNS::WHITE,
-		GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, fontNS::WHITE, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+		fontNS::ORANGE,
+		GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, fontNS::ORANGE, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
 		leftPaddleScore
 	);
 
 	fontManager->print(
 		fontNS::SABO_FILLED,
-		fontNS::WHITE,
-		GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, fontNS::WHITE, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+		fontNS::BLUE,
+		GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, fontNS::BLUE, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
 		rightPaddleScore
 	);
