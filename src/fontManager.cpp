@@ -1,5 +1,21 @@
 #include "fontManager.h"
 
+const char* nameToString(fontNS::FONT_NAME n) {
+	switch (n) {
+		case fontNS::SABO:			return "sabo";
+		case fontNS::SABO_FILLED:   return "sabo_filled";
+	}
+}
+
+const char* colorToString(fontNS::FONT_COLOR c) {
+	switch (c) {
+		case fontNS::WHITE:			return "white";
+		case fontNS::BLUE:			return "blue";
+		case fontNS::ORANGE:		return "orange";
+		case fontNS::RED:			return "red";
+	}
+}
+
 FontManager::FontManager(Graphics *g) {
 	graphics = g;
 }
@@ -7,46 +23,60 @@ FontManager::FontManager(Graphics *g) {
 FontManager::~FontManager() {}
 
 void FontManager::initialize() {
-	if (!saboFontTexture.initialize(graphics, fontNS::SABO_FONT_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing sabo font texture"));
+	fontNS::FONT_NAME name;
+	std::vector<fontNS::FONT_COLOR> colorsVec;
+	Font* font;
+	TextureManager* tm;
+	colorFontMap* cfm;
 
-	if (!saboFilledFontTexure.initialize(graphics, fontNS::SABO_FILLED_FONT_TEXTURE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing sabo filled font texture"));
+	char fileDirectory[] = "resources\\font\\";
 
-	Font* saboFont = new Font();
-	saboFont->initialize(graphics, fontNS::CHAR_WIDTH, fontNS::CHAR_HEIGHT, fontNS::NCOLS, &saboFontTexture);
-	saboFont->loadTextData(fontNS::SABO_FONT_INFO);
+	for (auto& x : fontNS::initMap) {
+		char infoLocation[1024], fontLocation[1024], errorMsg[1024];
+		cfm = new colorFontMap();
 
-	Font* saboFilledFont = new Font();
-	saboFilledFont->initialize(graphics, fontNS::CHAR_WIDTH, fontNS::CHAR_HEIGHT, fontNS::NCOLS, &saboFilledFontTexure);
-	saboFilledFont->loadTextData(fontNS::SABO_FILLED_FONT_INFO);
+		name = x.first;
+		colorsVec = x.second;
+		
+		sprintf(infoLocation, "%s%s.dat", fileDirectory, nameToString(name));
 
-	fonts.insert(nameFontPair(fontNS::SABO, saboFont));
-	fonts.insert(nameFontPair(fontNS::SABO_FILLED, saboFilledFont));
-}
+		for (size_t i = 0; i < colorsVec.size(); i++) {
+			font = new Font();
+			tm = new TextureManager();
+			
+			sprintf(fontLocation, "%s%s_%s.png", fileDirectory, nameToString(name), colorToString(colorsVec[i]));
+			sprintf(errorMsg, "Error initializing %s_%s texture", nameToString(name), colorToString(colorsVec[i]));
 
-void FontManager::draw() {
-	for (const nameFontPair& i : fonts) {	// access by reference
-		// i.first - key
-		// i.second - data
-		i.second->draw();
+			if (!(*tm).initialize(graphics, fontLocation))
+				throw(GameError(gameErrorNS::FATAL_ERROR, errorMsg));
+			
+			font->initialize(graphics, fontNS::CHAR_WIDTH, fontNS::CHAR_HEIGHT, fontNS::NCOLS, tm);
+			font->loadTextData(infoLocation);
+			cfm->insert(colorFontPair(colorsVec[i], font));
+
+			textureManagers.push_back(tm);
+		}
+
+		fonts.insert(nameColorsPair(name, cfm));
 	}
 }
 
-void FontManager::print(fontNS::FONT_NAME fontName, int x, int y, std::string text) {
-	fonts[fontName]->print(x, y, text);
+void FontManager::print(fontNS::FONT_NAME name, fontNS::FONT_COLOR color, int x, int y, std::string text) {
+	(*fonts[name])[color]->print(x, y, text);
 }
 
-int FontManager::getTotalWidth(fontNS::FONT_NAME fontName, std::string text) {
-	return fonts[fontName]->getTotalWidth(text);
+int FontManager::getTotalWidth(fontNS::FONT_NAME name, std::string text) {
+	return fonts[name]->begin()->second->getTotalWidth(text);
 }
 
 void FontManager::releaseAll() {
-	saboFontTexture.onLostDevice();
-	saboFontTexture.onLostDevice();
+	for (size_t i = 0; i < textureManagers.size(); i++) {
+		textureManagers[i]->onResetDevice();
+	}
 }
 
 void FontManager::resetAll() {
-	saboFontTexture.onLostDevice();
-	saboFilledFontTexure.onLostDevice();
+	for (size_t i = 0; i < textureManagers.size(); i++) {
+		textureManagers[i]->onLostDevice();
+	}
 }
