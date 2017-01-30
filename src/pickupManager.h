@@ -3,8 +3,8 @@
 
 #include <vector>
 #include <string>
-#include <random>
 
+#include "random.h"
 #include "game.h"
 #include "graphics.h"
 #include "gameError.h"
@@ -37,6 +37,9 @@ public:
 	PickupManager(Graphics* graphics);
 
 	~PickupManager();
+	
+	int getRandYSpawn();
+	int getRandEffectArrIndex();
 
 	Pickup* randomPickup(Game* game);
 	Pickup* createPickup(Game* game, effectNS::EFFECT_TYPE et);

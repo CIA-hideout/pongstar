@@ -2,8 +2,6 @@
 #define _ENTITY_H
 #define WIN32_LEAN_AND_MEAN
 
-#include <random>
-
 #include "image.h"
 #include "input.h"
 #include "game.h"

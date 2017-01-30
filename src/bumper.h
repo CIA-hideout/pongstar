@@ -2,6 +2,7 @@
 #define _BUMPER_H
 
 #include "entity.h"
+#include "random.h"
 
 namespace bumperNS {
 	const int HEIGHT = 100;
@@ -12,13 +13,14 @@ namespace bumperNS {
 
 class Bumper : public Entity {
 private:
-	std::uniform_int_distribution<int> randomBumperX;
-	std::uniform_int_distribution<int> randomBumperY;
 	bumperNS::SIDE side;
 
 public:
 	Bumper();
 	~Bumper();
+
+	int getRandXSpawn();
+	int getRandYSpawn();
 
 	bumperNS::SIDE getSide() { return side; }
 	void setSide(bumperNS::SIDE s) { side = s; }
