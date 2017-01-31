@@ -48,7 +48,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 }
 
 void Pickup::checkWithinView() {
-	if (spriteData.x < -spriteData.width * spriteData.scale || spriteData.x > GAME_WIDTH) {
+	if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale) || spriteData.x > RIGHT_WALL) {
 		setActive(false);
 	}
 }

@@ -22,6 +22,7 @@ public:
 	void update(float frameTime);
 	void resetBall();
 	void wallCollision();
+	void bumperCollision(Entity &bumper, VECTOR2 &collisionVector);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 
 	void runEffects();
