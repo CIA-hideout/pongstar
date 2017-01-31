@@ -7,6 +7,7 @@
 Pongstar::Pongstar() {
 	elapsedTime = 0;
 	gameStarted = false;
+	gameState = GAME_STATE::MENU;
 }
 
 //=============================================================================
@@ -31,6 +32,9 @@ void Pongstar::initialize(HWND hwnd) {
 
 	messageManager = new MessageManager(this, graphics, &entityVector);
 
+	menu = new Menu();
+	menu->initialize(fontManager);
+
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
@@ -53,7 +57,7 @@ void Pongstar::initialize(HWND hwnd) {
 
 	if (!border.initialize(graphics, 0, 0, 0, &borderTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border"));
-		
+
 	this->initializeEntities();
 
 	return;
@@ -97,35 +101,42 @@ void Pongstar::initializeEntities() {
 // Update all game items
 //=============================================================================
 void Pongstar::update() {
-	for (size_t i = 0; i < entityVector.size(); ++i) {
-		entityVector[i]->update(frameTime);
+	switch (gameState) {
+	case GAME_STATE::MENU: {
+		menu->update(frameTime);
+	} break;
+	case GAME_STATE::GAME: {
+		for (size_t i = 0; i < entityVector.size(); ++i) {
+			entityVector[i]->update(frameTime);
 
-		if (!entityVector[i]->getActive()) {
-			deleteEntityQueue.push(i);
+			if (!entityVector[i]->getActive()) {
+				deleteEntityQueue.push(i);
+			}
+
+			if (entityVector[i]->getMessage() != NULL) {
+				messageManager->push(entityVector[i]->getMessage());
+				entityVector[i]->setMessage(NULL);
+			}
 		}
 
-		if (entityVector[i]->getMessage() != NULL) {
-			messageManager->push(entityVector[i]->getMessage());
-			entityVector[i]->setMessage(NULL);
+		while (deleteEntityQueue.size() > 0) {
+			int indexToRemove = deleteEntityQueue.front();
+			entityVector.erase(entityVector.begin() + indexToRemove);
+			deleteEntityQueue.pop();
 		}
-	}
 
-	while (deleteEntityQueue.size() > 0) {
-		int indexToRemove = deleteEntityQueue.front();
-		entityVector.erase(entityVector.begin() + indexToRemove);
-		deleteEntityQueue.pop();
-	}
+		messageManager->resolve();
 
-	messageManager->resolve();
+		if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
+			startTime = steady_clock::now();
+			gameStarted = true;
+		}
 
-	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
-		startTime = steady_clock::now();
-		gameStarted = true;
-	}
-
-	if (gameStarted) {
-		steady_clock::time_point presentTime = steady_clock::now();
-		elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
+		if (gameStarted) {
+			steady_clock::time_point presentTime = steady_clock::now();
+			elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
+		}
+	} break;
 	}
 }
 
@@ -138,15 +149,23 @@ void Pongstar::ai() {}
 // Handle collisions
 //=============================================================================
 void Pongstar::collisions() {
-	VECTOR2 collisionVector;
+	switch (gameState) {
+	case GAME_STATE::MENU: {
 
-	for (size_t i = 0; i < entityVector.size(); ++i) {
-		for (size_t j = 0; j < entityVector.size(); ++j) {
-			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
+	} break;
+	case GAME_STATE::GAME: {
+		VECTOR2 collisionVector;
+
+		for (size_t i = 0; i < entityVector.size(); ++i) {
+			for (size_t j = 0; j < entityVector.size(); ++j) {
+				if (entityVector[i]->getId() != entityVector[j]->getId()) {
+					entityVector[i]->collidesWith(*entityVector[j], collisionVector);
+				}
 			}
 		}
+	} break;
 	}
+
 }
 
 //=============================================================================
@@ -154,41 +173,47 @@ void Pongstar::collisions() {
 //=============================================================================
 void Pongstar::render() {
 	graphics->spriteBegin();                // begin drawing sprites
-	divider.draw();
+	switch (gameState) {
+	case GAME_STATE::MENU: {
+		menu->render();
+	} break;
+	case GAME_STATE::GAME: {
+		divider.draw();
 
-	for (size_t i = 0; i < entityVector.size(); ++i) {
-		entityVector[i]->draw();
-	}
+		for (size_t i = 0; i < entityVector.size(); ++i) {
+			entityVector[i]->draw();
+		}
 
-	border.draw();
+		border.draw();
 
-	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
-	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
-	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
+		std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
+		std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
+		std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
 
-	fontManager->print(
-		fontNS::SABO_FILLED,
-		elapsedTime > 50 ? fontNS::RED : fontNS::WHITE,
-		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
-		HUD_Y_POS,
-		timeLeft
-	);
+		fontManager->print(
+			fontNS::SABO_FILLED,
+			elapsedTime > 50 ? fontNS::RED : fontNS::WHITE,
+			GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
+			HUD_Y_POS,
+			timeLeft
+		);
 
-	fontManager->print(
-		fontNS::SABO_FILLED,
-		fontNS::ORANGE,
-		GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
-		HUD_Y_POS,
-		leftPaddleScore
-	);
+		fontManager->print(
+			fontNS::SABO_FILLED,
+			fontNS::ORANGE,
+			GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+			HUD_Y_POS,
+			leftPaddleScore
+		);
 
-	fontManager->print(
-		fontNS::SABO_FILLED,
-		fontNS::BLUE,
-		GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
-		HUD_Y_POS,
-		rightPaddleScore
-	);
+		fontManager->print(
+			fontNS::SABO_FILLED,
+			fontNS::BLUE,
+			GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
+			HUD_Y_POS,
+			rightPaddleScore
+		);
+	} break;
 
 	graphics->spriteEnd();                  // end drawing sprites
 }

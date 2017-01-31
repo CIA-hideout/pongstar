@@ -17,7 +17,13 @@
 #include "ball.h"
 #include "bumper.h"
 
+#include "menu.h"
+
 using namespace std::chrono;
+
+enum GAME_STATE {
+	MENU, GAME
+};
 
 class Pongstar : public Game {
 private:
@@ -41,6 +47,10 @@ private:
 	steady_clock::time_point startTime;
 	int elapsedTime;
 	bool gameStarted;
+
+	Menu* menu;
+
+	GAME_STATE gameState;
 
 public:
 	// Constructor

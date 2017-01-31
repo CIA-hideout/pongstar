@@ -14,6 +14,8 @@ Font::Font() {
 	startFrame = 0;
 	endFrame = 127;
 	currentFrame = 0;
+
+	kerning = 0.0f;
 }
 
 Font::~Font() {
@@ -43,6 +45,10 @@ bool Font::loadTextData(std::string fileName) {
 	// convert raw data to proportional data width
 	for (int i = 0; i < sizeof(this->widths) / sizeof(this->widths[0]); i++) {
 		widths[i] = (int)buffer[i * 2];
+
+		if (i == 73) {		// If hit char 'I' frame, increase width by 20
+			widths[i] += 20;
+		}
 	}
 
 	return true;
@@ -54,17 +60,21 @@ void Font::print(int x, int y, std::string text) {
 
 	for (size_t i = 0; i < text.length(); i++) {
 		int frame = (int)text[i] - '!' + 1;
-		if (isdigit(text[i]))
-			frame += 32;
+		frame += 32;
+
+		if (frame == 73) {	// If 'I' frame
+			fx -= 11;
+		}
 
 		setCurrentFrame(frame);
 		setX(fx);
 		setY(fy);
-		draw();		// repeatedly draw each letter 
+		draw();		// repeatedly draw each letter
+		
 		if (widths[frame] == 0)
 			widths[frame] = getWidth();
 
-		fx += widths[frame] * getScale();
+		fx += widths[frame] * getScale() + kerning;
 	}
 }
 
@@ -73,11 +83,13 @@ int Font::getTotalWidth(std::string text) {
 
 	for (size_t i = 0; i < text.length(); i++) {
 		int frame = (int)text[i] - '!' + 1;
-		if (isdigit(text[i]))
-			frame += 32;
+		frame += 32;
 
-		fx += widths[frame] * getScale();
+		if (frame == 73) {	// If 'I' frame
+			fx -= 11;
+		}
 
+		fx += widths[frame] * getScale() + kerning;
 	}
 
 	return (int)fx;

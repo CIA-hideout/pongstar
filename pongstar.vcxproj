@@ -80,6 +80,7 @@
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\effects.h" />
+    <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\message.h" />
     <ClInclude Include="src\messageManager.h" />
     <ClInclude Include="src\pickup.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="src\bumper.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />
+    <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\message.cpp" />
     <ClCompile Include="src\messageManager.cpp" />
     <ClCompile Include="src\pickup.cpp" />
