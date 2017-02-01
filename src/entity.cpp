@@ -21,7 +21,7 @@ Entity::Entity() : Image() {
 	collisionType = entityNS::BOX;
 	gravity = entityNS::GRAVITY;
 	message = NULL;
-	effectManager = new EffectManager();
+	effects = new Effects();
 }
 
 //=============================================================================
@@ -61,7 +61,7 @@ void Entity::update(float frameTime) {
 	Image::update(frameTime);
 	rotatedBoxReady = false;    // for rotatedBox collision detection
 
-	effectManager->update(frameTime);
+	effects->update(frameTime);
 	runEffects();
 }
 

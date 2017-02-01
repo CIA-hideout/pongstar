@@ -1,5 +1,5 @@
-#ifndef _EFFECTMANAGER_H
-#define _EFFECTMANAGER_H
+#ifndef _EFFECTS_H
+#define _EFFECTS_H
 
 #include <unordered_map>
 
@@ -19,19 +19,19 @@ namespace effectNS {
 typedef std::unordered_map<effectNS::EFFECT_TYPE, float> effectDurations;
 typedef std::pair<effectNS::EFFECT_TYPE, float> effectDurationPair;
 
-class EffectManager {
+class Effects {
 private:
-	effectDurations entityEffects;
+	effectDurations currentEffects;
 
 public:
-	EffectManager();
-	~EffectManager();
+	Effects();
+	~Effects();
 
 	// getters
-	effectDurations getEffects() { return entityEffects; }
+	effectDurations getEffects() { return currentEffects; }
 	
 	// setters
-	void setEffects(effectDurations ed) { entityEffects = ed; }
+	void setEffects(effectDurations ed) { currentEffects = ed; }
 
 	void update(float frameTime);
 	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);

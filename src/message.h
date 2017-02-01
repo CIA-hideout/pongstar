@@ -1,7 +1,7 @@
 #ifndef _MESSAGE_H
 #define _MESSAGE_H
 
-#include "effectManager.h"
+#include "effects.h"
 
 namespace messageNS {
 	enum MESSAGE_TYPE { SCORE, EFFECT, PICKUP };

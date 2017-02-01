@@ -5,7 +5,7 @@
 #include "image.h"
 #include "input.h"
 #include "game.h"
-#include "effectManager.h"
+#include "effects.h"
 #include "message.h"
 
 namespace entityNS {
@@ -41,7 +41,7 @@ protected:
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
 	entityNS::ENTITY_TYPE entityType;
 	Message* message;
-	EffectManager* effectManager;
+	Effects* effects;
 
 	// --- The following functions are protected because they are not intended to be
 	// --- called from outside the class.

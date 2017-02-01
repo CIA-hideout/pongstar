@@ -83,15 +83,15 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 }
 
 void Ball::runEffects() {
-	if (effectManager->getEffects().size() > 0) {
-		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager->getEffects()) {
+	if (effects->getEffects().size() > 0) {
+		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effects->getEffects()) {
 			switch (currentEffect.first) {
 			case effectNS::ENLARGE:
 				float scale = 2.0f;
 
 				if (currentEffect.second == 0) {
 					scale = 1.0f;
-					effectManager->removeEffect(currentEffect.first);
+					effects->removeEffect(currentEffect.first);
 				}
 
 				spriteData.scale = scale;
@@ -117,5 +117,5 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 }
 
 void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType, float duration) {
-	effectManager->addEffect(effectType, duration);
+	effects->addEffect(effectType, duration);
 }
