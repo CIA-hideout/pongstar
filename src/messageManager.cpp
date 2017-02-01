@@ -2,9 +2,12 @@
 
 MessageManager::MessageManager() {}
 
-MessageManager::MessageManager(PickupManager* pm, std::vector<Entity*>* ev) {
+MessageManager::MessageManager(PickupManager* pm, BallManager* bm, std::vector<Entity*>* ev) {
 	entityVector = ev;
 	pickupManager = pm;
+	ballManager = bm;
+
+	entityVector->push_back(pickupManager->createPickup(effectNS::MULTIPLY));
 }
 
 MessageManager::~MessageManager() {}
@@ -52,11 +55,14 @@ void MessageManager::dispatch(Message* msg) {
 		case messageNS::SCORE: {
 			dispatchScore(msg);
 		} break;
-		case messageNS::EFFECT: {
-			dispatchEffect(msg);
-		} break;
 		case messageNS::PICKUP: {
 			dispatchPickup(msg);
+		} break;
+		case messageNS::ADD_EFFECT: {
+			dispatchAddEffect(msg);
+		} break;
+		case messageNS::RUN_EFFECT: {
+			dispatchRunEffect(msg);
 		} break;
 	}
 }
@@ -70,14 +76,6 @@ void MessageManager::dispatchScore(Message* msg) {
 	}
 }
 
-void MessageManager::dispatchEffect(Message* msg) {
-	switch (msg->getTargetType()) {
-		case messageNS::BALL: {
-			getBall()->triggerEffect(msg->getEffectType(), msg->getDuration());
-		} break;
-	}
-}
-
 void MessageManager::dispatchPickup(Message* msg) {
 	Pickup* pickup = pickupManager->randomPickup();
 	pickup->setVelocity(
@@ -85,4 +83,34 @@ void MessageManager::dispatchPickup(Message* msg) {
 		VECTOR2(-pickupNS::VELOCITY, 0) :
 		VECTOR2(pickupNS::VELOCITY, 0)
 	);
+}
+
+void MessageManager::dispatchAddEffect(Message* msg) {
+	switch (msg->getTargetType()) {
+		case messageNS::BALL: {
+			getBall()->addEffect(msg->getEffectType(), msg->getDuration());
+		} break;
+	}
+}
+
+void MessageManager::dispatchRunEffect(Message* msg) {
+	switch (msg->getEffectType()) {
+		case effectNS::MULTIPLY: {
+			Ball* currentBall = getBall();
+			float ballAngle = currentBall->getBallAngle();
+			VECTOR2 newVelocity;
+
+			Ball* newBall1 = ballManager->createBall();
+			newBall1->setX(currentBall->getX());
+			newBall1->setY(currentBall->getY());
+			newVelocity = ballManager->getVelocityFromAngle(ballAngle + 30);
+			newBall1->setVelocity(newVelocity);
+
+			Ball* newBall2 = ballManager->createBall();
+			newBall2->setX(currentBall->getX());
+			newBall2->setY(currentBall->getY());
+			newVelocity = ballManager->getVelocityFromAngle(ballAngle - 30);
+			newBall2->setVelocity(newVelocity);
+		} break;
+	}
 }

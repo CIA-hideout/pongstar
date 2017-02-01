@@ -83,20 +83,23 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 }
 
 void Ball::runEffects() {
+	Message* msgPtr = NULL;
+
 	if (effects->getEffects().size() > 0) {
 		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effects->getEffects()) {
 			switch (currentEffect.first) {
-			case effectNS::ENLARGE:
-				float scale = 2.0f;
-
-				if (currentEffect.second == 0) {
-					scale = 1.0f;
-					effects->removeEffect(currentEffect.first);
-				}
-
-				spriteData.scale = scale;
-				break;
+				case effectNS::ENLARGE: {
+					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 2.0f;
+				} break;
+				
+				case effectNS::MULTIPLY: {
+					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY);
+					setMessage(msgPtr);
+				} break;
 			}
+
+			if (currentEffect.second == 0)
+				effects->removeEffect(currentEffect.first);
 		}
 	}
 }
@@ -104,18 +107,40 @@ void Ball::runEffects() {
 bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
-		case entityNS::PADDLE:
-			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-			break;
-		case entityNS::BUMPER:
-			bumperCollision(ent, collisionVector);
-			break;
+			case entityNS::PADDLE: {
+				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+			} break;
+
+			case entityNS::BUMPER: {
+				bumperCollision(ent, collisionVector);
+			} break;
 		}
 	}
 
 	return true;
 }
 
-void Ball::triggerEffect(effectNS::EFFECT_TYPE effectType, float duration) {
+void Ball::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 	effects->addEffect(effectType, duration);
+}
+
+
+float Ball::getBallAngle() {
+	float theta = (90 * fabs(velocity.y)) / ballNS::VELOCITY;
+	float angle;
+
+	if (velocity.x >= 0 && velocity.y < 0) {
+		angle = theta;
+	}
+	else if (velocity.x > 0 && velocity.y >= 0) {
+		angle = 90 + theta;
+	}
+	else if (velocity.x <= 0 && velocity.y > 0) {
+		angle = 180 + theta;
+	}
+	else if (velocity.x < 0 && velocity.y <= 0) {
+		angle = 270 + theta;
+	}
+
+	return angle;
 }

@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\ball.h" />
+    <ClInclude Include="src\ballManager.h" />
     <ClInclude Include="src\bumper.h" />
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
@@ -102,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ball.cpp" />
+    <ClCompile Include="src\ballManager.cpp" />
     <ClCompile Include="src\bumper.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />

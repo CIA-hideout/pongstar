@@ -36,18 +36,18 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
-		case entityNS::BALL: {
-			setActive(false);
-			msgPtr = new Message(messageNS::EFFECT, messageNS::BALL, effectType, duration);
-			setMessage(msgPtr);
-		}	break;
+			case entityNS::BALL: {
+				setActive(false);
+				msgPtr = new Message(messageNS::ADD_EFFECT, messageNS::BALL, effectType, duration);
+				setMessage(msgPtr);
+			}	break;
 
-		case entityNS::PADDLE: {
-			setActive(false);
-			messageNS::TARGET_TYPE targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::RIGHT_P : messageNS::LEFT_P;
-			msgPtr = new Message(messageNS::EFFECT, targetType, effectType, duration);
-			setMessage(msgPtr);
-		}	break;
+			/*case entityNS::PADDLE: {
+				setActive(false);
+				messageNS::TARGET_TYPE targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::RIGHT_P : messageNS::LEFT_P;
+				msgPtr = new Message(messageNS::ADD_EFFECT, targetType, effectType, duration);
+				setMessage(msgPtr);
+			}	break;*/
 		}
 	}
 

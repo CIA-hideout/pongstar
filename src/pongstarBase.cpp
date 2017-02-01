@@ -10,8 +10,9 @@ PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureMan
 PongstarBase::~PongstarBase() {}
 
 void PongstarBase::initialize() {
+	ballManager = new BallManager(game, tmMap[pongstarNS::BALL], &entityVector);
 	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
-	messageManager = new MessageManager(pickupManager, &entityVector);
+	messageManager = new MessageManager(pickupManager, ballManager, &entityVector);
 
 	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[pongstarNS::DIVIDER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
@@ -94,9 +95,7 @@ void PongstarBase::update(float frameTime) {
 	}
 }
 
-void PongstarBase::ai() {
-
-}
+void PongstarBase::ai() {}
 
 void PongstarBase::collisions() {
 	VECTOR2 collisionVector;
@@ -151,10 +150,6 @@ void PongstarBase::render() {
 		);
 }
 
-void PongstarBase::releaseAll() {
+void PongstarBase::releaseAll() {}
 
-}
-
-void PongstarBase::resetAll() {
-
-}
+void PongstarBase::resetAll() {}

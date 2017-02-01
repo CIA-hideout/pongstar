@@ -93,6 +93,9 @@
     <ClInclude Include="src\pongstarBase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ballManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\winmain.cpp">
@@ -159,6 +162,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\pongstarBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ballManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

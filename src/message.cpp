@@ -15,12 +15,19 @@ Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, messageN
 	scoreCmd = sc;
 }
 
-// constructor for effects messages
+// constructor for add effects messages
 Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et, float d) {
 	messageType = mt;
 	targetType = tt;
 	effectType = et;
 	duration = d;
+}
+
+// constructor for run effects messages
+Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et) {
+	messageType = mt;
+	targetType = tt;
+	effectType = et;
 }
 
 Message::~Message() {}
