@@ -13,7 +13,11 @@ Menu::Menu() {}
 
 Menu::~Menu() {}
 
-void Menu::initialize(FontManager* fm) {
+void Menu::initialize(Input* i, FontManager* fm) {
+	selectedItemIndex = 0;
+	blink = true;
+	input = i;
+
 	// Copy from initialized fm
 	titleFm = new FontManager(*fm);
 	menuFm = new FontManager(*fm);
@@ -25,7 +29,22 @@ void Menu::initialize(FontManager* fm) {
 }
 
 void Menu::update(float frameTime) {
+	if (input->wasKeyPressed(UP_KEY)) {
+		selectedItemIndex = selectedItemIndex == 0 ? items.size() - 1 : selectedItemIndex - 1;
+	}
 
+	if (input->wasKeyPressed(DOWN_KEY)) {
+		selectedItemIndex = selectedItemIndex == items.size() - 1 ? 0 : selectedItemIndex + 1;
+	}
+
+	if (blinkTimer < menuNS::BLINK_INTERVAL) {
+		blinkTimer += frameTime;
+	}
+
+	if (blinkTimer >= menuNS::BLINK_INTERVAL) {
+		blink = !blink;
+		blinkTimer = 0.0;
+	}
 }
 
 void Menu::render() {
@@ -58,15 +77,35 @@ void Menu::render() {
 
 	menuFm->setKerning(fontNS::SABO_FILLED, -4);
 
-	for (std::list<menuNS::SCENE>::iterator it = items.begin(); it != items.end(); ++it) {
+	for (size_t i = 0; i < items.size(); i++) {
+		int itemWidth = menuFm->getTotalWidth(fontNS::SABO_FILLED, sceneToString(items[i]));
+		int itemStartXPos = GAME_WIDTH / 2 - itemWidth / 2;
+		int itemStartYPos = menuNS::MENU_Y_POS + i * menuNS::HEIGHT_BETWEEN_ITEM;
+
+		if (selectedItemIndex == i && blink) {
+			menuFm->print(
+				fontNS::SABO,
+				fontNS::WHITE,
+				itemStartXPos - menuFm->getTotalWidth(fontNS::SABO, "-") - menuNS::DIST_BTWN_MINUS_AND_ITEM,
+				itemStartYPos,
+				"-"
+			);
+
+			menuFm->print(
+				fontNS::SABO,
+				fontNS::WHITE,
+				itemStartXPos + itemWidth + menuNS::DIST_BTWN_MINUS_AND_ITEM,
+				itemStartYPos,
+				"-"
+			);
+		}
+
 		menuFm->print(
 			fontNS::SABO_FILLED,
 			fontNS::WHITE,
-			GAME_WIDTH / 2 - menuFm->getTotalWidth(fontNS::SABO_FILLED, sceneToString(*it)) / 2,
-			menuNS::MENU_Y_POS + count * menuNS::HEIGHT_BETWEEN_ITEM,
-			sceneToString(*it)	
+			itemStartXPos,
+			itemStartYPos,
+			sceneToString(items[i])
 		);
-
-		count++;
 	}
 }

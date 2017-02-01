@@ -33,7 +33,7 @@ void Pongstar::initialize(HWND hwnd) {
 	messageManager = new MessageManager(this, graphics, &entityVector);
 
 	menu = new Menu();
-	menu->initialize(fontManager);
+	menu->initialize(input, fontManager);
 
 	// Textures
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))

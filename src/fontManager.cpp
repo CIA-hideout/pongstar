@@ -23,10 +23,8 @@ FontManager::FontManager(Graphics* g) {
 }
 
 FontManager::FontManager(const FontManager& obj) {
-	// do not need to copy value of graphics,
-	// all fontManagers can have the same pointer to the same graphics object
-	graphics = obj.graphics;	
-	textureManagers = obj.textureManagers;
+	graphics = obj.graphics;				// Use same graphics pointer for all fontManagers
+	textureManagers = obj.textureManagers;	// Use same texture pointers for all fontManagers
 	
 	fontNS::FONT_NAME name;
 	fontNS::FONT_COLOR color;
