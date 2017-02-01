@@ -35,6 +35,9 @@ void Pongstar::initialize(HWND hwnd) {
 	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
 
+	if (!borderTexture.initialize(graphics, BORDER_IMAGE))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border texture"));
+
 	if (!paddleTexture.initialize(graphics, PADDLE_IMAGE))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle texture"));
 
@@ -48,6 +51,9 @@ void Pongstar::initialize(HWND hwnd) {
 	if (!divider.initialize(graphics, 0, 0, 0, &dividerTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
 
+	if (!border.initialize(graphics, 0, 0, 0, &borderTexture))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border"));
+		
 	this->initializeEntities();
 
 	return;
@@ -148,12 +154,13 @@ void Pongstar::collisions() {
 //=============================================================================
 void Pongstar::render() {
 	graphics->spriteBegin();                // begin drawing sprites
-
 	divider.draw();
 
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->draw();
 	}
+
+	border.draw();
 
 	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
 	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());

@@ -26,11 +26,13 @@ private:
 	FontManager* fontManager;
 	MessageManager* messageManager;
 
-	TextureManager dividerTexture;
-	TextureManager paddleTexture;
 	TextureManager ballTexture;
+	TextureManager paddleTexture;
 	TextureManager bumperTexture;
+	TextureManager borderTexture;
+	TextureManager dividerTexture;
 
+	Image border;
 	Image divider;
 
 	std::vector<Entity*> entityVector;

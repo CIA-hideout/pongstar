@@ -62,6 +62,26 @@ void Ball::wallCollision() {
 	}
 }
 
+void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
+	// Get positive values of collision vector
+	float xCollisionValue = (collisionVector.x >= 0) ? collisionVector.x : -collisionVector.x;
+	float yCollisionValue = (collisionVector.y >= 0) ? collisionVector.y : -collisionVector.y;
+
+	// Collided on left or right face
+	if (xCollisionValue > yCollisionValue) {
+		velocity.x = -velocity.x;
+	}
+	// Collided on top or bottom face
+	else if (xCollisionValue < yCollisionValue) {
+		velocity.y = -velocity.y;
+	}
+	// Collided precisely at the corner (xCollisionValue = yCollisionValue)
+	else {
+		VECTOR2 newVelocity = VECTOR2(-velocity.y, -velocity.x);
+		velocity = newVelocity;
+	}
+}
+
 void Ball::runEffects() {
 	if (effectManager->getEffects().size() > 0) {
 		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effectManager->getEffects()) {
@@ -85,8 +105,10 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 		case entityNS::PADDLE:
-		case entityNS::BUMPER:
 			Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+			break;
+		case entityNS::BUMPER:
+			bumperCollision(ent, collisionVector);
 			break;
 		}
 	}
