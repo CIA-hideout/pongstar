@@ -7,12 +7,13 @@
 #include <stack>
 #include <chrono>
 
-#include "gameError.h"
 #include "game.h"
+#include "gameError.h"
 #include "dataManager.h"
 #include "fontManager.h"
 #include "textureManager.h"
 #include "messageManager.h"
+#include "pickupManager.h"
 #include "image.h"
 
 #include "paddle.h"
@@ -22,16 +23,16 @@
 
 using namespace std::chrono;
 
-
 namespace pongstarNS {
-	enum TEXTURE { BALL, PADDLE, DIVIDER, BUMPER };
+	enum TEXTURE { BALL, PADDLE, DIVIDER, BUMPER, PICKUPS };
 	const char TEXTURE_DIRECTORY[] = "sprites\\";
 
 	const std::vector<TEXTURE> initTextureVec = {
 		TEXTURE::BALL,
 		TEXTURE::PADDLE,
 		TEXTURE::DIVIDER,
-		TEXTURE::BUMPER
+		TEXTURE::BUMPER,
+		TEXTURE::PICKUPS
 	};
 }
 
@@ -40,13 +41,14 @@ typedef std::unordered_map<pongstarNS::TEXTURE, TextureManager*> TextureManagerM
 class PongstarBase : public Scene {
 private:
 	// Game items
-	MessageManager* messageManager;
+	Game* game;
+	Input* input;
 	FontManager* fontManager;
 	DataManager* dataManager;
 	TextureManagerMap tmMap;
-	Game* game;
-	Input* input;
 
+	MessageManager* messageManager;
+	PickupManager* pickupManager;
 	Image divider;
 
 	std::vector<Entity*> entityVector;
@@ -57,7 +59,7 @@ private:
 	bool gameStarted;
 
 public:
-	PongstarBase(DataManager* dm, FontManager* fm, MessageManager* mm, TextureManagerMap t, Game* g, Input* i);
+	PongstarBase(Game* g, Input* i, DataManager* dm, FontManager* fm, TextureManagerMap t);
 	~PongstarBase();
 
 	virtual void initialize(Image d);

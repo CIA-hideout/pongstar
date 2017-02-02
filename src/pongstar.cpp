@@ -7,6 +7,8 @@ const char* textureToString(pongstarNS::TEXTURE t) {
 	case pongstarNS::PADDLE:		return "Paddle";
 	case pongstarNS::DIVIDER:		return "Divider";
 	case pongstarNS::BUMPER:		return "Bumper";
+	case pongstarNS::PICKUPS:		return "Pickups";
+	default:						return "Unable to find string conversion for texture";
 	}
 }
 
@@ -63,7 +65,7 @@ void Pongstar::initialize(HWND hwnd) {
 	if (!divider.initialize(graphics, 0, 0, 0, tmMap[pongstarNS::DIVIDER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
 
-	ps = new PongstarBase(dataManager, fontManager, messageManager, tmMap, this, input);
+	ps = new PongstarBase(this, input, dataManager, fontManager, tmMap);
 	ps->initialize(divider);
 
 	//this->initializeEntities();

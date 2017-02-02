@@ -6,9 +6,8 @@
 
 #include "random.h"
 #include "game.h"
-#include "graphics.h"
-#include "gameError.h"
 #include "textureManager.h"
+#include "entity.h"
 #include "pickup.h"
 
 namespace effectDataNS {
@@ -27,22 +26,23 @@ namespace effectDataNS {
 	const int EFFECT_ARR_SIZE = 9;
 }
 
-
 class PickupManager {
 private:
-	TextureManager pickupTexture;
+	Game* game;
+	TextureManager* pickupTexture;
+	std::vector<Entity*>* entityVector;
 
 public:
 	PickupManager();
-	PickupManager(Graphics* graphics);
+	PickupManager(Game* g, TextureManager* pt, std::vector<Entity*>* ev);
 
 	~PickupManager();
 	
 	int getRandYSpawn();
 	int getRandEffectArrIndex();
 
-	Pickup* randomPickup(Game* game);
-	Pickup* createPickup(Game* game, effectNS::EFFECT_TYPE et);
+	Pickup* randomPickup();
+	Pickup* createPickup(effectNS::EFFECT_TYPE et);
 
 	effectNS::EffectData getPickupData(effectNS::EFFECT_TYPE et);
 };

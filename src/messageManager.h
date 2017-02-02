@@ -1,27 +1,29 @@
-/* In charge of relying messages to the correct entites or components */
+/*	In charge of relying messages to the correct entites or components
+	MessageManager should not store any data
+*/
 
-#ifndef _MESSAGEMANAGER_H
+#ifndef _MESSAGEMANAGER_H	
 #define _MESSAGEMANAGER_H
 
 #include <queue>
 
-#include "game.h"
+#include "pickupManager.h"
 #include "message.h"
 #include "entity.h"
 #include "paddle.h"
 #include "ball.h"
-#include "pickupManager.h"
 
 class MessageManager {
 private:
-	Game* game;
-	PickupManager* pickupManager;
 	std::queue<Message*> messageQueue;
 	std::vector<Entity*>* entityVector;
 
+	// Components
+	PickupManager* pickupManager;
+
 public:
 	MessageManager();
-	MessageManager(Game* g, Graphics* graphics, std::vector<Entity*>* ev);
+	MessageManager(PickupManager* pm, std::vector<Entity*>* ev);
 	~MessageManager();
 
 	void push(Message* msg);
@@ -29,7 +31,7 @@ public:
 
 	void dispatchScore(Message* msg);
 	void dispatchEffect(Message* msg);
-	void dispatchPickup(Message* msg);
+	void dispatchPickup(Message *msg);
 
 	void resolve();
 

@@ -2,13 +2,9 @@
 
 MessageManager::MessageManager() {}
 
-MessageManager::MessageManager(Game* g, Graphics* graphics, std::vector<Entity*>* ev) {
-	game = g;
+MessageManager::MessageManager(PickupManager* pm, std::vector<Entity*>* ev) {
 	entityVector = ev;
-
-	pickupManager = new PickupManager(graphics);
-
-	entityVector->push_back(pickupManager->createPickup(g, effectNS::BOOST));
+	pickupManager = pm;
 }
 
 MessageManager::~MessageManager() {}
@@ -61,7 +57,7 @@ void MessageManager::dispatch(Message* msg) {
 		} break;
 		case messageNS::PICKUP: {
 			dispatchPickup(msg);
-		}
+		} break;
 	}
 }
 
@@ -83,14 +79,10 @@ void MessageManager::dispatchEffect(Message* msg) {
 }
 
 void MessageManager::dispatchPickup(Message* msg) {
-	Pickup* pickup = pickupManager->randomPickup(game);
-
-	if (msg->getPickupCmd() == messageNS::MOVE_LEFT) {
-		pickup->setVelocity(VECTOR2(-pickupNS::VELOCITY, 0));
-	}
-	else {
-		pickup->setVelocity(VECTOR2(pickupNS::VELOCITY, 0));
-	}
-
-	entityVector->push_back(pickup);
+	Pickup* pickup = pickupManager->randomPickup();
+	pickup->setVelocity(
+		msg->getPickupCmd() == messageNS::MOVE_LEFT ? 
+		VECTOR2(-pickupNS::VELOCITY, 0) :
+		VECTOR2(pickupNS::VELOCITY, 0)
+	);
 }

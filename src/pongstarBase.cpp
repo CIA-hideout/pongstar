@@ -1,22 +1,22 @@
 #include "pongstarBase.h"
 
-PongstarBase::PongstarBase(DataManager* dm, FontManager* fm, MessageManager* mm, TextureManagerMap t, Game* g, Input* i) {
-	messageManager = mm;
-	fontManager = fm;
-	dataManager = dm;
-	tmMap = t;
+PongstarBase::PongstarBase(Game* g, Input* i, DataManager* dm, FontManager* fm, TextureManagerMap t) {
 	game = g;
 	input = i;
+	dataManager = dm;
+	fontManager = fm;
+	tmMap = t;
 }
 
 PongstarBase::~PongstarBase() {}
 
 void PongstarBase::initialize(Image d) {
 	divider = d;
-	
-	initializeEntities();
 
-	messageManager = new MessageManager(this, graphics, &entityVector);
+	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
+	messageManager = new MessageManager(pickupManager, &entityVector);
+
+	initializeEntities();
 }
 
 void PongstarBase::initializeEntities() {
@@ -51,6 +51,9 @@ void PongstarBase::initializeEntities() {
 	entityVector.push_back(paddle2);
 	entityVector.push_back(ball);
 	entityVector.push_back(bumper);
+
+	// Testing sprite effect
+	pickupManager->createPickup(effectNS::ENLARGE);
 }
 
 void PongstarBase::update(float frameTime) {
