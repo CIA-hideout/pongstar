@@ -41,6 +41,18 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 			msgPtr = new Message(messageNS::EFFECT, messageNS::BALL, effectType, duration);
 			setMessage(msgPtr);
 		}	break;
+
+		case entityNS::PADDLE: {
+			setActive(false);
+			if (ent.getX() >= GAME_WIDTH / 2) {
+				msgPtr = new Message(messageNS::EFFECT, messageNS::RIGHT_P, effectType, duration);
+				setMessage(msgPtr);
+			}
+			else {
+				msgPtr = new Message(messageNS::EFFECT, messageNS::LEFT_P, effectType, duration);
+				setMessage(msgPtr);
+			}
+		}	break;
 		}
 	}
 
