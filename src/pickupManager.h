@@ -6,6 +6,7 @@
 
 #include "random.h"
 #include "game.h"
+#include "gameError.h"
 #include "textureManager.h"
 #include "entity.h"
 #include "pickup.h"

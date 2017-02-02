@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "constants.h"
+#include "scene.h"
 #include "graphics.h"
 #include "input.h"
 #include "fontManager.h"
@@ -14,18 +15,18 @@ namespace menuNS {
 	const int HEIGHT_BETWEEN_ITEM = 90;
 	const int DIST_BTWN_MINUS_AND_ITEM = 20;
 	const float BLINK_INTERVAL = 0.2f;
-
-	enum SCENE_TYPE {
-		CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS
-	};
 }
 
-class Menu {
+class Menu : public Scene {
 private:
+	// Game items
+	Input* input;
+	FontManager* baseFm;
+
+	// Scene items
 	FontManager* titleFm;
 	FontManager* menuFm;
-	std::vector<menuNS::SCENE_TYPE> items;
-	Input* input;
+	std::vector<sceneNS::TYPE> items;
 	int selectedItemIndex;
 
 	float blinkTimer;
@@ -33,11 +34,18 @@ private:
 
 public:
 	Menu();
+	Menu::Menu(Input* i, FontManager* fm);
 	~Menu();
-
-	void initialize(Input *i, FontManager* fm);
+	
+	// Interface
+	void initialize();
 	void update(float frameTime);
+	void ai() {};
+	void collisions() {};
 	void render();
+
+	void releaseAll() {};
+	void resetAll() {};
 };
 
 #endif

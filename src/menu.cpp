@@ -1,31 +1,35 @@
 #include "menu.h"
 
-const char* sceneToString(menuNS::SCENE_TYPE s) {
+const char* sceneToString(sceneNS::TYPE s) {
 	switch (s) {
-	case menuNS::CLASSIC:			return "CLASSIC";
-	case menuNS::TIME_ATK:			return "TIME ATTACK";
-	case menuNS::HIGH_SCORES:		return "HIGH SCORES";
-	case menuNS::CREDITS:			return "CREDITS";
+	case sceneNS::CLASSIC:			return "CLASSIC";
+	case sceneNS::TIME_ATK:			return "TIME ATTACK";
+	case sceneNS::HIGH_SCORES:		return "HIGH SCORES";
+	case sceneNS::CREDITS:			return "CREDITS";
 	}
 }
 
-Menu::Menu() {}
+Menu::Menu() {};
+
+Menu::Menu(Input* i, FontManager* fm) {
+	input = i;
+	baseFm = fm;
+}
 
 Menu::~Menu() {}
 
-void Menu::initialize(Input* i, FontManager* fm) {
+void Menu::initialize() {
 	selectedItemIndex = 0;
 	blink = true;
-	input = i;
 
 	// Copy from initialized fm
-	titleFm = new FontManager(*fm);
-	menuFm = new FontManager(*fm);
+	titleFm = new FontManager(*baseFm);
+	menuFm = new FontManager(*baseFm);
 
-	items.push_back(menuNS::CLASSIC);
-	items.push_back(menuNS::TIME_ATK);
-	items.push_back(menuNS::HIGH_SCORES);
-	items.push_back(menuNS::CREDITS);
+	items.push_back(sceneNS::CLASSIC);
+	items.push_back(sceneNS::TIME_ATK);
+	items.push_back(sceneNS::HIGH_SCORES);
+	items.push_back(sceneNS::CREDITS);
 }
 
 void Menu::update(float frameTime) {
@@ -35,6 +39,11 @@ void Menu::update(float frameTime) {
 
 	if (input->wasKeyPressed(DOWN_KEY)) {
 		selectedItemIndex = selectedItemIndex == items.size() - 1 ? 0 : selectedItemIndex + 1;
+	}
+
+	if (input->wasKeyPressed(ENTER_KEY)) {
+		nextSceneType = new sceneNS::TYPE;
+		nextSceneType = &items[selectedItemIndex];
 	}
 
 	if (blinkTimer < menuNS::BLINK_INTERVAL) {

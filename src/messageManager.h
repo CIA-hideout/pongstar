@@ -1,8 +1,8 @@
-/*	In charge of relying messages to the correct entites or components
+/*	In charge of relaying messages to the correct entites or components
 	MessageManager should not store any data
 */
 
-#ifndef _MESSAGEMANAGER_H	
+#ifndef _MESSAGEMANAGER_H
 #define _MESSAGEMANAGER_H
 
 #include <queue>
@@ -31,7 +31,7 @@ public:
 
 	void dispatchScore(Message* msg);
 	void dispatchEffect(Message* msg);
-	void dispatchPickup(Message *msg);
+	void dispatchPickup(Message* msg);
 
 	void resolve();
 

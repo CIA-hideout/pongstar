@@ -81,11 +81,10 @@
     <ClInclude Include="src\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-<<<<<<< HEAD
     <ClInclude Include="src\effects.h">
-=======
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="src\menu.h">
->>>>>>> Draw menu
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene.h">

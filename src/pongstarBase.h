@@ -24,7 +24,7 @@
 using namespace std::chrono;
 
 namespace pongstarNS {
-	enum TEXTURE { BALL, PADDLE, DIVIDER, BUMPER, PICKUPS };
+	enum TEXTURE { BALL, PADDLE, DIVIDER, BUMPER, BORDER, PICKUPS };
 	const char TEXTURE_DIRECTORY[] = "sprites\\";
 
 	const std::vector<TEXTURE> initTextureVec = {
@@ -32,6 +32,7 @@ namespace pongstarNS {
 		TEXTURE::PADDLE,
 		TEXTURE::DIVIDER,
 		TEXTURE::BUMPER,
+		TEXTURE::BORDER,
 		TEXTURE::PICKUPS
 	};
 }
@@ -42,30 +43,32 @@ class PongstarBase : public Scene {
 private:
 	// Game items
 	Game* game;
-	Input* input;
 	FontManager* fontManager;
 	DataManager* dataManager;
 	TextureManagerMap tmMap;
 
+	// Scene items
 	MessageManager* messageManager;
 	PickupManager* pickupManager;
-	Image divider;
-
 	std::vector<Entity*> entityVector;
 	std::queue<int> deleteEntityQueue;
+
+	// Other sprites that are not entities
+	Image divider;
+	Image border;
 
 	steady_clock::time_point startTime;
 	int elapsedTime;
 	bool gameStarted;
 
 public:
-	PongstarBase(Game* g, Input* i, DataManager* dm, FontManager* fm, TextureManagerMap t);
+	PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t);
 	~PongstarBase();
 
-	virtual void initialize(Image d);
 	void initializeEntities();
 
 	// Interface
+	virtual void initialize();	// initialize base pongstar items
 	virtual void update(float frameTime);
 	virtual void ai();
 	virtual void collisions();

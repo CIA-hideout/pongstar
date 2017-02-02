@@ -1,8 +1,7 @@
 #include "pongstarBase.h"
 
-PongstarBase::PongstarBase(Game* g, Input* i, DataManager* dm, FontManager* fm, TextureManagerMap t) {
+PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t) {
 	game = g;
-	input = i;
 	dataManager = dm;
 	fontManager = fm;
 	tmMap = t;
@@ -10,11 +9,15 @@ PongstarBase::PongstarBase(Game* g, Input* i, DataManager* dm, FontManager* fm, 
 
 PongstarBase::~PongstarBase() {}
 
-void PongstarBase::initialize(Image d) {
-	divider = d;
-
+void PongstarBase::initialize() {
 	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
 	messageManager = new MessageManager(pickupManager, &entityVector);
+
+	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[pongstarNS::DIVIDER]))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
+
+	if (!border.initialize(game->getGraphics(), 0, 0, 0, tmMap[pongstarNS::BORDER]))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border"));
 
 	initializeEntities();
 }
@@ -57,6 +60,8 @@ void PongstarBase::initializeEntities() {
 }
 
 void PongstarBase::update(float frameTime) {
+	Input* input = game->getInput();
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
 
@@ -111,6 +116,8 @@ void PongstarBase::render() {
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->draw();
 	}
+
+	border.draw();
 
 	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
 	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());

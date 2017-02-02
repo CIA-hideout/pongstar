@@ -48,7 +48,6 @@ public:
 	FontManager();
 	FontManager(Graphics* graphics);
 	FontManager(const FontManager& fm);	// copy constructor
-	//FontManager& operator=(const FontManager& rhs) {};
 
 	~FontManager();
 

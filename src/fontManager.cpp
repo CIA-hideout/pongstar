@@ -49,6 +49,8 @@ FontManager::FontManager(const FontManager& obj) {
 	}
 }
 
+FontManager::~FontManager() {}
+
 void FontManager::initialize() {
 	fontNS::FONT_NAME name;
 	std::vector<fontNS::FONT_COLOR> colorsVec;
