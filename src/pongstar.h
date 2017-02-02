@@ -4,7 +4,9 @@
 
 #include <vector>
 #include <queue>
+#include <stack>
 #include <chrono>
+#include <unordered_map>
 
 #include "game.h"
 #include "dataManager.h"
@@ -17,7 +19,9 @@
 #include "ball.h"
 #include "bumper.h"
 
+#include "scene.h"
 #include "menu.h"
+#include "pongstarBase.h"
 
 using namespace std::chrono;
 
@@ -30,13 +34,7 @@ private:
 	// Game items
 	DataManager* dataManager;
 	FontManager* fontManager;
-	MessageManager* messageManager;
-
-	TextureManager ballTexture;
-	TextureManager paddleTexture;
-	TextureManager bumperTexture;
-	TextureManager borderTexture;
-	TextureManager dividerTexture;
+	TextureManagerMap tmMap;
 
 	Image border;
 	Image divider;
@@ -51,6 +49,8 @@ private:
 	Menu* menu;
 
 	GAME_STATE gameState;
+	std::stack<Scene> gameStack;
+	PongstarBase* ps;
 
 public:
 	// Constructor

@@ -1,6 +1,6 @@
 #include "menu.h"
 
-const char* sceneToString(menuNS::SCENE s) {
+const char* sceneToString(menuNS::SCENE_TYPE s) {
 	switch (s) {
 	case menuNS::CLASSIC:			return "CLASSIC";
 	case menuNS::TIME_ATK:			return "TIME ATTACK";

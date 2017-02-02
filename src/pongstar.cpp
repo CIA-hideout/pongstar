@@ -1,13 +1,22 @@
 #include "pongstar.h"
 #include <string>
 
+const char* textureToString(pongstarNS::TEXTURE t) {
+	switch (t) {
+	case pongstarNS::BALL:			return "Ball";
+	case pongstarNS::PADDLE:		return "Paddle";
+	case pongstarNS::DIVIDER:		return "Divider";
+	case pongstarNS::BUMPER:		return "Bumper";
+	}
+}
+
 //=============================================================================
 // Constructor
 //=============================================================================
 Pongstar::Pongstar() {
 	elapsedTime = 0;
 	gameStarted = false;
-	gameState = GAME_STATE::MENU;
+	gameState = GAME_STATE::GAME;
 }
 
 //=============================================================================
@@ -30,71 +39,70 @@ void Pongstar::initialize(HWND hwnd) {
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
 
-	messageManager = new MessageManager(this, graphics, &entityVector);
-
 	menu = new Menu();
 	menu->initialize(input, fontManager);
 
-	// Textures
-	if (!dividerTexture.initialize(graphics, DIVIDER_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider texture"));
+	TextureManager* tm;
+	pongstarNS::TEXTURE texture;
 
-	if (!borderTexture.initialize(graphics, BORDER_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border texture"));
+	for (size_t i = 0; i < pongstarNS::initTextureVec.size(); i++) {
+		char textureLocation[1024], errorMsg[1024];
+		tm = new TextureManager();
+		texture = pongstarNS::initTextureVec[i];
 
-	if (!paddleTexture.initialize(graphics, PADDLE_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle texture"));
+		sprintf(textureLocation, "%s%s.png", pongstarNS::TEXTURE_DIRECTORY, textureToString(texture));
+		sprintf(errorMsg, "Erorr initializing %s texture", textureToString(texture));
 
-	if (!ballTexture.initialize(graphics, BALL_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball texture"));
+		if (!tm->initialize(graphics, textureLocation))
+			throw(GameError(gameErrorNS::FATAL_ERROR, errorMsg));
 
-	if (!bumperTexture.initialize(graphics, BUMPER_IMAGE))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper texture"));
+		tmMap.insert(std::pair<pongstarNS::TEXTURE, TextureManager*>(texture, tm));
+	}
 
 	// Images
-	if (!divider.initialize(graphics, 0, 0, 0, &dividerTexture))
+	if (!divider.initialize(graphics, 0, 0, 0, tmMap[pongstarNS::DIVIDER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
 
-	if (!border.initialize(graphics, 0, 0, 0, &borderTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border"));
+	ps = new PongstarBase(dataManager, fontManager, messageManager, tmMap, this, input);
+	ps->initialize(divider);
 
-	this->initializeEntities();
+	//this->initializeEntities();
 
 	return;
 }
 
 void Pongstar::initializeEntities() {
-	ControlsJson controls = dataManager->getControlsJson();
+	//ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
-	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
-	Ball* ball = new Ball();
-	Bumper* bumper = new Bumper();
+	//Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
+	//Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
+	//Ball* ball = new Ball();
+	//Bumper* bumper = new Bumper();
 
-	if (!paddle1->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle1"));
+	//if (!paddle1->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
+	//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle1"));
 
-	if (!paddle2->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, &paddleTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
+	//if (!paddle2->initialize(this, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
+	//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
 
-	if (!ball->initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, &ballTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
+	//if (!ball->initialize(this, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, tmMap[pongstarNS::BALL]))
+	//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
-	if (!bumper->initialize(this, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, &bumperTexture))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
+	//if (!bumper->initialize(this, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[pongstarNS::BUMPER]))
+	//	throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
 
-	paddle1->setX((float)paddleNS::SIDE_SPACE);
-	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
-	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
-	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
+	//paddle1->setX((float)paddleNS::SIDE_SPACE);
+	//paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
+	//paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
+	//paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 
-	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
-	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
+	//ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
+	//ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
-	entityVector.push_back(paddle1);
-	entityVector.push_back(paddle2);
-	entityVector.push_back(ball);
-	entityVector.push_back(bumper);
+	//entityVector.push_back(paddle1);
+	//entityVector.push_back(paddle2);
+	//entityVector.push_back(ball);
+	//entityVector.push_back(bumper);
 }
 
 //=============================================================================
@@ -106,36 +114,37 @@ void Pongstar::update() {
 		menu->update(frameTime);
 	} break;
 	case GAME_STATE::GAME: {
-		for (size_t i = 0; i < entityVector.size(); ++i) {
-			entityVector[i]->update(frameTime);
+		ps->update(frameTime);
+		//for (size_t i = 0; i < entityVector.size(); ++i) {
+		//	entityVector[i]->update(frameTime);
 
-			if (!entityVector[i]->getActive()) {
-				deleteEntityQueue.push(i);
-			}
+		//	if (!entityVector[i]->getActive()) {
+		//		deleteEntityQueue.push(i);
+		//	}
 
-			if (entityVector[i]->getMessage() != NULL) {
-				messageManager->push(entityVector[i]->getMessage());
-				entityVector[i]->setMessage(NULL);
-			}
-		}
+		//	if (entityVector[i]->getMessage() != NULL) {
+		//		messageManager->push(entityVector[i]->getMessage());
+		//		entityVector[i]->setMessage(NULL);
+		//	}
+		//}
 
-		while (deleteEntityQueue.size() > 0) {
-			int indexToRemove = deleteEntityQueue.front();
-			entityVector.erase(entityVector.begin() + indexToRemove);
-			deleteEntityQueue.pop();
-		}
+		//while (deleteEntityQueue.size() > 0) {
+		//	int indexToRemove = deleteEntityQueue.front();
+		//	entityVector.erase(entityVector.begin() + indexToRemove);
+		//	deleteEntityQueue.pop();
+		//}
 
-		messageManager->resolve();
+		//messageManager->resolve();
 
-		if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
-			startTime = steady_clock::now();
-			gameStarted = true;
-		}
+		//if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
+		//	startTime = steady_clock::now();
+		//	gameStarted = true;
+		//}
 
-		if (gameStarted) {
-			steady_clock::time_point presentTime = steady_clock::now();
-			elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
-		}
+		//if (gameStarted) {
+		//	steady_clock::time_point presentTime = steady_clock::now();
+		//	elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
+		//}
 	} break;
 	}
 }
@@ -154,15 +163,16 @@ void Pongstar::collisions() {
 
 	} break;
 	case GAME_STATE::GAME: {
-		VECTOR2 collisionVector;
+		ps->collisions();
+		//VECTOR2 collisionVector;
 
-		for (size_t i = 0; i < entityVector.size(); ++i) {
-			for (size_t j = 0; j < entityVector.size(); ++j) {
-				if (entityVector[i]->getId() != entityVector[j]->getId()) {
-					entityVector[i]->collidesWith(*entityVector[j], collisionVector);
-				}
-			}
-		}
+		//for (size_t i = 0; i < entityVector.size(); ++i) {
+		//	for (size_t j = 0; j < entityVector.size(); ++j) {
+		//		if (entityVector[i]->getId() != entityVector[j]->getId()) {
+		//			entityVector[i]->collidesWith(*entityVector[j], collisionVector);
+		//		}
+		//	}
+		//}
 	} break;
 	}
 
@@ -178,7 +188,8 @@ void Pongstar::render() {
 		menu->render();
 	} break;
 	case GAME_STATE::GAME: {
-		divider.draw();
+		ps->render();
+	/*	divider.draw();
 
 		for (size_t i = 0; i < entityVector.size(); ++i) {
 			entityVector[i]->draw();
@@ -212,7 +223,7 @@ void Pongstar::render() {
 			GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
 			HUD_Y_POS,
 			rightPaddleScore
-		);
+		);*/
 	} break;
 
 	graphics->spriteEnd();                  // end drawing sprites
@@ -223,10 +234,9 @@ void Pongstar::render() {
 // Release all reserved video memory so graphics device may be reset.
 //=============================================================================
 void Pongstar::releaseAll() {
-	dividerTexture.onLostDevice();
-	paddleTexture.onLostDevice();
-	ballTexture.onLostDevice();
-	bumperTexture.onLostDevice();
+	for (auto &tm : tmMap) {
+		tm.second->onLostDevice();
+	}
 
 	fontManager->releaseAll();
 
@@ -239,10 +249,9 @@ void Pongstar::releaseAll() {
 // Recreate all surfaces.
 //=============================================================================
 void Pongstar::resetAll() {
-	dividerTexture.onResetDevice();
-	paddleTexture.onResetDevice();
-	ballTexture.onResetDevice();
-	bumperTexture.onResetDevice();
+	for (auto &tm : tmMap) {
+		tm.second->onResetDevice();
+	}
 
 	fontManager->resetAll();
 

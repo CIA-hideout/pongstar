@@ -95,7 +95,9 @@
     <ClInclude Include="src\paddle.h" />
     <ClInclude Include="src\pickupManager.h" />
     <ClInclude Include="src\pongstar.h" />
+    <ClInclude Include="src\pongstarBase.h" />
     <ClInclude Include="src\random.h" />
+    <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\textureManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +119,7 @@
     <ClCompile Include="src\paddle.cpp" />
     <ClCompile Include="src\pickupManager.cpp" />
     <ClCompile Include="src\pongstar.cpp" />
+    <ClCompile Include="src\pongstarBase.cpp" />
     <ClCompile Include="src\random.cpp" />
     <ClCompile Include="src\textureManager.cpp" />
     <ClCompile Include="src\winmain.cpp" />

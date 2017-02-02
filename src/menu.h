@@ -15,7 +15,7 @@ namespace menuNS {
 	const int DIST_BTWN_MINUS_AND_ITEM = 20;
 	const float BLINK_INTERVAL = 0.2f;
 
-	enum SCENE {
+	enum SCENE_TYPE {
 		CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS
 	};
 }
@@ -24,7 +24,7 @@ class Menu {
 private:
 	FontManager* titleFm;
 	FontManager* menuFm;
-	std::vector<menuNS::SCENE> items;
+	std::vector<menuNS::SCENE_TYPE> items;
 	Input* input;
 	int selectedItemIndex;
 
