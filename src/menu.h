@@ -1,0 +1,51 @@
+#ifndef _MENU_H
+#define _MENU_H
+
+#include <vector>
+
+#include "constants.h"
+#include "scene.h"
+#include "graphics.h"
+#include "input.h"
+#include "fontManager.h"
+
+namespace menuNS {
+	const int TITLE_Y_POS = 70;
+	const int MENU_Y_POS = 250;
+	const int HEIGHT_BETWEEN_ITEM = 90;
+	const int DIST_BTWN_MINUS_AND_ITEM = 20;
+	const float BLINK_INTERVAL = 0.2f;
+}
+
+class Menu : public Scene {
+private:
+	// Game items
+	Input* input;
+	FontManager* baseFm;
+
+	// Scene items
+	FontManager* titleFm;
+	FontManager* menuFm;
+	std::vector<sceneNS::TYPE> items;
+	int selectedItemIndex;
+
+	float blinkTimer;
+	bool blink;
+
+public:
+	Menu();
+	Menu::Menu(Input* i, FontManager* fm);
+	~Menu();
+	
+	// Interface
+	void initialize();
+	void update(float frameTime);
+	void ai() {};
+	void collisions() {};
+	void render();
+
+	void releaseAll() {};
+	void resetAll() {};
+};
+
+#endif

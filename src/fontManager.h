@@ -45,10 +45,16 @@ private:
 	nameColorsMap fonts;
 	
 public:
+	FontManager();
 	FontManager(Graphics* graphics);
+	FontManager(const FontManager& fm);	// copy constructor
+
 	~FontManager();
 
 	void initialize();
+
+	void setScale(fontNS::FONT_NAME n, float s);
+	void setKerning(fontNS::FONT_NAME n, int k);
 
 	void print(fontNS::FONT_NAME n, fontNS::FONT_COLOR c, int x, int y, std::string t);
 	int getTotalWidth(fontNS::FONT_NAME n, std::string t);

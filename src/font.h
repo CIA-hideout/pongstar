@@ -9,10 +9,14 @@ class Font : public Image {
 private:
 	int widths[256];
 	std::string text;
+	int kerning;	// independent of scale, space between each char
 
 public:
 	Font();
 	~Font();
+
+	void setKerning(int k) { kerning = k; }
+	int getKerning() { return kerning; }
 
 	bool loadTextData(std::string fileName);
 	bool loadTextSprite(TextureManager* texture);

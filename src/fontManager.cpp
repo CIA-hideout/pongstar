@@ -16,8 +16,37 @@ const char* colorToString(fontNS::FONT_COLOR c) {
 	}
 }
 
-FontManager::FontManager(Graphics *g) {
+FontManager::FontManager() {}
+
+FontManager::FontManager(Graphics* g) {
 	graphics = g;
+}
+
+FontManager::FontManager(const FontManager& obj) {
+	graphics = obj.graphics;				// Use same graphics pointer for all fontManagers
+	textureManagers = obj.textureManagers;	// Use same texture pointers for all fontManagers
+	
+	fontNS::FONT_NAME name;
+	fontNS::FONT_COLOR color;
+	Font* font;
+	colorFontMap* cfm;
+	colorFontMap* oldCfm;
+
+	for (auto& x : obj.fonts) {
+		cfm = new colorFontMap();
+		name = x.first;
+		oldCfm = x.second;
+
+		for (auto& y : *oldCfm) {
+			font = new Font();
+			color = y.first;
+			*font = *y.second;
+
+			cfm->insert(colorFontPair(color, font));
+		}
+
+		fonts.insert(nameColorsPair(name, cfm));
+	}
 }
 
 FontManager::~FontManager() {}
@@ -58,6 +87,18 @@ void FontManager::initialize() {
 		}
 
 		fonts.insert(nameColorsPair(name, cfm));
+	}
+}
+
+void FontManager::setScale(fontNS::FONT_NAME name, float scale) {
+	for (auto &colorFont : (*fonts[name])) {
+		colorFont.second->setScale(scale);
+	}
+}
+
+void FontManager::setKerning(fontNS::FONT_NAME name, int kerning) {
+	for (auto &colorFont : (*fonts[name])) {
+		colorFont.second->setKerning(kerning);
 	}
 }
 

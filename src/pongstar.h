@@ -2,20 +2,16 @@
 #define _PONGSTAR_H
 #define _WIN32_LEAN_AND_MEAN
 
-#include <vector>
-#include <queue>
-#include <chrono>
+#include <stack>
 
 #include "game.h"
 #include "dataManager.h"
 #include "fontManager.h"
 #include "textureManager.h"
-#include "messageManager.h"
-#include "image.h"
 
-#include "paddle.h"
-#include "ball.h"
-#include "bumper.h"
+#include "scene.h"
+#include "menu.h"
+#include "pongstarBase.h"
 
 using namespace std::chrono;
 
@@ -24,23 +20,9 @@ private:
 	// Game items
 	DataManager* dataManager;
 	FontManager* fontManager;
-	MessageManager* messageManager;
+	TextureManagerMap tmMap;
 
-	TextureManager ballTexture;
-	TextureManager paddleTexture;
-	TextureManager bumperTexture;
-	TextureManager borderTexture;
-	TextureManager dividerTexture;
-
-	Image border;
-	Image divider;
-
-	std::vector<Entity*> entityVector;
-	std::queue<int> deleteEntityQueue;
-
-	steady_clock::time_point startTime;
-	int elapsedTime;
-	bool gameStarted;
+	std::stack<Scene*>* gameStack;
 
 public:
 	// Constructor
@@ -51,7 +33,6 @@ public:
 
 	// Initialize the game
 	void initialize(HWND hwnd);
-	void initializeEntities();
 
 	void update();      // must override pure virtual from Game
 	void ai();          // "

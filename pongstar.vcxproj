@@ -80,6 +80,7 @@
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\effects.h" />
+    <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\message.h" />
     <ClInclude Include="src\messageManager.h" />
     <ClInclude Include="src\pickup.h" />
@@ -94,7 +95,9 @@
     <ClInclude Include="src\paddle.h" />
     <ClInclude Include="src\pickupManager.h" />
     <ClInclude Include="src\pongstar.h" />
+    <ClInclude Include="src\pongstarBase.h" />
     <ClInclude Include="src\random.h" />
+    <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\textureManager.h" />
   </ItemGroup>
   <ItemGroup>
@@ -102,6 +105,7 @@
     <ClCompile Include="src\bumper.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />
+    <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\message.cpp" />
     <ClCompile Include="src\messageManager.cpp" />
     <ClCompile Include="src\pickup.cpp" />
@@ -115,6 +119,7 @@
     <ClCompile Include="src\paddle.cpp" />
     <ClCompile Include="src\pickupManager.cpp" />
     <ClCompile Include="src\pongstar.cpp" />
+    <ClCompile Include="src\pongstarBase.cpp" />
     <ClCompile Include="src\random.cpp" />
     <ClCompile Include="src\textureManager.cpp" />
     <ClCompile Include="src\winmain.cpp" />
