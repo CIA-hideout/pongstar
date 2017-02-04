@@ -4,11 +4,9 @@
 
 #include <vector>
 #include <queue>
-#include <stack>
-#include <chrono>
+//#include <chrono>
 
 #include "game.h"
-#include "gameError.h"
 #include "dataManager.h"
 #include "fontManager.h"
 #include "textureManager.h"
@@ -17,31 +15,30 @@
 #include "ballManager.h"
 #include "image.h"
 
-#include "paddle.h"
-#include "ball.h"
 #include "bumper.h"
+
 #include "scene.h"
 
-using namespace std::chrono;
+//using namespace std::chrono;
 
 namespace pongstarNS {
 	enum TEXTURE { BALL, PADDLE, DIVIDER, BUMPER, BORDER, PICKUPS };
 	const char TEXTURE_DIRECTORY[] = "sprites\\";
 
 	const std::vector<TEXTURE> initTextureVec = {
-		TEXTURE::BALL,
-		TEXTURE::PADDLE,
-		TEXTURE::DIVIDER,
-		TEXTURE::BUMPER,
-		TEXTURE::BORDER,
-		TEXTURE::PICKUPS
+		BALL,
+		PADDLE,
+		DIVIDER,
+		BUMPER,
+		BORDER,
+		PICKUPS
 	};
 }
 
 typedef std::unordered_map<pongstarNS::TEXTURE, TextureManager*> TextureManagerMap;
 
 class PongstarBase : public Scene {
-private:
+protected:
 	// Game items
 	Game* game;
 	FontManager* fontManager;
@@ -59,9 +56,9 @@ private:
 	Image divider;
 	Image border;
 
-	steady_clock::time_point startTime;
-	int elapsedTime;
-	bool gameStarted;
+	//steady_clock::time_point startTime;
+	//int elapsedTime;
+	//bool timeStarted;
 
 public:
 	PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t);

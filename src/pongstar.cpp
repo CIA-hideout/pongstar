@@ -77,16 +77,25 @@ void Pongstar::update() {
 	if (input->wasKeyPressed(ESC_KEY) && gameStack->size() > 1)
 		gameStack->pop();
 
-	if (gameStack->top()->getNextSceneType() != NULL) {
+	if (gameStack->top()->getNextSceneType() != nullptr) {
 		sceneNS::TYPE nextSceneType = *gameStack->top()->getNextSceneType();
 		gameStack->top()->clearNextSceneType();
 		Scene* nextScene;
 
 		switch (nextSceneType) {
 			case sceneNS::CLASSIC: {
-				nextScene = new PongstarBase(this, dataManager, fontManager, tmMap);
+				nextScene = new Classic(this, dataManager, fontManager, tmMap);
 				nextScene->initialize();
 			} break;
+			case sceneNS::TIME_ATK: {
+				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
+				nextScene->initialize();
+			} break;
+			case sceneNS::HIGH_SCORES: {
+			} break;
+			case sceneNS::CREDITS: {
+			} break;
+			default: break;
 		}
 
 		gameStack->push(nextScene);

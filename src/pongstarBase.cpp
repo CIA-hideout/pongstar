@@ -57,8 +57,6 @@ void PongstarBase::initializeEntities() {
 }
 
 void PongstarBase::update(float frameTime) {
-	Input* input = game->getInput();
-
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
 
@@ -114,17 +112,8 @@ void PongstarBase::render() {
 
 	border.draw();
 
-	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
 	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
 	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
-
-	fontManager->print(
-		fontNS::SABO_FILLED,
-		elapsedTime > 50 ? fontNS::RED : fontNS::WHITE,
-		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
-		HUD_Y_POS,
-		timeLeft
-		);
 
 	fontManager->print(
 		fontNS::SABO_FILLED,

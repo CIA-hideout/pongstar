@@ -95,6 +95,12 @@
     </ClInclude>
     <ClInclude Include="src\ballManager.h">
       <Filter>Header Files</Filter>
+    </CInclude>
+    <ClInclude Include="src\timeAttack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classic.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -165,6 +171,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\ballManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\timeAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classic.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

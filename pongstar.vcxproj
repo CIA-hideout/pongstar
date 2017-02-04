@@ -78,6 +78,7 @@
     <ClInclude Include="src\ball.h" />
     <ClInclude Include="src\ballManager.h" />
     <ClInclude Include="src\bumper.h" />
+    <ClInclude Include="src\classic.h" />
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\effects.h" />
@@ -100,11 +101,13 @@
     <ClInclude Include="src\random.h" />
     <ClInclude Include="src\scene.h" />
     <ClInclude Include="src\textureManager.h" />
+    <ClInclude Include="src\timeAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ball.cpp" />
     <ClCompile Include="src\ballManager.cpp" />
     <ClCompile Include="src\bumper.cpp" />
+    <ClCompile Include="src\classic.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />
     <ClCompile Include="src\menu.cpp" />
@@ -124,6 +127,7 @@
     <ClCompile Include="src\pongstarBase.cpp" />
     <ClCompile Include="src\random.cpp" />
     <ClCompile Include="src\textureManager.cpp" />
+    <ClCompile Include="src\timeAttack.cpp" />
     <ClCompile Include="src\winmain.cpp" />
   </ItemGroup>
   <ItemGroup>
