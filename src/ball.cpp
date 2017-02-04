@@ -114,6 +114,8 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 			case entityNS::BUMPER: {
 				bumperCollision(ent, collisionVector);
 			} break;
+
+			default: break;
 		}
 	}
 
@@ -127,7 +129,7 @@ void Ball::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 
 float Ball::getBallAngle() {
 	float theta = (90 * fabs(velocity.y)) / ballNS::VELOCITY;
-	float angle;
+	float angle = 0;
 
 	if (velocity.x >= 0 && velocity.y < 0) {
 		angle = theta;

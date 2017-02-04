@@ -41,7 +41,7 @@ void MessageManager::push(Message* msg) {
 }
 
 void MessageManager::resolve() {
-	Message* msgPtr = NULL;
+	Message* msgPtr = nullptr;
 
 	while (messageQueue.size() > 0) {
 		msgPtr = messageQueue.front();
@@ -112,5 +112,7 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 			newVelocity = ballManager->getVelocityFromAngle(ballAngle - 30);
 			newBall2->setVelocity(newVelocity);
 		} break;
+
+		default: break;
 	}
 }
