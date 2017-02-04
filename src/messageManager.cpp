@@ -6,8 +6,6 @@ MessageManager::MessageManager(PickupManager* pm, BallManager* bm, std::vector<E
 	entityVector = ev;
 	pickupManager = pm;
 	ballManager = bm;
-
-	entityVector->push_back(pickupManager->createPickup(effectNS::MULTIPLY));
 }
 
 MessageManager::~MessageManager() {}

@@ -33,13 +33,14 @@ void Pickup::update(float frameTime) {
 
 bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	Message* msgPtr = nullptr;
-	messageNS::TARGET_TYPE targetType;
+	messageNS::TARGET_TYPE targetType = messageNS::NONE;
 
 	if (Entity::collidesWith(ent, collisionVector)) {
 		if (ent.getEntityType() == entityNS::BALL) {
 			switch (getEffectType()) {
 				case effectNS::MULTIPLY:
 				case effectNS::BOOST:
+				case effectNS::ENLARGE:
 					targetType = messageNS::BALL;
 					break;
 			}
@@ -54,6 +55,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 					targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::RIGHT_P : messageNS::LEFT_P;
 					break;
 			}
+		}
+		else {
+			return true;
 		}
 
 		setActive(false);

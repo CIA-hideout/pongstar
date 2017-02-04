@@ -28,7 +28,7 @@ void PongstarBase::initializeEntities() {
 
 	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
 	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
-	Ball* ball = new Ball();
+	Ball* ball = ballManager->createBall();
 	Bumper* bumper = new Bumper();
 
 	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
@@ -53,11 +53,10 @@ void PongstarBase::initializeEntities() {
 
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
-	entityVector.push_back(ball);
 	entityVector.push_back(bumper);
 
 	// Testing sprite effect
-	pickupManager->createPickup(effectNS::ENLARGE);
+	pickupManager->createPickup(effectNS::MULTIPLY);
 }
 
 void PongstarBase::update(float frameTime) {
@@ -121,9 +120,6 @@ void PongstarBase::render() {
 	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
 	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
 	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
-
-	printf("right %i\n", messageManager->getPaddle(paddleNS::RIGHT)->getScore());
-	printf("left %i\n", messageManager->getPaddle(paddleNS::LEFT)->getScore());
 
 	fontManager->print(
 		fontNS::SABO_FILLED,
