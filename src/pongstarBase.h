@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <queue>
-//#include <chrono>
+#include <chrono>
 
 #include "game.h"
 #include "dataManager.h"
@@ -19,7 +19,7 @@
 
 #include "scene.h"
 
-//using namespace std::chrono;
+using namespace std::chrono;
 
 namespace pongstarNS {
 	enum TEXTURE { BALL, PADDLE, DIVIDER, BUMPER, BORDER, PICKUPS };
@@ -56,9 +56,9 @@ protected:
 	Image divider;
 	Image border;
 
-	//steady_clock::time_point startTime;
-	//int elapsedTime;
-	//bool timeStarted;
+	steady_clock::time_point startTime;
+	int elapsedTime;
+	bool gameStarted;
 
 public:
 	PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t);

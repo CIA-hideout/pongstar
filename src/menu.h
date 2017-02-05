@@ -3,11 +3,9 @@
 
 #include <vector>
 
-#include "constants.h"
-#include "scene.h"
-#include "graphics.h"
 #include "input.h"
 #include "fontManager.h"
+#include "scene.h"
 
 namespace menuNS {
 	const int TITLE_Y_POS = 70;

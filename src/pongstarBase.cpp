@@ -57,6 +57,8 @@ void PongstarBase::initializeEntities() {
 }
 
 void PongstarBase::update(float frameTime) {
+	Input* input = game->getInput();
+
 	for (size_t i = 0; i < entityVector.size(); ++i) {
 		entityVector[i]->update(frameTime);
 
@@ -77,7 +79,7 @@ void PongstarBase::update(float frameTime) {
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
 	}
-
+	
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();
 		gameStarted = true;
@@ -85,7 +87,7 @@ void PongstarBase::update(float frameTime) {
 
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
-		elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
+		elapsedTime = duration_cast<milliseconds>(presentTime - startTime).count();
 	}
 }
 

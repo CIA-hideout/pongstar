@@ -1,5 +1,4 @@
 #include "pongstar.h"
-#include <string>
 
 const char* textureToString(pongstarNS::TEXTURE t) {
 	switch (t) {
@@ -57,15 +56,13 @@ void Pongstar::initialize(HWND hwnd) {
 		tmMap.insert(std::pair<pongstarNS::TEXTURE, TextureManager*>(texture, tm));
 	}
 
+	Victory* vic = new Victory(graphics, input, fontManager);
+	vic->initialize();
+	gameStack->push(vic);
+/*
 	Menu* menu = new Menu(input, fontManager);
 	menu->initialize();
-	gameStack->push(menu);
-
-	//PongstarBase* ps = new PongstarBase(this, dataManager, fontManager, tmMap);
-	//ps->initialize();
-	//gameStack->push(ps);
-
-	return;
+	gameStack->push(menu);*/
 }
 
 //=============================================================================
@@ -80,24 +77,28 @@ void Pongstar::update() {
 	if (gameStack->top()->getNextSceneType() != nullptr) {
 		sceneNS::TYPE nextSceneType = *gameStack->top()->getNextSceneType();
 		gameStack->top()->clearNextSceneType();
-		Scene* nextScene;
+		Scene* nextScene = nullptr;
 
 		switch (nextSceneType) {
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);
-				nextScene->initialize();
 			} break;
 			case sceneNS::TIME_ATK: {
 				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
-				nextScene->initialize();
 			} break;
 			case sceneNS::HIGH_SCORES: {
 			} break;
 			case sceneNS::CREDITS: {
 			} break;
-			default: break;
+			case sceneNS::VICTORY: {
+				nextScene = new Victory(graphics, input, fontManager);
+			} break;
+
+			default: 
+			break;
 		}
 
+		nextScene->initialize();
 		gameStack->push(nextScene);
 	}
 }

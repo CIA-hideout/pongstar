@@ -13,6 +13,7 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 
+#include "util/util.h"
 #include "constants.h"
 #include "gameError.h"
 

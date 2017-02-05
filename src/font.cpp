@@ -15,7 +15,7 @@ Font::Font() {
 	endFrame = 127;
 	currentFrame = 0;
 
-	kerning = 0.0f;
+	kerning = 0;
 }
 
 Font::~Font() {

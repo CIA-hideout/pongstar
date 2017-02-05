@@ -9,9 +9,6 @@ using namespace std::chrono;
 
 class TimeAttack : public PongstarBase {
 private:
-	steady_clock::time_point startTime;
-	int elapsedTime;
-	bool timeStarted;
 
 public:
 	TimeAttack(Game *g, DataManager* dm, FontManager* fm, TextureManagerMap t);

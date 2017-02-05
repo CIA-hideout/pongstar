@@ -5,16 +5,16 @@
 
 namespace sceneNS {
 	enum TYPE {
-		CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS
+		CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY
 	};
 }
 
 class Scene {
 protected:
-	sceneNS::TYPE* nextSceneType = NULL;
+	sceneNS::TYPE* nextSceneType = nullptr;
 public:
 	sceneNS::TYPE* getNextSceneType() { return nextSceneType; }
-	void clearNextSceneType() { nextSceneType = NULL; }
+	void clearNextSceneType() { nextSceneType = nullptr; }
 
 	virtual ~Scene() {}
 

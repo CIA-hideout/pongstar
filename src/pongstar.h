@@ -12,6 +12,7 @@
 #include "menu.h"
 #include "classic.h"
 #include "timeAttack.h"
+#include "victory.h"
 
 class Pongstar : public Game {
 private:
