@@ -4,3 +4,21 @@ Classic::Classic(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t)
 PongstarBase(g, dm, fm, t) {}
 
 Classic::~Classic() {}
+
+void Classic::update(float frameTime) {
+	PongstarBase::update(frameTime);
+
+	paddleNS::SIDE winner;
+	bool winnerFound = false;
+	int leftPaddleScore = messageManager->getPaddle(paddleNS::LEFT)->getScore();
+	int rightPaddleScore = messageManager->getPaddle(paddleNS::RIGHT)->getScore();
+	
+	if (leftPaddleScore == classicNS::POINTS_TO_WIN || rightPaddleScore == classicNS::POINTS_TO_WIN)
+		winnerFound = true;
+	
+	if (winnerFound) {
+		nextSceneType = sceneNS::VICTORY;
+		sceneData.modePlayed = sceneNS::CLASSIC;
+		sceneData.winner = leftPaddleScore == classicNS::POINTS_TO_WIN ? paddleNS::LEFT : paddleNS::RIGHT;
+	}
+}

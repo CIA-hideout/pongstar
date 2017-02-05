@@ -56,13 +56,17 @@ void Pongstar::initialize(HWND hwnd) {
 		tmMap.insert(std::pair<pongstarNS::TEXTURE, TextureManager*>(texture, tm));
 	}
 
+	sceneNS::SceneData sd = sceneNS::SceneData();
+	sd.modePlayed = sceneNS::CLASSIC;
+	sd.winner = paddleNS::RIGHT;
+
 	Victory* vic = new Victory(graphics, input, fontManager);
-	vic->initialize();
+	vic->initialize(sd);
 	gameStack->push(vic);
-/*
-	Menu* menu = new Menu(input, fontManager);
-	menu->initialize();
-	gameStack->push(menu);*/
+
+	//Menu* menu = new Menu(input, fontManager);
+	//menu->initialize(sd);
+	//gameStack->push(menu);
 }
 
 //=============================================================================
@@ -74,8 +78,8 @@ void Pongstar::update() {
 	if (input->wasKeyPressed(ESC_KEY) && gameStack->size() > 1)
 		gameStack->pop();
 
-	if (gameStack->top()->getNextSceneType() != nullptr) {
-		sceneNS::TYPE nextSceneType = *gameStack->top()->getNextSceneType();
+	if (gameStack->top()->getNextSceneType() != sceneNS::NONE) {
+		sceneNS::TYPE nextSceneType = gameStack->top()->getNextSceneType();
 		gameStack->top()->clearNextSceneType();
 		Scene* nextScene = nullptr;
 
@@ -98,7 +102,7 @@ void Pongstar::update() {
 			break;
 		}
 
-		nextScene->initialize();
+		nextScene->initialize(gameStack->top()->getSceneData());
 		gameStack->push(nextScene);
 	}
 }

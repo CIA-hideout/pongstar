@@ -9,7 +9,7 @@
 
 namespace victoryNS {
 	const int gameCenterX = GAME_WIDTH / 2;
-	const int tbWidth = 500;
+	const int tbWidth = 600;
 	const int tbHeight = 70;
 	const int tbStartX = gameCenterX - tbWidth / 2;
 	const int tbStartY = 300;
@@ -31,6 +31,10 @@ namespace victoryNS {
 	// no need padding because font autopads
 	const int textStartX = tbStartX;
 	const int textStartY = tbStartY;
+
+	const int winnerStrStartY = 70;
+	const int enterYourNameStartY = 230;
+	const int enterToContinueStartY = 550;
 }
 
 class Victory : public Scene {
@@ -42,13 +46,14 @@ private:
 	LP_LINE textBox;
 	LP_LINE cursor;
 
+	void renderTxb();
 public:
 	Victory();
 	Victory::Victory(Graphics* g, Input* i, FontManager* fm);
 	~Victory();
 
 	// Interface
-	void initialize();
+	void initialize(sceneNS::SceneData sd);
 	void update(float frameTime);
 	void ai() {};
 	void collisions() {};

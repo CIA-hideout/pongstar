@@ -9,7 +9,7 @@ PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureMan
 
 PongstarBase::~PongstarBase() {}
 
-void PongstarBase::initialize() {
+void PongstarBase::initialize(sceneNS::SceneData sd) {
 	ballManager = new BallManager(game, tmMap[pongstarNS::BALL], &entityVector);
 	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
 	messageManager = new MessageManager(pickupManager, ballManager, &entityVector);
@@ -79,7 +79,7 @@ void PongstarBase::update(float frameTime) {
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
 	}
-	
+
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();
 		gameStarted = true;

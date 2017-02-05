@@ -67,7 +67,7 @@ public:
 	void initializeEntities();
 
 	// Interface
-	virtual void initialize();	// initialize base pongstar items
+	virtual void initialize(sceneNS::SceneData sd);	// initialize base pongstar items
 	virtual void update(float frameTime);
 	virtual void ai();
 	virtual void collisions();

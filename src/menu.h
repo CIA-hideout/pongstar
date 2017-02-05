@@ -36,7 +36,7 @@ public:
 	~Menu();
 	
 	// Interface
-	void initialize();
+	void initialize(sceneNS::SceneData sd);
 	void update(float frameTime);
 	void ai() {};
 	void collisions() {};

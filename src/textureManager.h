@@ -3,7 +3,6 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include "graphics.h"
-#include "constants.h"
 
 class TextureManager {
 private:
@@ -32,7 +31,7 @@ public:
 	UINT getHeight() const { return height; }
 
 	// Initialize the textureManager
-	// Pre: *g points to Graphics object
+	// Pre: *g points to Graphicso bject
 	//      *file points to name of texture file to load
 	// Post: The texture file is loaded
 	virtual bool initialize(Graphics *g, const char *file);
