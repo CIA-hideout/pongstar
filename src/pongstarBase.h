@@ -14,6 +14,7 @@
 #include "textureManager.h"
 #include "messageManager.h"
 #include "pickupManager.h"
+#include "ballManager.h"
 #include "image.h"
 
 #include "paddle.h"
@@ -50,6 +51,7 @@ private:
 	// Scene items
 	MessageManager* messageManager;
 	PickupManager* pickupManager;
+	BallManager* ballManager;
 	std::vector<Entity*> entityVector;
 	std::queue<int> deleteEntityQueue;
 

@@ -10,8 +10,9 @@ PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureMan
 PongstarBase::~PongstarBase() {}
 
 void PongstarBase::initialize() {
+	ballManager = new BallManager(game, tmMap[pongstarNS::BALL], &entityVector);
 	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
-	messageManager = new MessageManager(pickupManager, &entityVector);
+	messageManager = new MessageManager(pickupManager, ballManager, &entityVector);
 
 	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[pongstarNS::DIVIDER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
@@ -27,7 +28,6 @@ void PongstarBase::initializeEntities() {
 
 	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
 	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
-	Ball* ball = new Ball();
 	Bumper* bumper = new Bumper();
 
 	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
@@ -35,9 +35,6 @@ void PongstarBase::initializeEntities() {
 
 	if (!paddle2->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
-
-	if (!ball->initialize(game, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, tmMap[pongstarNS::BALL]))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
 	if (!bumper->initialize(game, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[pongstarNS::BUMPER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
@@ -47,16 +44,16 @@ void PongstarBase::initializeEntities() {
 	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
 	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 
+	entityVector.push_back(paddle1);
+	entityVector.push_back(paddle2);
+	entityVector.push_back(bumper);
+
+	Ball* ball = ballManager->createBall();
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
-	entityVector.push_back(paddle1);
-	entityVector.push_back(paddle2);
-	entityVector.push_back(ball);
-	entityVector.push_back(bumper);
-
-	// Testing sprite effect
-	pickupManager->createPickup(effectNS::ENLARGE);
+	// For pickups testing
+	pickupManager->createPickup(effectNS::MULTIPLY);
 }
 
 void PongstarBase::update(float frameTime) {
@@ -75,13 +72,13 @@ void PongstarBase::update(float frameTime) {
 		}
 	}
 
+	messageManager->resolve();
+
 	while (deleteEntityQueue.size() > 0) {
 		int indexToRemove = deleteEntityQueue.front();
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
 	}
-
-	messageManager->resolve();
 
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();
@@ -94,9 +91,7 @@ void PongstarBase::update(float frameTime) {
 	}
 }
 
-void PongstarBase::ai() {
-
-}
+void PongstarBase::ai() {}
 
 void PongstarBase::collisions() {
 	VECTOR2 collisionVector;
@@ -123,9 +118,6 @@ void PongstarBase::render() {
 	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
 	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
 
-	printf("right %i\n", messageManager->getPaddle(paddleNS::RIGHT)->getScore());
-	printf("left %i\n", messageManager->getPaddle(paddleNS::LEFT)->getScore());
-
 	fontManager->print(
 		fontNS::SABO_FILLED,
 		elapsedTime > 50 ? fontNS::RED : fontNS::WHITE,
@@ -151,10 +143,6 @@ void PongstarBase::render() {
 		);
 }
 
-void PongstarBase::releaseAll() {
+void PongstarBase::releaseAll() {}
 
-}
-
-void PongstarBase::resetAll() {
-
-}
+void PongstarBase::resetAll() {}

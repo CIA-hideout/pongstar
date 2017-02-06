@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "message.h"
 #include "pickup.h"
+#include "bumper.h"
 
 namespace ballNS {
 	const int HEIGHT = 20;
@@ -26,7 +27,8 @@ public:
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 
 	void runEffects();
-	void triggerEffect(effectNS::EFFECT_TYPE et, float duration);
+
+	float getBallAngle();
 };
 
 #endif

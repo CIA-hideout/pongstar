@@ -32,23 +32,37 @@ void Pickup::update(float frameTime) {
 }
 
 bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-	Message* msgPtr = NULL;
+	Message* msgPtr = nullptr;
+	messageNS::TARGET_TYPE targetType = messageNS::NONE;
 
 	if (Entity::collidesWith(ent, collisionVector)) {
-		switch (ent.getEntityType()) {
-		case entityNS::BALL: {
-			setActive(false);
-			msgPtr = new Message(messageNS::EFFECT, messageNS::BALL, effectType, duration);
-			setMessage(msgPtr);
-		}	break;
-
-		case entityNS::PADDLE: {
-			setActive(false);
-			messageNS::TARGET_TYPE targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::RIGHT_P : messageNS::LEFT_P;
-			msgPtr = new Message(messageNS::EFFECT, targetType, effectType, duration);
-			setMessage(msgPtr);
-		}	break;
+		if (ent.getEntityType() == entityNS::BALL) {
+			switch (getEffectType()) {
+				case effectNS::MULTIPLY:
+				case effectNS::BOOST:
+				case effectNS::ENLARGE:
+					targetType = messageNS::BALL;
+					break;
+			}
 		}
+		else if (ent.getEntityType() == entityNS::PADDLE) {
+			switch (getEffectType()) {
+				case effectNS::MULTIPLY:
+					targetType = messageNS::BALL;
+					break;
+
+				case effectNS::BOOST:
+					targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::RIGHT_P : messageNS::LEFT_P;
+					break;
+			}
+		}
+		else {
+			return true;
+		}
+
+		setActive(false);
+		msgPtr = new Message(messageNS::ADD_EFFECT, targetType, effectType, ent.getId(), duration);
+		setMessage(msgPtr);
 	}
 
 	return true;

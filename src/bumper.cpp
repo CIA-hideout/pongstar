@@ -28,15 +28,15 @@ bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
-		case entityNS::BALL:
-			// Set message to spawn pickup
-			messageNS::PICKUP_CMD direction = (side == bumperNS::LEFT) ? messageNS::MOVE_RIGHT : messageNS::MOVE_LEFT;
-			msgPtr = new Message(messageNS::PICKUP, direction);
-			setMessage(msgPtr);
+			case entityNS::BALL:
+				// Set message to spawn pickup
+				messageNS::PICKUP_CMD direction = (side == bumperNS::LEFT) ? messageNS::MOVE_RIGHT : messageNS::MOVE_LEFT;
+				msgPtr = new Message(messageNS::PICKUP, direction);
+				setMessage(msgPtr);
 
-			// Move bumper
-			randomLocationBumper();
-			break;
+				// Move bumper
+				//randomLocationBumper();
+				break;
 		}
 	}
 

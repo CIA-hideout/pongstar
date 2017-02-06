@@ -7,36 +7,40 @@
 
 #include <queue>
 
-#include "pickupManager.h"
 #include "message.h"
 #include "entity.h"
 #include "paddle.h"
 #include "ball.h"
+#include "ballManager.h"
+#include "pickupManager.h"
 
 class MessageManager {
 private:
+	Game* game;
 	std::queue<Message*> messageQueue;
 	std::vector<Entity*>* entityVector;
 
 	// Components
+	BallManager* ballManager;
 	PickupManager* pickupManager;
 
 public:
 	MessageManager();
-	MessageManager(PickupManager* pm, std::vector<Entity*>* ev);
+	MessageManager(PickupManager* pm, BallManager* bm, std::vector<Entity*>* ev);
 	~MessageManager();
 
 	void push(Message* msg);
 	void dispatch(Message* msg);
 
 	void dispatchScore(Message* msg);
-	void dispatchEffect(Message* msg);
 	void dispatchPickup(Message* msg);
+	void dispatchAddEffect(Message* msg);
+	void dispatchRunEffect(Message* msg);
 
 	void resolve();
 
 	Paddle* getPaddle(paddleNS::SIDE s);
-	Ball* getBall();
+	Entity* getEntity(int id);
 };
 
 #endif
