@@ -34,8 +34,8 @@ void Pongstar::initialize(HWND hwnd) {
 	Game::initialize(hwnd); // throws GameError
 
 	dataManager = new DataManager();
-	dataManager->initControlData(CONTROLS_JSON);
-	dataManager->initHighScoreData(HIGH_SCORES_JSON);
+	dataManager->initControlData();
+	dataManager->initHighScoreData();
 
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
@@ -58,21 +58,6 @@ void Pongstar::initialize(HWND hwnd) {
 	}
 
 	sceneNS::SceneData sd = sceneNS::SceneData();
-	//sd.modePlayed = sceneNS::GM_CLASSIC;
-	//sd.winner = paddleNS::RIGHT;
-	//sd.newHighScore.name = "LALAA";
-	//sd.newHighScore.score = 21000;
-	//sd.hsDisplayMode = sceneNS::HS_BOTH;
-	//sd.winner = sceneNS::W_DRAW;
-
-	//HighScore* hs = new HighScore(input, dataManager, fontManager);
-	//hs->initialize(sd);
-	//gameStack->push(hs);
-
-	//Victory* vic = new Victory(graphics, input, fontManager);
-	//vic->initialize(sd);
-	//gameStack->push(vic);
-
 	Menu* menu = new Menu(input, fontManager);
 	menu->initialize(sd);
 	gameStack->push(menu);
@@ -102,12 +87,6 @@ void Pongstar::update() {
 		Scene* nextScene = nullptr;
 
 		switch (nextSceneType) {
-			case sceneNS::MENU: {
-				// Pop everything to base layer
-				while (gameStack->size() > 1) {
-					gameStack->pop();
-				}
-			} break;
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);
 			} break;
@@ -123,11 +102,17 @@ void Pongstar::update() {
 				nextScene = new Victory(graphics, input, fontManager);
 			} break;
 
+			case sceneNS::MENU:
 			default: 
 			break;
 		}
 
-		if (nextSceneType != sceneNS::MENU) {
+		if (nextSceneType == sceneNS::MENU) {
+			// Pop everything to base layer
+			while (gameStack->size() > 1) {
+				gameStack->pop();
+			}
+		} else {			
 			gameStack->top()->clearNextSceneType();
 			nextScene->initialize(sd);
 			gameStack->push(nextScene);
@@ -164,7 +149,8 @@ void Pongstar::releaseAll() {
 	for (auto &tm : tmMap) {
 		tm.second->onLostDevice();
 	}
-
+	
+	dataManager->saveHighScore();
 	fontManager->releaseAll();
 
 	Game::releaseAll();

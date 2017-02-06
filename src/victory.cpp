@@ -29,8 +29,11 @@ void Victory::initialize(sceneNS::SceneData sd) {
 void Victory::update(float frameTime) {
 	if (input->wasKeyPressed(ENTER_KEY)) {
 		if (sceneData.winner != sceneNS::W_DRAW) {
+			// Remove enter char
+			std::string name = input->getTextIn().substr(0, input->getTextIn().size() - 1);
+
 			nextSceneType = sceneNS::HIGH_SCORES;
-			sceneData.newHighScore.name = toUpperCase(input->getTextIn());
+			sceneData.newHighScore.name = toUpperCase(name);
 			sceneData.hsDisplayMode = sceneData.modePlayed == sceneNS::GM_CLASSIC ? sceneNS::HS_CLASSIC : sceneNS::HS_TIME_ATK;
 		} else {
 			nextSceneType = sceneNS::MENU;
@@ -85,7 +88,7 @@ void Victory::render() {
 
 		char winnerStr[512];
 		fontNS::FONT_COLOR color = sceneData.winner == sceneNS::W_LEFT ? fontNS::ORANGE : fontNS::BLUE;
-		sprintf(winnerStr, "%s WON THE GAME", sceneData.winner == sceneNS::W_RIGHT ? "ORANGE" : "BLUE");
+		sprintf(winnerStr, "%s WON THE GAME", sceneData.winner == sceneNS::W_LEFT ? "ORANGE" : "BLUE");
 
 		std::string enterYourNameStr = "ENTER YOUR NAME:";
 

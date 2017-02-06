@@ -29,7 +29,6 @@ DataManager::DataManager() {}
 DataManager::~DataManager() {}
 
 Document DataManager::readFile(const char* fileName) {
-	
 	Document document;
 	std::string jsonString,line;
 	std::ifstream file(fileName, std::ifstream::binary);
@@ -50,6 +49,45 @@ Document DataManager::readFile(const char* fileName) {
 	}
 
 	return document;
+}
+
+Value DataManager::convertHsmToVal(HighScoreMap hsm, Document::AllocatorType& a) {
+	Value scoreArr(kArrayType);
+
+	for (auto &x : hsm) {
+		Value scoreObj(kObjectType), name;
+
+		char buffer[30];
+		int len = sprintf(buffer, "%s", x.second.c_str() ); // dynamically created string.
+		name.SetString(buffer, len, a);
+		memset(buffer, 0, sizeof(buffer));
+
+		scoreObj.AddMember("name", name, a);
+		scoreObj.AddMember("score", x.first, a);
+		
+		scoreArr.PushBack(scoreObj, a);
+	}
+
+	return scoreArr;
+}
+
+void DataManager::saveHighScore() {
+	Document d;
+	d.SetObject();
+	Document::AllocatorType& a = d.GetAllocator();
+
+	d.AddMember("classic", convertHsmToVal(highScoreJson.classic, a), a);
+	d.AddMember("timeAttack", convertHsmToVal(highScoreJson.timeAttack, a), a);
+
+	// Stringify the DOM
+	StringBuffer buffer;
+	PrettyWriter<StringBuffer> writer(buffer);
+	d.Accept(writer);
+
+	// Write to file 
+	std::ofstream ofs(dataManagerNS::HIGH_SCORES_JSON, std::ofstream::out);
+	ofs << buffer.GetString();
+	ofs.close();
 }
 
 PaddleControls DataManager::parseControlVal(Value val) {
@@ -78,8 +116,8 @@ HighScoreMap DataManager::parseHighScoreVal(const Value& val) {
 	return hsm;
 }
 
-void DataManager::initControlData(const char* fileName) {
-	Document document = readFile(fileName);
+void DataManager::initControlData() {
+	Document document = readFile(dataManagerNS::CONTROLS_JSON);
 	
 	ControlsJson cj = ControlsJson(
 		parseControlVal(document["p1"].GetObjectA()),
@@ -89,8 +127,8 @@ void DataManager::initControlData(const char* fileName) {
 	controlsJson = cj;
 }
 
-void DataManager::initHighScoreData(const char* fileName) {
-	Document document = readFile(fileName);
+void DataManager::initHighScoreData() {
+	Document document = readFile(dataManagerNS::HIGH_SCORES_JSON);
 	const Value& classicVal = document["classic"].GetArray();
 	const Value& timeAtkVal = document["timeAttack"].GetArray();
 	

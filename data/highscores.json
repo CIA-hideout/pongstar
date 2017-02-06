@@ -1,20 +1,66 @@
 {
-  "classic": [
-    {"name": "JAKE", "score": 20512},
-    {"name": "BOBBY", "score": 20534},
-    {"name": "HARRY", "score": 21413},
-	{"name": "CHARLES", "score": 19400},
-    {"name": "JOHN", "score": 10000},
-    {"name": "TOM", "score": 30300},
-	{"name": "DICK", "score": 29500},
-    {"name": "ALPHA", "score": 89500},
-    {"name": "BRAVO", "score": 12000},
-    {"name": "JULIET", "score": 34000},
-	{"name": "ROMEO", "score": 18500}
-  ],
-  "timeAttack": [
-    {"name": "LUKE", "score": 11},
-    {"name": "CRAG", "score": 12},
-    {"name": "JACOB", "score": 8}
-  ]
+    "classic": [
+        {
+            "name": "JOHN",
+            "score": 10000
+        },
+        {
+            "name": "BRAVO",
+            "score": 12000
+        },
+        {
+            "name": "ROMEO",
+            "score": 18500
+        },
+        {
+            "name": "CHARLES",
+            "score": 19400
+        },
+        {
+            "name": "JAKE",
+            "score": 20512
+        },
+        {
+            "name": "BOBBY",
+            "score": 20534
+        },
+        {
+            "name": "HARRY",
+            "score": 21413
+        },
+        {
+            "name": "DICK",
+            "score": 29500
+        },
+        {
+            "name": "TOM",
+            "score": 30300
+        },
+        {
+            "name": "JULIET",
+            "score": 34000
+        },
+        {
+            "name": "ALPHA",
+            "score": 89500
+        }
+    ],
+    "timeAttack": [
+        {
+            "name": "BOBBY",
+            "score": 3
+        },
+        {
+            "name": "JACOB",
+            "score": 8
+        },
+        {
+            "name": "LUKE",
+            "score": 11
+        },
+        {
+            "name": "CRAG",
+            "score": 12
+        }
+    ]
 }

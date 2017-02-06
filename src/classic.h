@@ -3,10 +3,6 @@
 
 #include "pongstarBase.h"
 
-namespace classicNS {
-	const int POINTS_TO_WIN = 2;
-}
-
 class Classic : public PongstarBase {
 private:
 

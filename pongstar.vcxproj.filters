@@ -92,7 +92,7 @@
     </ClInclude>
     <ClInclude Include="src\ballManager.h">
       <Filter>Header Files</Filter>
-    </CInclude>
+    </ClInclude>
     <ClInclude Include="src\timeAttack.h">
       <Filter>Header Files</Filter>
     </ClInclude>

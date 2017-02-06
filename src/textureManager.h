@@ -31,7 +31,7 @@ public:
 	UINT getHeight() const { return height; }
 
 	// Initialize the textureManager
-	// Pre: *g points to Graphicso bject
+	// Pre: *g points to Graphics object
 	//      *file points to name of texture file to load
 	// Post: The texture file is loaded
 	virtual bool initialize(Graphics *g, const char *file);
