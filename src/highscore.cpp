@@ -3,6 +3,8 @@
 HighScore::HighScore() {}
 
 HighScore::HighScore(Input* i, DataManager* dm, FontManager* fm) {
+	sceneType = sceneNS::HIGH_SCORES;
+
 	input = i;
 	dataManager = dm;
 	baseFm = fm;

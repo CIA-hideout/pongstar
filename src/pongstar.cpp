@@ -84,7 +84,16 @@ void Pongstar::initialize(HWND hwnd) {
 void Pongstar::update() {
 	gameStack->top()->update(frameTime);
 
-	if (input->wasKeyPressed(ESC_KEY) && gameStack->size() > 1)
+	sceneNS::TYPE currSceneType = gameStack->top()->getSceneType();
+
+	bool allowEsc =
+		currSceneType == sceneNS::CLASSIC ||
+		currSceneType == sceneNS::TIME_ATK ||
+		currSceneType == sceneNS::CREDITS ||		
+		(currSceneType == sceneNS::HIGH_SCORES &&
+		gameStack->top()->getSceneData().hsDisplayMode == sceneNS::HS_BOTH);
+
+	if (input->wasKeyPressed(ESC_KEY) && allowEsc && gameStack->size() > 1)
 		gameStack->pop();
 
 	if (gameStack->top()->getNextSceneType() != sceneNS::NONE) {
@@ -94,11 +103,10 @@ void Pongstar::update() {
 
 		switch (nextSceneType) {
 			case sceneNS::MENU: {
-				// Pop everything to menu
+				// Pop everything to base layer
 				while (gameStack->size() > 1) {
 					gameStack->pop();
 				}
-
 			} break;
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);

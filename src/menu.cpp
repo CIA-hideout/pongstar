@@ -13,6 +13,8 @@ const char* sceneToString(sceneNS::TYPE s) {
 Menu::Menu() {};
 
 Menu::Menu(Input* i, FontManager* fm) {
+	sceneType = sceneNS::MENU;
+
 	input = i;
 	baseFm = fm;
 }

@@ -36,12 +36,15 @@ namespace sceneNS {
 
 class Scene {
 protected:
+	sceneNS::TYPE sceneType = sceneNS::NONE;
 	sceneNS::TYPE nextSceneType = sceneNS::NONE;
 	sceneNS::SceneData sceneData = sceneNS::SceneData();
 public:
+	sceneNS::TYPE getSceneType() { return sceneType; }
 	sceneNS::TYPE getNextSceneType() { return nextSceneType; }
 	sceneNS::SceneData getSceneData() { return sceneData; }
 
+	void setSceneType(sceneNS::TYPE st) { sceneType = st; }
 	void setNextSceneType(sceneNS::TYPE nst) { nextSceneType = nst; }
 	void setSceneData(sceneNS::SceneData sd) { sceneData = sd; }
 

@@ -3,6 +3,8 @@
 Victory::Victory() {}
 
 Victory::Victory(Graphics* g, Input* i, FontManager* fm) {
+	sceneType = sceneNS::VICTORY;
+
 	graphics = g;
 	input = i;
 	baseFm = fm;
