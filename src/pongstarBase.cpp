@@ -75,7 +75,6 @@ void PongstarBase::update(float frameTime) {
 	messageManager->resolve();
 
 	while (deleteEntityQueue.size() > 0) {
-		printf("delete");
 		int indexToRemove = deleteEntityQueue.front();
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();

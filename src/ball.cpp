@@ -115,6 +115,8 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 			case entityNS::BUMPER: {
 				bumperCollision(ent, collisionVector);
+				Bumper* bumper = (Bumper*)&ent;
+				bumper->randomLocationBumper();
 			} break;
 
 			default: break;

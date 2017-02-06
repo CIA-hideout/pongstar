@@ -5,6 +5,7 @@
 #include "entity.h"
 #include "message.h"
 #include "pickup.h"
+#include "bumper.h"
 
 namespace ballNS {
 	const int HEIGHT = 20;
