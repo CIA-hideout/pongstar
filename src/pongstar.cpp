@@ -23,7 +23,7 @@ Pongstar::Pongstar() {
 // Destructor
 //=============================================================================
 Pongstar::~Pongstar() {
-	releaseAll();           // call onLostDevice() for every graphics item
+	Pongstar::releaseAll();           // call onLostDevice() for every graphics item
 }
 
 //=============================================================================
@@ -63,6 +63,7 @@ void Pongstar::initialize(HWND hwnd) {
 	//sd.newHighScore.name = "LALAA";
 	//sd.newHighScore.score = 21000;
 	//sd.hsDisplayMode = sceneNS::HS_BOTH;
+	//sd.winner = sceneNS::W_DRAW;
 
 	//HighScore* hs = new HighScore(input, dataManager, fontManager);
 	//hs->initialize(sd);
@@ -94,7 +95,10 @@ void Pongstar::update() {
 		switch (nextSceneType) {
 			case sceneNS::MENU: {
 				// Pop everything to menu
-				/*gameStack->pop();*/
+				while (gameStack->size() > 1) {
+					gameStack->pop();
+				}
+
 			} break;
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);
@@ -103,13 +107,11 @@ void Pongstar::update() {
 				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::HIGH_SCORES: {
-				//gameStack->pop();	// pop victory layer
 				nextScene = new HighScore(input, dataManager, fontManager);
 			} break;
 			case sceneNS::CREDITS: {
 			} break;
 			case sceneNS::VICTORY: {
-				gameStack->pop();	// pop game layer
 				nextScene = new Victory(graphics, input, fontManager);
 			} break;
 
@@ -117,10 +119,11 @@ void Pongstar::update() {
 			break;
 		}
 
-		gameStack->top()->clearNextSceneType();
-
-		nextScene->initialize(sd);
-		gameStack->push(nextScene);
+		if (nextSceneType != sceneNS::MENU) {
+			gameStack->top()->clearNextSceneType();
+			nextScene->initialize(sd);
+			gameStack->push(nextScene);
+		}
 	}
 }
 

@@ -14,6 +14,9 @@ void Victory::initialize(sceneNS::SceneData sd) {
 	sceneData = sd;
 	input->clearTextIn();
 
+	titleFm = new FontManager(*baseFm);
+	titleFm->setScale(fontNS::SABO_FILLED, 1.0f);
+
 	D3DXCreateLine(graphics->get3Ddevice(), &textBox);
 	textBox->SetWidth(victoryNS::tbLineWidth);
 
@@ -23,9 +26,13 @@ void Victory::initialize(sceneNS::SceneData sd) {
 
 void Victory::update(float frameTime) {
 	if (input->wasKeyPressed(ENTER_KEY)) {
-		nextSceneType = sceneNS::HIGH_SCORES;
-		sceneData.newHighScore.name = toUpperCase(input->getTextIn());
-		sceneData.hsDisplayMode = sceneData.modePlayed == sceneNS::GM_CLASSIC ? sceneNS::HS_CLASSIC : sceneNS::HS_TIME_ATK;
+		if (sceneData.winner != sceneNS::W_DRAW) {
+			nextSceneType = sceneNS::HIGH_SCORES;
+			sceneData.newHighScore.name = toUpperCase(input->getTextIn());
+			sceneData.hsDisplayMode = sceneData.modePlayed == sceneNS::GM_CLASSIC ? sceneNS::HS_CLASSIC : sceneNS::HS_TIME_ATK;
+		} else {
+			nextSceneType = sceneNS::MENU;
+		}
 
 		input->clearTextIn();
 	}
@@ -63,34 +70,44 @@ void Victory::renderTxb() {
 }
 
 void Victory::render() {
-	renderTxb();
+	if (sceneData.winner == sceneNS::W_DRAW) {
+		titleFm->print(
+			fontNS::SABO_FILLED,
+			fontNS::WHITE,
+			GAME_WIDTH / 2 - titleFm->getTotalWidth(fontNS::SABO_FILLED, "DRAW") / 2 - fontNS::CENTER_OFFSET_MAX_SCALE,
+			victoryNS::drawStartY,
+			"DRAW"
+			);
+	} else {
+		renderTxb();
 
-	char winnerStr[512];
-	fontNS::FONT_COLOR color = sceneData.winner == paddleNS::LEFT ? fontNS::BLUE : fontNS::ORANGE;
-	sprintf(winnerStr, "%s WON THE GAME", sceneData.winner == paddleNS::LEFT ? "BLUE" : "ORANGE");
+		char winnerStr[512];
+		fontNS::FONT_COLOR color = sceneData.winner == sceneNS::W_LEFT ? fontNS::ORANGE : fontNS::BLUE;
+		sprintf(winnerStr, "%s WON THE GAME", sceneData.winner == sceneNS::W_RIGHT ? "ORANGE" : "BLUE");
 
-	std::string enterYourNameStr = "ENTER YOUR NAME:";
-	std::string enterToContinueStr = "PRESS ENTER TO CONTINUE";
+		std::string enterYourNameStr = "ENTER YOUR NAME:";
 
-	baseFm->print(
-		fontNS::SABO_FILLED, 
-		color, 
-		GAME_WIDTH / 2 - baseFm->getTotalWidth(fontNS::SABO_FILLED, winnerStr) / 2 - fontNS::CENTER_OFFSET,
-		victoryNS::winnerStrStartY, 
-		winnerStr
+		baseFm->print(
+			fontNS::SABO_FILLED, 
+			color, 
+			GAME_WIDTH / 2 - baseFm->getTotalWidth(fontNS::SABO_FILLED, winnerStr) / 2 - fontNS::CENTER_OFFSET,
+			victoryNS::winnerStrStartY, 
+			winnerStr
+			);
+
+		baseFm->print(
+			fontNS::SABO_FILLED,
+			fontNS::WHITE, 
+			GAME_WIDTH / 2 - baseFm->getTotalWidth(fontNS::SABO_FILLED, enterYourNameStr) / 2 - fontNS::CENTER_OFFSET,
+			victoryNS::enterYourNameStartY, 
+			enterYourNameStr
 		);
+	}
 
+	std::string enterToContinueStr = "PRESS ENTER TO CONTINUE";
 	baseFm->print(
 		fontNS::SABO_FILLED,
-		fontNS::WHITE, 
-		GAME_WIDTH / 2 - baseFm->getTotalWidth(fontNS::SABO_FILLED, enterYourNameStr) / 2 - fontNS::CENTER_OFFSET,
-		victoryNS::enterYourNameStartY, 
-		enterYourNameStr
-		);
-
-	baseFm->print(
-		fontNS::SABO_FILLED, 
-		fontNS::WHITE, 
+		fontNS::WHITE,
 		GAME_WIDTH / 2 - baseFm->getTotalWidth(fontNS::SABO_FILLED, enterToContinueStr) / 2 - fontNS::CENTER_OFFSET,
 		victoryNS::enterToContinueStartY,
 		enterToContinueStr

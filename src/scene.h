@@ -3,8 +3,6 @@
 #ifndef _SCENE_H
 #define _SCENE_H
 
-#include "paddle.h"
-
 namespace sceneNS {
 	enum TYPE {
 		MENU, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
@@ -18,13 +16,17 @@ namespace sceneNS {
 		GM_CLASSIC, GM_TIME_ATK
 	};
 
+	enum WINNER {
+		W_LEFT, W_RIGHT, W_DRAW
+	};
+
 	struct NewHighScore {
 		int score;
 		std::string name;
 	};
 
 	struct SceneData {	// data to be passed down scene to scene
-		paddleNS::SIDE winner;
+		WINNER winner;
 		GAME_MODE modePlayed;
 		
 		NewHighScore newHighScore;

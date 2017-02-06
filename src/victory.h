@@ -35,6 +35,7 @@ namespace victoryNS {
 	const int winnerStrStartY = 70;
 	const int enterYourNameStartY = 230;
 	const int enterToContinueStartY = 550;
+	const int drawStartY = 200;
 }
 
 class Victory : public Scene {
@@ -42,6 +43,8 @@ private:
 	Graphics* graphics;
 	Input* input;
 	FontManager* baseFm;
+
+	FontManager* titleFm;
 
 	LP_LINE textBox;
 	LP_LINE cursor;

@@ -19,7 +19,7 @@ void Classic::update(float frameTime) {
 	if (winnerFound) {
 		nextSceneType = sceneNS::VICTORY;
 		sceneData.modePlayed = sceneNS::GM_CLASSIC;
-		sceneData.winner = leftPaddleScore == classicNS::POINTS_TO_WIN ? paddleNS::LEFT : paddleNS::RIGHT;
+		sceneData.winner = leftPaddleScore == classicNS::POINTS_TO_WIN ? sceneNS::W_LEFT : sceneNS::W_RIGHT;
 		sceneData.newHighScore.score = elapsedTime;
 	}
 }

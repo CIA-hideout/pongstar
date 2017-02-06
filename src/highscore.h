@@ -9,6 +9,7 @@
 #include "input.h"
 #include "fontManager.h"
 #include "scene.h"
+#include "dataManager.h"
 
 namespace highScoreNS {
 	const int nameStartX = 300;

@@ -33,6 +33,9 @@ namespace pongstarNS {
 		BORDER,
 		PICKUPS
 	};
+
+	const int TIME_PER_GAME = 12 * 1000;	// milliseconds
+	const int TEN_SECONDS = 10 * 1000;
 }
 
 typedef std::unordered_map<pongstarNS::TEXTURE, TextureManager*> TextureManagerMap;
