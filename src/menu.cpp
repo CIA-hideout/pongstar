@@ -61,11 +61,11 @@ void Menu::update(float frameTime) {
 }
 
 void Menu::render() {
-	titleFm->setScale(fontNS::SABO_FILLED, 1.0);
-	titleFm->setScale(fontNS::SABO, 1.0);
+	titleFm->setScale(fontNS::SABO_FILLED, 0.625);
+	titleFm->setScale(fontNS::SABO, 0.625);
 
-	titleFm->setKerning(fontNS::SABO_FILLED, -10);
-	titleFm->setKerning(fontNS::SABO, -10);
+	titleFm->setKerning(fontNS::SABO_FILLED, 50);
+	titleFm->setKerning(fontNS::SABO, 50);
 
 	int pongstarWidth = titleFm->getTotalWidth(fontNS::SABO_FILLED, "pong") + titleFm->getTotalWidth(fontNS::SABO, "star");
 	int pongX = GAME_WIDTH / 2 - pongstarWidth / 2 - fontNS::CENTER_OFFSET;
@@ -86,17 +86,19 @@ void Menu::render() {
 		"star"
 	);
 
-	menuFm->setKerning(fontNS::SABO_FILLED, -4);
+	menuFm->setScale(fontNS::SABO_FILLED, 0.3125);
+	menuFm->setScale(fontNS::SABO, 0.3125);
+	menuFm->setKerning(fontNS::SABO_FILLED, 3);
 
 	for (size_t i = 0; i < items.size(); i++) {
 		int itemWidth = menuFm->getTotalWidth(fontNS::SABO_FILLED, sceneToString(items[i]));
 		int itemStartXPos = GAME_WIDTH / 2 - itemWidth / 2;
-		int itemStartYPos = menuNS::MENU_Y_POS + i * menuNS::HEIGHT_BETWEEN_ITEM;
+		int itemStartYPos = menuNS::MENU_Y_POS + (menuFm->getHeight(fontNS::SABO_FILLED) + menuNS::HEIGHT_BETWEEN_ITEM) * i;
 
 		if (selectedItemIndex == i && blink) {
 			menuFm->print(
 				fontNS::SABO,
-				fontNS::WHITE,
+				fontNS::ORANGE,
 				itemStartXPos - menuFm->getTotalWidth(fontNS::SABO, "-") - menuNS::DIST_BTWN_MINUS_AND_ITEM,
 				itemStartYPos,
 				"-"
@@ -104,7 +106,7 @@ void Menu::render() {
 
 			menuFm->print(
 				fontNS::SABO,
-				fontNS::WHITE,
+				fontNS::BLUE,
 				itemStartXPos + itemWidth + menuNS::DIST_BTWN_MINUS_AND_ITEM,
 				itemStartYPos,
 				"-"

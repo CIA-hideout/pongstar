@@ -13,6 +13,7 @@ const char* colorToString(fontNS::FONT_COLOR c) {
 		case fontNS::BLUE:			return "blue";
 		case fontNS::ORANGE:		return "orange";
 		case fontNS::RED:			return "red";
+		case fontNS::GREY:			return "grey";
 	}
 }
 

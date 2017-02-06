@@ -8,9 +8,9 @@
 #include "scene.h"
 
 namespace menuNS {
-	const int TITLE_Y_POS = 70;
-	const int MENU_Y_POS = 250;
-	const int HEIGHT_BETWEEN_ITEM = 90;
+	const int TITLE_Y_POS = 140;
+	const int MENU_Y_POS = 360;
+	const int HEIGHT_BETWEEN_ITEM = 30;
 	const int DIST_BTWN_MINUS_AND_ITEM = 20;
 	const float BLINK_INTERVAL = 0.2f;
 }
