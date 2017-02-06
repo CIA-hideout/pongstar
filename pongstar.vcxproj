@@ -82,6 +82,7 @@
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\effects.h" />
+    <ClInclude Include="src\highscore.h" />
     <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\message.h" />
     <ClInclude Include="src\messageManager.h" />
@@ -112,6 +113,7 @@
     <ClCompile Include="src\classic.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />
+    <ClCompile Include="src\highscore.cpp" />
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\message.cpp" />
     <ClCompile Include="src\messageManager.cpp" />
@@ -136,6 +138,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\controls.json" />
+    <None Include="data\highscores.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

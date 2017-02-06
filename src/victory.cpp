@@ -21,7 +21,15 @@ void Victory::initialize(sceneNS::SceneData sd) {
 	cursor->SetWidth(victoryNS::cursorLineWidth);
 }
 
-void Victory::update(float frameTime) {}
+void Victory::update(float frameTime) {
+	if (input->wasKeyPressed(ENTER_KEY)) {
+		nextSceneType = sceneNS::HIGH_SCORES;
+		sceneData.newHighScore.name = toUpperCase(input->getTextIn());
+		sceneData.hsDisplayMode = sceneData.modePlayed == sceneNS::GM_CLASSIC ? sceneNS::HS_CLASSIC : sceneNS::HS_TIME_ATK;
+
+		input->clearTextIn();
+	}
+}
 
 void Victory::renderTxb() {
 	// Draw the textbox
@@ -53,7 +61,6 @@ void Victory::renderTxb() {
 	cursor->Draw(cursorPoints, victoryNS::cursorPointsToDraw, graphicsNS::WHITE);
 	cursor->End();
 }
-
 
 void Victory::render() {
 	renderTxb();
@@ -88,9 +95,6 @@ void Victory::render() {
 		victoryNS::enterToContinueStartY,
 		enterToContinueStr
 		);
-
-	if (input->wasKeyPressed(ENTER_KEY))
-		input->clearTextIn();
 }
 
 void Victory::releaseAll() {

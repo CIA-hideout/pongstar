@@ -19,6 +19,9 @@
 
 using namespace rapidjson;
 
+typedef std::map<int, std::string> HighScoreMap;
+typedef std::pair<int, std::string> HighScorePair;
+
 struct PaddleControls {
 	UCHAR up;
 	UCHAR down;
@@ -39,22 +42,34 @@ struct ControlsJson {
 		p2(p2) {}
 };
 
+struct HighScoreJson {
+	HighScoreMap classic;
+	HighScoreMap timeAttack;
+};
+
 class DataManager {
 private:
 	ControlsJson controlsJson;
+	HighScoreJson highScoreJson;
 
 public:
 	DataManager();
 	~DataManager();
 
+	PaddleControls parseControlVal(Value val);
+	HighScoreMap parseHighScoreVal(const Value& val);
+
 	// getters
-	ControlsJson getControlsJson() { return controlsJson; };
+	ControlsJson getControlsJson() { return controlsJson; }
+	HighScoreJson getHighScoreJson() { return highScoreJson; }
 	
 	// setters
 	void setControlsJson(ControlsJson cj) { controlsJson = cj; }
+	void setHighScoreJson(HighScoreJson hsj) { highScoreJson = hsj; }
 
 	Document readFile(const char* fileName);	// Takes in a pointer to a char array
 	void initControlData(const char* fileName);
+	void initHighScoreData(const char* fileName);
 };
 
 #endif

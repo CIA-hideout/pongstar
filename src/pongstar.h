@@ -13,6 +13,7 @@
 #include "classic.h"
 #include "timeAttack.h"
 #include "victory.h"
+#include "highscore.h"
 
 class Pongstar : public Game {
 private:

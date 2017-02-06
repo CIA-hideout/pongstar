@@ -58,6 +58,7 @@ public:
 
 	void print(fontNS::FONT_NAME n, fontNS::FONT_COLOR c, int x, int y, std::string t);
 	int getTotalWidth(fontNS::FONT_NAME n, std::string t);
+	int getHeight(fontNS::FONT_NAME n);
 
 	void releaseAll();
 	void resetAll();

@@ -49,7 +49,7 @@ private:
 	void renderTxb();
 public:
 	Victory();
-	Victory::Victory(Graphics* g, Input* i, FontManager* fm);
+	Victory(Graphics* g, Input* i, FontManager* fm);
 	~Victory();
 
 	// Interface

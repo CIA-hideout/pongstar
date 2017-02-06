@@ -95,6 +95,10 @@ int Font::getTotalWidth(std::string text) {
 	return (int)fx;
 }
 
+int Font::getHeight() {
+	return textureManager->getHeight() / cols * spriteData.scale;
+}
+
 void Font::draw() {
 	Image::draw();
 }

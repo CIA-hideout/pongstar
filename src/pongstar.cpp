@@ -35,6 +35,7 @@ void Pongstar::initialize(HWND hwnd) {
 
 	dataManager = new DataManager();
 	dataManager->initControlData(CONTROLS_JSON);
+	dataManager->initHighScoreData(HIGH_SCORES_JSON);
 
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
@@ -57,16 +58,23 @@ void Pongstar::initialize(HWND hwnd) {
 	}
 
 	sceneNS::SceneData sd = sceneNS::SceneData();
-	sd.modePlayed = sceneNS::CLASSIC;
-	sd.winner = paddleNS::RIGHT;
+	//sd.modePlayed = sceneNS::GM_CLASSIC;
+	//sd.winner = paddleNS::RIGHT;
+	//sd.newHighScore.name = "LALAA";
+	//sd.newHighScore.score = 21000;
+	//sd.hsDisplayMode = sceneNS::HS_BOTH;
 
-	Victory* vic = new Victory(graphics, input, fontManager);
-	vic->initialize(sd);
-	gameStack->push(vic);
+	//HighScore* hs = new HighScore(input, dataManager, fontManager);
+	//hs->initialize(sd);
+	//gameStack->push(hs);
 
-	//Menu* menu = new Menu(input, fontManager);
-	//menu->initialize(sd);
-	//gameStack->push(menu);
+	//Victory* vic = new Victory(graphics, input, fontManager);
+	//vic->initialize(sd);
+	//gameStack->push(vic);
+
+	Menu* menu = new Menu(input, fontManager);
+	menu->initialize(sd);
+	gameStack->push(menu);
 }
 
 //=============================================================================
@@ -80,10 +88,14 @@ void Pongstar::update() {
 
 	if (gameStack->top()->getNextSceneType() != sceneNS::NONE) {
 		sceneNS::TYPE nextSceneType = gameStack->top()->getNextSceneType();
-		gameStack->top()->clearNextSceneType();
+		sceneNS::SceneData sd = gameStack->top()->getSceneData();
 		Scene* nextScene = nullptr;
 
 		switch (nextSceneType) {
+			case sceneNS::MENU: {
+				// Pop everything to menu
+				/*gameStack->pop();*/
+			} break;
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);
 			} break;
@@ -91,10 +103,13 @@ void Pongstar::update() {
 				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::HIGH_SCORES: {
+				//gameStack->pop();	// pop victory layer
+				nextScene = new HighScore(input, dataManager, fontManager);
 			} break;
 			case sceneNS::CREDITS: {
 			} break;
 			case sceneNS::VICTORY: {
+				gameStack->pop();	// pop game layer
 				nextScene = new Victory(graphics, input, fontManager);
 			} break;
 
@@ -102,7 +117,9 @@ void Pongstar::update() {
 			break;
 		}
 
-		nextScene->initialize(gameStack->top()->getSceneData());
+		gameStack->top()->clearNextSceneType();
+
+		nextScene->initialize(sd);
 		gameStack->push(nextScene);
 	}
 }
@@ -140,7 +157,6 @@ void Pongstar::releaseAll() {
 	fontManager->releaseAll();
 
 	Game::releaseAll();
-	return;
 }
 
 //=============================================================================
@@ -155,5 +171,4 @@ void Pongstar::resetAll() {
 	fontManager->resetAll();
 
 	Game::resetAll();
-	return;
 }

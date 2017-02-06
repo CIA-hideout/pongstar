@@ -7,12 +7,28 @@
 
 namespace sceneNS {
 	enum TYPE {
-		CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
+		MENU, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
+	};
+
+	enum HS_DISPLAY_MODE {
+		HS_CLASSIC, HS_TIME_ATK, HS_BOTH
+	};
+
+	enum GAME_MODE {
+		GM_CLASSIC, GM_TIME_ATK
+	};
+
+	struct NewHighScore {
+		int score;
+		std::string name;
 	};
 
 	struct SceneData {	// data to be passed down scene to scene
 		paddleNS::SIDE winner;
-		TYPE modePlayed;
+		GAME_MODE modePlayed;
+		
+		NewHighScore newHighScore;
+		HS_DISPLAY_MODE hsDisplayMode;
 	};
 }
 
