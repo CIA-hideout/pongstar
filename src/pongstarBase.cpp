@@ -28,7 +28,6 @@ void PongstarBase::initializeEntities() {
 
 	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
 	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
-	Ball* ball = ballManager->createBall();
 	Bumper* bumper = new Bumper();
 
 	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
@@ -36,9 +35,6 @@ void PongstarBase::initializeEntities() {
 
 	if (!paddle2->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
-
-	if (!ball->initialize(game, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, tmMap[pongstarNS::BALL]))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
 	if (!bumper->initialize(game, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[pongstarNS::BUMPER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
@@ -48,14 +44,15 @@ void PongstarBase::initializeEntities() {
 	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
 	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 
-	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
-	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
-
 	entityVector.push_back(paddle1);
 	entityVector.push_back(paddle2);
 	entityVector.push_back(bumper);
 
-	// Testing sprite effect
+	Ball* ball = ballManager->createBall();
+	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
+	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
+
+	// For pickups testing
 	pickupManager->createPickup(effectNS::MULTIPLY);
 }
 
@@ -75,13 +72,14 @@ void PongstarBase::update(float frameTime) {
 		}
 	}
 
+	messageManager->resolve();
+
 	while (deleteEntityQueue.size() > 0) {
+		printf("delete");
 		int indexToRemove = deleteEntityQueue.front();
 		entityVector.erase(entityVector.begin() + indexToRemove);
 		deleteEntityQueue.pop();
 	}
-
-	messageManager->resolve();
 
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();

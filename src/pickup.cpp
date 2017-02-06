@@ -61,7 +61,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		}
 
 		setActive(false);
-		msgPtr = new Message(messageNS::ADD_EFFECT, targetType, effectType, duration);
+		msgPtr = new Message(messageNS::ADD_EFFECT, targetType, effectType, ent.getId(), duration);
 		setMessage(msgPtr);
 	}
 

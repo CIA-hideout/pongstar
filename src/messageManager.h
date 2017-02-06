@@ -40,7 +40,7 @@ public:
 	void resolve();
 
 	Paddle* getPaddle(paddleNS::SIDE s);
-	Ball* getBall();
+	Entity* getEntity(int id);
 };
 
 #endif

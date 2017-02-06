@@ -35,18 +35,20 @@ void Ball::resetBall() {
 }
 
 void Ball::wallCollision() {
-	Message* msgPtr = NULL;
+	Message* msgPtr = nullptr;
 
 	// Collision with right wall
 	if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale) {
-		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT);
+		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
 		setMessage(msgPtr);
+		setVisible(false);
 		resetBall();
 	}
 	// Collision with left wall
 	else if (spriteData.x < LEFT_WALL) {
-		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT);
+		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
 		setMessage(msgPtr);
+		setVisible(false);
 		resetBall();
 	}
 
@@ -83,7 +85,7 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 }
 
 void Ball::runEffects() {
-	Message* msgPtr = NULL;
+	Message* msgPtr = nullptr;
 
 	if (effects->getEffects().size() > 0) {
 		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effects->getEffects()) {
@@ -93,7 +95,7 @@ void Ball::runEffects() {
 				} break;
 				
 				case effectNS::MULTIPLY: {
-					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY);
+					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
 					setMessage(msgPtr);
 				} break;
 			}
@@ -121,11 +123,6 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 	return true;
 }
-
-void Ball::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
-	effects->addEffect(effectType, duration);
-}
-
 
 float Ball::getBallAngle() {
 	float theta = (90 * fabs(velocity.y)) / ballNS::VELOCITY;

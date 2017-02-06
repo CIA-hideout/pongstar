@@ -6,6 +6,7 @@ BallManager::BallManager(Game* g, TextureManager* bt, std::vector<Entity*>* ev) 
 	game = g;
 	ballTexture = bt;
 	entityVector = ev;
+	ballCount = 0;
 }
 
 BallManager::~BallManager() {}
@@ -17,6 +18,7 @@ Ball* BallManager::createBall() {
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
 	entityVector->push_back(ball);
+	ballCount++;
 	return ball;
 }
 

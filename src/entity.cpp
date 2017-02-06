@@ -439,4 +439,8 @@ void Entity::gravityForce(Entity *ent, float frameTime) {
 	velocity += gravityV;
 }
 
+void Entity::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
+	effects->addEffect(effectType, duration);
+}
+
 void Entity::runEffects() {}

@@ -26,7 +26,6 @@ public:
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 
 	void runEffects();
-	void addEffect(effectNS::EFFECT_TYPE et, float duration);
 
 	float getBallAngle();
 };
