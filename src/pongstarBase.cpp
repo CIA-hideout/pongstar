@@ -9,7 +9,7 @@ PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureMan
 
 PongstarBase::~PongstarBase() {}
 
-void PongstarBase::initialize() {
+void PongstarBase::initialize(sceneNS::SceneData sd) {
 	ballManager = new BallManager(game, tmMap[pongstarNS::BALL], &entityVector);
 	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
 	messageManager = new MessageManager(pickupManager, ballManager, &entityVector);
@@ -87,7 +87,7 @@ void PongstarBase::update(float frameTime) {
 
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
-		elapsedTime = duration_cast<seconds>(presentTime - startTime).count();
+		elapsedTime = duration_cast<milliseconds>(presentTime - startTime).count();
 	}
 }
 
@@ -114,17 +114,8 @@ void PongstarBase::render() {
 
 	border.draw();
 
-	std::string timeLeft = std::to_string(TIME_PER_GAME - elapsedTime);
 	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
 	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
-
-	fontManager->print(
-		fontNS::SABO_FILLED,
-		elapsedTime > 50 ? fontNS::RED : fontNS::WHITE,
-		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
-		HUD_Y_POS,
-		timeLeft
-		);
 
 	fontManager->print(
 		fontNS::SABO_FILLED,

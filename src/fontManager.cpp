@@ -110,6 +110,10 @@ int FontManager::getTotalWidth(fontNS::FONT_NAME name, std::string text) {
 	return fonts[name]->begin()->second->getTotalWidth(text);
 }
 
+int FontManager::getHeight(fontNS::FONT_NAME name) {
+	return fonts[name]->begin()->second->getHeight();
+}
+
 void FontManager::releaseAll() {
 	for (size_t i = 0; i < textureManagers.size(); i++) {
 		textureManagers[i]->onResetDevice();

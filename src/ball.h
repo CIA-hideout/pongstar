@@ -1,7 +1,7 @@
 #ifndef _BALL_H
 #define _BALL_H
 
-#include "random.h"
+#include "util/random.h"
 #include "entity.h"
 #include "message.h"
 #include "pickup.h"

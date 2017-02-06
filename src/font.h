@@ -25,6 +25,7 @@ public:
 	virtual bool initialize(Graphics *g, int width, int height, int ncols, TextureManager *textureM);
 
 	int getTotalWidth(std::string text);
+	int getHeight();
 };
 
 #endif

@@ -6,19 +6,22 @@ const char* sceneToString(sceneNS::TYPE s) {
 	case sceneNS::TIME_ATK:			return "TIME ATTACK";
 	case sceneNS::HIGH_SCORES:		return "HIGH SCORES";
 	case sceneNS::CREDITS:			return "CREDITS";
+	default:						return "Invalid scene type found";
 	}
 }
 
 Menu::Menu() {};
 
 Menu::Menu(Input* i, FontManager* fm) {
+	sceneType = sceneNS::MENU;
+
 	input = i;
 	baseFm = fm;
 }
 
 Menu::~Menu() {}
 
-void Menu::initialize() {
+void Menu::initialize(sceneNS::SceneData sd) {
 	selectedItemIndex = 0;
 	blink = true;
 
@@ -30,6 +33,8 @@ void Menu::initialize() {
 	items.push_back(sceneNS::TIME_ATK);
 	items.push_back(sceneNS::HIGH_SCORES);
 	items.push_back(sceneNS::CREDITS);
+
+	sceneData.hsDisplayMode = sceneNS::HS_BOTH;
 }
 
 void Menu::update(float frameTime) {
@@ -42,8 +47,7 @@ void Menu::update(float frameTime) {
 	}
 
 	if (input->wasKeyPressed(ENTER_KEY)) {
-		nextSceneType = new sceneNS::TYPE;
-		nextSceneType = &items[selectedItemIndex];
+		nextSceneType = items[selectedItemIndex];
 	}
 
 	if (blinkTimer < menuNS::BLINK_INTERVAL) {
@@ -57,8 +61,6 @@ void Menu::update(float frameTime) {
 }
 
 void Menu::render() {
-	int count = 0;
-
 	titleFm->setScale(fontNS::SABO_FILLED, 1.0);
 	titleFm->setScale(fontNS::SABO, 1.0);
 

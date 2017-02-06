@@ -1,5 +1,4 @@
 #include "pongstar.h"
-#include <string>
 
 const char* textureToString(pongstarNS::TEXTURE t) {
 	switch (t) {
@@ -24,7 +23,7 @@ Pongstar::Pongstar() {
 // Destructor
 //=============================================================================
 Pongstar::~Pongstar() {
-	releaseAll();           // call onLostDevice() for every graphics item
+	Pongstar::releaseAll();           // call onLostDevice() for every graphics item
 }
 
 //=============================================================================
@@ -35,7 +34,8 @@ void Pongstar::initialize(HWND hwnd) {
 	Game::initialize(hwnd); // throws GameError
 
 	dataManager = new DataManager();
-	dataManager->initControlData(CONTROLS_JSON);
+	dataManager->initControlData();
+	dataManager->initHighScoreData();
 
 	fontManager = new FontManager(graphics);
 	fontManager->initialize();
@@ -57,15 +57,10 @@ void Pongstar::initialize(HWND hwnd) {
 		tmMap.insert(std::pair<pongstarNS::TEXTURE, TextureManager*>(texture, tm));
 	}
 
+	sceneNS::SceneData sd = sceneNS::SceneData();
 	Menu* menu = new Menu(input, fontManager);
-	menu->initialize();
+	menu->initialize(sd);
 	gameStack->push(menu);
-
-	//PongstarBase* ps = new PongstarBase(this, dataManager, fontManager, tmMap);
-	//ps->initialize();
-	//gameStack->push(ps);
-
-	return;
 }
 
 //=============================================================================
@@ -74,22 +69,54 @@ void Pongstar::initialize(HWND hwnd) {
 void Pongstar::update() {
 	gameStack->top()->update(frameTime);
 
-	if (input->wasKeyPressed(ESC_KEY) && gameStack->size() > 1)
+	sceneNS::TYPE currSceneType = gameStack->top()->getSceneType();
+
+	bool allowEsc =
+		currSceneType == sceneNS::CLASSIC ||
+		currSceneType == sceneNS::TIME_ATK ||
+		currSceneType == sceneNS::CREDITS ||		
+		(currSceneType == sceneNS::HIGH_SCORES &&
+		gameStack->top()->getSceneData().hsDisplayMode == sceneNS::HS_BOTH);
+
+	if (input->wasKeyPressed(ESC_KEY) && allowEsc && gameStack->size() > 1)
 		gameStack->pop();
 
-	if (gameStack->top()->getNextSceneType() != NULL) {
-		sceneNS::TYPE nextSceneType = *gameStack->top()->getNextSceneType();
-		gameStack->top()->clearNextSceneType();
-		Scene* nextScene;
+	if (gameStack->top()->getNextSceneType() != sceneNS::NONE) {
+		sceneNS::TYPE nextSceneType = gameStack->top()->getNextSceneType();
+		sceneNS::SceneData sd = gameStack->top()->getSceneData();
+		Scene* nextScene = nullptr;
 
 		switch (nextSceneType) {
 			case sceneNS::CLASSIC: {
-				nextScene = new PongstarBase(this, dataManager, fontManager, tmMap);
-				nextScene->initialize();
+				nextScene = new Classic(this, dataManager, fontManager, tmMap);
 			} break;
+			case sceneNS::TIME_ATK: {
+				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
+			} break;
+			case sceneNS::HIGH_SCORES: {
+				nextScene = new HighScore(input, dataManager, fontManager);
+			} break;
+			case sceneNS::CREDITS: {
+			} break;
+			case sceneNS::VICTORY: {
+				nextScene = new Victory(graphics, input, fontManager);
+			} break;
+
+			case sceneNS::MENU:
+			default: 
+			break;
 		}
 
-		gameStack->push(nextScene);
+		if (nextSceneType == sceneNS::MENU) {
+			// Pop everything to base layer
+			while (gameStack->size() > 1) {
+				gameStack->pop();
+			}
+		} else {			
+			gameStack->top()->clearNextSceneType();
+			nextScene->initialize(sd);
+			gameStack->push(nextScene);
+		}
 	}
 }
 
@@ -122,11 +149,11 @@ void Pongstar::releaseAll() {
 	for (auto &tm : tmMap) {
 		tm.second->onLostDevice();
 	}
-
+	
+	dataManager->saveHighScore();
 	fontManager->releaseAll();
 
 	Game::releaseAll();
-	return;
 }
 
 //=============================================================================
@@ -141,5 +168,4 @@ void Pongstar::resetAll() {
 	fontManager->resetAll();
 
 	Game::resetAll();
-	return;
 }

@@ -2,7 +2,7 @@
 #define _BUMPER_H
 
 #include "entity.h"
-#include "random.h"
+#include "util/random.h"
 
 namespace bumperNS {
 	const int HEIGHT = 100;

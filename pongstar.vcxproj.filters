@@ -13,7 +13,7 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Config">
+    <Filter Include="Data">
       <UniqueIdentifier>{fb340420-8670-45ad-b6c7-77b29a83040f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -78,9 +78,6 @@
     <ClInclude Include="src\messageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\random.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\effects.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -94,6 +91,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\ballManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\timeAttack.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\classic.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\victory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\highscore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -152,9 +167,6 @@
     <ClCompile Include="src\messageManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\random.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\effects.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -167,10 +179,31 @@
     <ClCompile Include="src\ballManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\timeAttack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\classic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\victory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\random.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\util.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\highscore.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="config\controls.json">
-      <Filter>Config</Filter>
+      <Filter>Data</Filter>
+    </None>
+    <None Include="data\highscores.json">
+      <Filter>Data</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -15,7 +15,7 @@ Font::Font() {
 	endFrame = 127;
 	currentFrame = 0;
 
-	kerning = 0.0f;
+	kerning = 0;
 }
 
 Font::~Font() {
@@ -93,6 +93,10 @@ int Font::getTotalWidth(std::string text) {
 	}
 
 	return (int)fx;
+}
+
+int Font::getHeight() {
+	return textureManager->getHeight() / cols * spriteData.scale;
 }
 
 void Font::draw() {

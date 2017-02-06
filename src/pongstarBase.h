@@ -4,11 +4,9 @@
 
 #include <vector>
 #include <queue>
-#include <stack>
 #include <chrono>
 
 #include "game.h"
-#include "gameError.h"
 #include "dataManager.h"
 #include "fontManager.h"
 #include "textureManager.h"
@@ -17,9 +15,8 @@
 #include "ballManager.h"
 #include "image.h"
 
-#include "paddle.h"
-#include "ball.h"
 #include "bumper.h"
+
 #include "scene.h"
 
 using namespace std::chrono;
@@ -29,19 +26,23 @@ namespace pongstarNS {
 	const char TEXTURE_DIRECTORY[] = "sprites\\";
 
 	const std::vector<TEXTURE> initTextureVec = {
-		TEXTURE::BALL,
-		TEXTURE::PADDLE,
-		TEXTURE::DIVIDER,
-		TEXTURE::BUMPER,
-		TEXTURE::BORDER,
-		TEXTURE::PICKUPS
+		BALL,
+		PADDLE,
+		DIVIDER,
+		BUMPER,
+		BORDER,
+		PICKUPS
 	};
+
+	const int POINTS_TO_WIN = 5;
+	const int TIME_PER_GAME = 10 * 1000;	// milliseconds
+	const int TEN_SECONDS = 10 * 1000;
 }
 
 typedef std::unordered_map<pongstarNS::TEXTURE, TextureManager*> TextureManagerMap;
 
 class PongstarBase : public Scene {
-private:
+protected:
 	// Game items
 	Game* game;
 	FontManager* fontManager;
@@ -70,7 +71,7 @@ public:
 	void initializeEntities();
 
 	// Interface
-	virtual void initialize();	// initialize base pongstar items
+	virtual void initialize(sceneNS::SceneData sd);	// initialize base pongstar items
 	virtual void update(float frameTime);
 	virtual void ai();
 	virtual void collisions();

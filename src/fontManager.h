@@ -17,6 +17,7 @@ namespace fontNS {
 	enum FONT_NAME { SABO, SABO_FILLED };
 	enum FONT_COLOR { WHITE, BLUE, ORANGE, RED };
 	const int CENTER_OFFSET = 11;
+	const int CENTER_OFFSET_MAX_SCALE = 11 / 4 * 10;
 
 	const std::unordered_map<fontNS::FONT_NAME, std::vector<fontNS::FONT_COLOR>> initMap = {
 		{ fontNS::SABO, { fontNS::WHITE } },
@@ -58,6 +59,7 @@ public:
 
 	void print(fontNS::FONT_NAME n, fontNS::FONT_COLOR c, int x, int y, std::string t);
 	int getTotalWidth(fontNS::FONT_NAME n, std::string t);
+	int getHeight(fontNS::FONT_NAME n);
 
 	void releaseAll();
 	void resetAll();

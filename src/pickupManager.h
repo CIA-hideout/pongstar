@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include "random.h"
+#include "util/random.h"
 #include "game.h"
 #include "gameError.h"
 #include "textureManager.h"

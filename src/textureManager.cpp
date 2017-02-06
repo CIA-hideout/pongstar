@@ -4,11 +4,11 @@
 // Constructor
 //=============================================================================
 TextureManager::TextureManager() {
-	texture = NULL;
+	texture = nullptr;
 	width = 0;
 	height = 0;
-	file = NULL;
-	graphics = NULL;
+	file = nullptr;
+	graphics = nullptr;
 	initialized = false;	// set true when successfully initialized
 }
 

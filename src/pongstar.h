@@ -10,9 +10,10 @@
 
 #include "scene.h"
 #include "menu.h"
-#include "pongstarBase.h"
-
-using namespace std::chrono;
+#include "classic.h"
+#include "timeAttack.h"
+#include "victory.h"
+#include "highscore.h"
 
 class Pongstar : public Game {
 private:

@@ -3,7 +3,6 @@
 #define WIN32_LEAN_AND_MEAN
 
 #include "graphics.h"
-#include "constants.h"
 
 class TextureManager {
 private:

@@ -3,11 +3,9 @@
 
 #include <vector>
 
-#include "constants.h"
-#include "scene.h"
-#include "graphics.h"
 #include "input.h"
 #include "fontManager.h"
+#include "scene.h"
 
 namespace menuNS {
 	const int TITLE_Y_POS = 70;
@@ -38,7 +36,7 @@ public:
 	~Menu();
 	
 	// Interface
-	void initialize();
+	void initialize(sceneNS::SceneData sd);
 	void update(float frameTime);
 	void ai() {};
 	void collisions() {};
