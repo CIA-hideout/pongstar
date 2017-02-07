@@ -94,7 +94,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 		setActive(false);
 		msgPtr = new Message(messageNS::ADD_EFFECT, targetType, effectType, ent.getId(), duration);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 	}
 
 	return true;

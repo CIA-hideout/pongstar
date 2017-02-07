@@ -16,7 +16,7 @@ namespace effectDataNS {
 	const effectNS::EffectData effectArray[] = {
 		effectNS::EffectData(effectNS::MAGNET, 0, 1.0f),
 		effectNS::EffectData(effectNS::INVERT, 1, 3.0f),
-		effectNS::EffectData(e ffectNS::SHIELD, 2, 0.0f),
+		effectNS::EffectData(effectNS::SHIELD, 2, 0.0f),
 		effectNS::EffectData(effectNS::MULTIPLY, 3, 0.0f),
 		effectNS::EffectData(effectNS::BOOST, 4, 3.0f),
 		effectNS::EffectData(effectNS::SLOW, 5, 3.0f),

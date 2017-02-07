@@ -68,9 +68,9 @@ void PongstarBase::update(float frameTime) {
 		if (!entity->getActive())
 			deleteEntityQueue.push(entity->getId());
 
-		if (entity->getMessage() != nullptr) {
-			messageManager->push(entity->getMessage());
-			entity->setMessage(nullptr);
+		while (entity->getMessageQueue().size() > 0) {
+			messageManager->push(entity->getMessageQueue().front());
+			entity->popMsg();
 		}
 	}
 

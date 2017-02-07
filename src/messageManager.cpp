@@ -138,10 +138,6 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 				bv[i]->setMagnetised(true);
 			}
 		} break;
-		
-		case effectNS::MAGNET: {
-
-		}
 
 		default: break;
 	}
@@ -152,7 +148,6 @@ void MessageManager::dispatchEndEffect(Message* msg) {
 	switch (msg->getEffectType()) {
 		case effectNS::SHIELD: {
 			// Identify paddle target that shield has been hit
-
 			Paddle* p = msg->getTargetType() ==
 				messageNS::LEFT_P ?
 				entityManager->getPaddle(paddleNS::LEFT) :
@@ -170,7 +165,19 @@ void MessageManager::dispatchEndEffect(Message* msg) {
 			}
 
 		} break;
+		case effectNS::MAGNET: {
+			// check if other balls are magnetised
+			Paddle* magnetizedP = (Paddle*)entityManager->getEntity(msg->getEntityId());
+			Paddle* otherP = entityManager->getPaddle(magnetizedP->getSide() == paddleNS::LEFT ? paddleNS::RIGHT : paddleNS::LEFT);
+			
+			if (!otherP->getMagnetised()) {
+				std::vector<Ball*> bv = entityManager->getBalls();
+				for (size_t i = 0; i < bv.size(); i++) {
+					bv[i]->setMagnetised(false);
+				}
+			}
 
+		} break;
 		default: break;
 	}
 }
@@ -180,20 +187,26 @@ void MessageManager::dispatchMagnetEffect(Message* msg) {
 	int paddleId = msg->getPaddleId();
 	int ballId = msg->getBallId();
 
+	printf("map size %i\n", entityManager->getEntityMap()->size()); 
+
 	Paddle* p = (Paddle*)entityManager->getEntity(paddleId);
 	Ball* b = (Ball*)entityManager->getEntity(ballId);
 
 	switch (msg->getMagnetCmd()) {
 	case messageNS::BIND: {
-		p->setMagnetBall(b);
-
-		// notifies other balls to stop listening
+		// Ideally should stop other balls being magnetized here 
+		// but we clear all balls magnetism at the end of effect
+		if (p->getMagnetBall() == nullptr) {
+			p->setMagnetBall(b);
+			p->startMagnetTimer();	// Run another timer to keep track of ball on paddle
+		}
 
 	} break;
 	case messageNS::UNBIND: {
+		b->setMagnetised(false);
+		printf("unbind\n");
 		p->setMagnetised(false);
 		p->setMagnetBall(nullptr);
-		b->setMagnetised(false);
 	} break;
 	default: break;
 	}

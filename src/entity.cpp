@@ -20,7 +20,6 @@ Entity::Entity() : Image() {
 	rotatedBoxReady = false;
 	collisionType = entityNS::BOX;
 	gravity = entityNS::GRAVITY;
-	message = NULL;
 	effects = new Effects();
 }
 

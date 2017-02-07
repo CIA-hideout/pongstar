@@ -19,6 +19,7 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s) : Entity() {
 	shield = false;
 	magnetised = false;
 	magnetBall = nullptr;
+	magnetTimer = 2.0f;
 
 	D3DXCreateLine(g->get3Ddevice(), &shieldLine);
 	shieldLine->SetWidth(20);
@@ -122,7 +123,16 @@ void Paddle::update(float frameTime) {
 	setVelocity(VECTOR2(0, yVelocity));
 
 	if (magnetised && magnetBall != nullptr) {
+		//printf("magnetball\n");
 		magnetBall->setVelocity(VECTOR2(0, yVelocity));
+		magnetBallId = magnetBall->getId();
+	} else {
+		//printf("%i\n", magnetised);
+		//printf("nullptr\n");
+	}
+
+	if (magnetTimerStarted) {
+		magnetTimer -= frameTime;
 	}
 
 	spriteData.x += frameTime * velocity.x;
@@ -139,7 +149,8 @@ bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 }
 
 void Paddle::runEffects() {
-	Message* msgPtr = nullptr;
+	Message* msgPtr;
+	Message* msgPtrTwo;
 
 	if (effects->getEffects().size() > 0) {
 		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effects->getEffects()) {
@@ -157,7 +168,7 @@ void Paddle::runEffects() {
 					// Notify balls
 					shield = true;
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
-					setMessage(msgPtr);
+					pushMsg(msgPtr);
 				} break;
 				case effectNS::BOOST: {
 					boosted = currentEffect.second != 0;
@@ -166,33 +177,32 @@ void Paddle::runEffects() {
 					slowed = currentEffect.second != 0;
 				} break;
 				case effectNS::MAGNET: {
-					magnetised = true;
-					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
-					setMessage(msgPtr);
-				} break;
-				case effectNS::MAGNET: {
+					// Initialize magnet effect
 					if (!magnetised) {
+						magnetTimer = currentEffect.second;
 						magnetised = true;
 						msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
-						setMessage(msgPtr);
+						pushMsg(msgPtr);
 					}
 				} break;
 			}
 
 			if (currentEffect.second == 0) {
-				if (currentEffect.first == effectNS::MAGNET && magnetised) {	// this thing runs twice			
-					magnetised = false; 
-
-					// disengage ball
-					msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBall->getId());
-					setMessage(msgPtr);
-				}
-
 				effects->removeEffect(currentEffect.first);
 			}
 		}
 	}
-	
+
+	if (magnetTimer <= 0) {
+		magnetTimer = 2.0f;
+		magnetTimerStarted = false;
+
+		msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBallId);
+		msgPtrTwo = new Message(messageNS::END_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
+
+		pushMsg(msgPtr);
+		pushMsg(msgPtrTwo);
+	}	
 }
 
 void Paddle::draw(COLOR_ARGB color) {

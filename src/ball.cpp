@@ -51,12 +51,12 @@ void Ball::wallCollision() {
 
 		// dispatch ms to turn off right shield for paddle and other balls
 		msgPtr = new Message(messageNS::END_EFFECT, messageNS::RIGHT_P, effectNS::SHIELD, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 	}
 	// Collide with right wall
 	else if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 		setVisible(false);
 		resetBall();
 	}
@@ -68,12 +68,12 @@ void Ball::wallCollision() {
 		
 		// dispatch msg to turn off left shield for paddle and other balls
 		msgPtr = new Message(messageNS::END_EFFECT, messageNS::LEFT_P, effectNS::SHIELD, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 	}
 	// Collision with left wall
 	else if (spriteData.x < LEFT_WALL) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 		setVisible(false);
 		resetBall();
 	}
@@ -161,7 +161,7 @@ void Ball::runEffects() {
 
 				case effectNS::MULTIPLY: {
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
-					setMessage(msgPtr);
+					pushMsg(msgPtr);
 				} break;
 			}
 
@@ -178,10 +178,12 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				if (!magnetised) {
 					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 					audio->playCue(HIT_PADDLE_CUE);
+					printf("not magnetized\n");
 				}
 
 				if (magnetised && !initializedMagnetEffect) {
 					initMagnetEffect(ent.getId());
+					printf("initMagnetEffect\n");
 				}
 			} break;
 
@@ -202,7 +204,7 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 void Ball::initMagnetEffect(int targetPaddleId) {
 	// send instance to paddle to ask for binding
 	Message* msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::BIND, targetPaddleId, id);
-	setMessage(msgPtr);
+	pushMsg(msgPtr);
 	setVelocity(VECTOR2(0, 0));
 	initializedMagnetEffect = true;
 }

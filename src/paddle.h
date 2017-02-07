@@ -30,6 +30,10 @@ private:
 	LP_LINE magnetLine;
 
 	Entity* magnetBall;
+	int magnetBallId;
+
+	float magnetTimer;
+	bool magnetTimerStarted;
 
 public:
 	Paddle();
@@ -45,6 +49,7 @@ public:
 	bool getShield() { return shield; }
 	bool getMagnetised() { return magnetised; }
 	Entity* getMagnetBall() { return magnetBall; }
+	float getMagnetTimer() { return magnetTimer; }
 
 	// setters
 	void setScore(int s) { score = s; }
@@ -52,11 +57,13 @@ public:
 	void setShield(bool s) { shield = s; }
 	void setMagnetised(bool m) { magnetised = m; }
 	void setMagnetBall(Entity* mb) { magnetBall = mb; }
+	void setMagnetTimer(float mt) { magnetTimer = mt; }
 
 	void update(float frameTime);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 
 	void runEffects();
+	void startMagnetTimer() { magnetTimerStarted = true; };
 };
 
 #endif
