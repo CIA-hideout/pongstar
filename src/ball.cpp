@@ -49,7 +49,7 @@ void Ball::wallCollision() {
 		setMessage(msgPtr);
 	}
 	// Collide with right wall
-	else if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale) {
+	else if (spriteData.x > RIGHT_WALL) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
 		setMessage(msgPtr);
 		setVisible(false);
@@ -66,7 +66,7 @@ void Ball::wallCollision() {
 		setMessage(msgPtr);
 	}
 	// Collision with left wall
-	else if (spriteData.x < LEFT_WALL) {
+	else if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale)) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
 		setMessage(msgPtr);
 		setVisible(false);
@@ -125,28 +125,28 @@ void Ball::runEffects() {
 					float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
 					float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
 					VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio * 2, ballNS::VELOCITY * yRatio * 2);
-					velocity = newVelocity;
 
 					if (currentEffect.second == 0) {
-						float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-						float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-						VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio );
-						velocity = newVelocity;
+						xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+						yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+						newVelocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
 					}
+
+					velocity = newVelocity;
 				} break;
 
 				case effectNS::SLOW: {
 					float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
 					float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
 					VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio * 0.5, ballNS::VELOCITY * yRatio * 0.5);
-					velocity = newVelocity;
 
 					if (currentEffect.second == 0) {
-						float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-						float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-						VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio );
-						velocity = newVelocity;
+						xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+						yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+						newVelocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
 					}
+
+					velocity = newVelocity;
 				} break;
 
 				case effectNS::INVERT: {
