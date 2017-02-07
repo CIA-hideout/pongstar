@@ -32,7 +32,7 @@ bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				// Set message to spawn pickup
 				messageNS::PICKUP_CMD direction = (side == bumperNS::LEFT) ? messageNS::MOVE_RIGHT : messageNS::MOVE_LEFT;
 				msgPtr = new Message(messageNS::PICKUP, direction);
-				setMessage(msgPtr);
+				pushMsg(msgPtr);
 
 				// Move bumper
 				//randomLocationBumper();

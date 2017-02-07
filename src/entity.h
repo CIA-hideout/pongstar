@@ -2,6 +2,7 @@
 #define _ENTITY_H
 #define WIN32_LEAN_AND_MEAN
 
+#include <queue>
 #include "image.h"
 #include "input.h"
 #include "audio.h"
@@ -42,7 +43,7 @@ protected:
 	bool    active;         // only active entities may collide
 	bool    rotatedBoxReady;    // true when rotated collision box is ready
 	entityNS::ENTITY_TYPE entityType;
-	Message* message;
+	std::queue<Message*> messageQueue;
 	Effects* effects;
 
 	// --- The following functions are protected because they are not intended to be
@@ -119,7 +120,7 @@ public:
 	virtual entityNS::ENTITY_TYPE getEntityType() { return entityType; }
 
 	// Return message
-	virtual Message* getMessage() { return message; }
+	virtual std::queue<Message*> getMessageQueue() { return messageQueue; }
 
 	// Return effects
 	virtual Effects* getEffects() { return effects; }
@@ -148,9 +149,12 @@ public:
 
 	// Set radius of collision circle.
 	virtual void setCollisionRadius(float r)    { radius = r; }
+	
+	// Set effects
+	virtual void setEffects(Effects* e) { effects = e; }
 
 	// Set message
-	virtual void setMessage(Message* m) { message = m; }
+	virtual void setMessageQueue(std::queue<Message*> mq) { messageQueue = mq; }
 
 	////////////////////////////////////////
 	//         Other functions            //
@@ -190,7 +194,11 @@ public:
 	void gravityForce(Entity *other, float frameTime);
 
 	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);
-	virtual void runEffects();
+	virtual void runEffects() {};
+	virtual void resetEffects();
+
+	void pushMsg(Message* msg) { messageQueue.push(msg); }
+	void popMsg() { messageQueue.pop(); }
 };
 
 #endif

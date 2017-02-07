@@ -11,14 +11,22 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s) : Entity() {
 	edge.left = -(long)(paddleNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(paddleNS::WIDTH * spriteData.scale / 2);
 
+	currentFrame = (s == paddleNS::LEFT) ? 0 : 1;
+	loop = false;
+
 	controls = pc;
 	side = s;
-
-	currentFrame = (side == paddleNS::LEFT) ? 0 : 1;
-	loop = false;
+	shield = false;
+	magnetised = false;
+	magnetBall = nullptr;
+	magnetTimer = 2.0f;
 
 	D3DXCreateLine(g->get3Ddevice(), &shieldLine);
 	shieldLine->SetWidth(20);
+	
+	// Only work on bg, use image
+	D3DXCreateLine(g->get3Ddevice(), &magnetLine);
+	magnetLine->SetWidth(5);
 }
 
 Paddle::~Paddle() {}
@@ -114,6 +122,15 @@ void Paddle::update(float frameTime) {
 
 	setVelocity(VECTOR2(0, yVelocity));
 
+	if (magnetised && magnetBall != nullptr) {
+		magnetBall->setVelocity(VECTOR2(0, yVelocity));
+		magnetBallId = magnetBall->getId();
+	}
+
+	if (magnetTimerStarted) {
+		magnetTimer -= frameTime;
+	}
+
 	spriteData.x += frameTime * velocity.x;
 	spriteData.y += frameTime * velocity.y;
 }
@@ -128,7 +145,8 @@ bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 }
 
 void Paddle::runEffects() {
-	Message* msgPtr = nullptr;
+	Message* msgPtr;
+	Message* msgPtrTwo;
 
 	if (effects->getEffects().size() > 0) {
 		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effects->getEffects()) {
@@ -146,7 +164,7 @@ void Paddle::runEffects() {
 					// Notify balls
 					shield = true;
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
-					setMessage(msgPtr);
+					pushMsg(msgPtr);
 				} break;
 				case effectNS::BOOST: {
 					boosted = currentEffect.second != 0;
@@ -155,20 +173,37 @@ void Paddle::runEffects() {
 					slowed = currentEffect.second != 0;
 				} break;
 				case effectNS::MAGNET: {
-					magnetised = true;
-					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
-					setMessage(msgPtr);
+					// Initialize magnet effect
+					if (!magnetised) {
+						magnetTimer = currentEffect.second;
+						magnetised = true;
+						msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
+						pushMsg(msgPtr);
+					}
 				} break;
 			}
 
-			if (currentEffect.second == 0)
+			if (currentEffect.second == 0) {
 				effects->removeEffect(currentEffect.first);
+			}
 		}
 	}
-	
+
+	if (magnetTimer <= 0) {
+		magnetTimer = 2.0f;
+		magnetTimerStarted = false;
+
+		msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBallId);
+		msgPtrTwo = new Message(messageNS::END_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
+
+		pushMsg(msgPtr);
+		pushMsg(msgPtrTwo);
+	}	
 }
 
 void Paddle::draw(COLOR_ARGB color) {
+	Entity::draw(color);
+
 	if (shield) {
 		VECTOR2 shieldPoints[2];
 		if (side == paddleNS::LEFT) {
@@ -187,5 +222,30 @@ void Paddle::draw(COLOR_ARGB color) {
 		shieldLine->End();
 	}
 
-	Entity::draw(color);
+	if (magnetised) {
+		VECTOR2 magnetPoints[2];
+
+		if (side == paddleNS::LEFT) {
+			magnetPoints[0] = VECTOR2(spriteData.x - 10, spriteData.y);
+			magnetPoints[1] = VECTOR2(spriteData.x - 10, spriteData.y + spriteData.height);
+		}
+		else {
+			magnetPoints[0] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y);
+			magnetPoints[1] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y + spriteData.height);
+		}
+
+		magnetLine->Begin();
+		magnetLine->Draw(magnetPoints, 2, graphicsNS::WHITE);
+		magnetLine->End();
+	}
+}
+
+void Paddle::resetEffects() {
+	Entity::resetEffects();
+	
+	shield = false;
+	boosted = false;
+	slowed = false;
+	inverted = false;
+	magnetised = false;
 }

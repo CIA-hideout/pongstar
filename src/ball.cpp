@@ -9,6 +9,11 @@ Ball::Ball() : Entity() {
 	edge.bottom = (long)(ballNS::HEIGHT * spriteData.scale / 2);
 	edge.left = -(long)(ballNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(ballNS::WIDTH * spriteData.scale / 2);
+
+	leftShield = false;
+	rightShield = false;
+	magnetised = false; 
+	initializedMagnetEffect = false;
 }
 
 Ball::~Ball() {}
@@ -34,6 +39,10 @@ void Ball::resetBall() {
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
 	spriteData.scale = 1.0f;
+
+	// reset paddle effects
+	Message *msgPtr = new Message(messageNS::OTHERS, messageNS::CLEAN_UP);
+	pushMsg(msgPtr);
 }
 
 void Ball::wallCollision() {
@@ -46,12 +55,12 @@ void Ball::wallCollision() {
 
 		// dispatch ms to turn off right shield for paddle and other balls
 		msgPtr = new Message(messageNS::END_EFFECT, messageNS::RIGHT_P, effectNS::SHIELD, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 	}
 	// Collide with right wall
 	else if (spriteData.x > RIGHT_WALL) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 		setVisible(false);
 		resetBall();
 	}
@@ -63,12 +72,12 @@ void Ball::wallCollision() {
 		
 		// dispatch msg to turn off left shield for paddle and other balls
 		msgPtr = new Message(messageNS::END_EFFECT, messageNS::LEFT_P, effectNS::SHIELD, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 	}
 	// Collision with left wall
 	else if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale)) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
-		setMessage(msgPtr);
+		pushMsg(msgPtr);
 		setVisible(false);
 		resetBall();
 	}
@@ -156,7 +165,7 @@ void Ball::runEffects() {
 
 				case effectNS::MULTIPLY: {
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
-					setMessage(msgPtr);
+					pushMsg(msgPtr);
 				} break;
 			}
 
@@ -170,8 +179,14 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 			case entityNS::PADDLE: {
-				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-				audio->playCue(HIT_PADDLE_CUE);
+				if (!magnetised) {
+					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+					audio->playCue(HIT_PADDLE_CUE);
+				}
+
+				if (magnetised && !initializedMagnetEffect) {
+					initMagnetEffect(ent.getId());
+				}
 			} break;
 
 			case entityNS::BUMPER: {
@@ -186,6 +201,19 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	}
 
 	return true;
+}
+
+void Ball::initMagnetEffect(int targetPaddleId) {
+	// send instance to paddle to ask for binding
+	Message* msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::BIND, targetPaddleId, id);
+	pushMsg(msgPtr);
+	setVelocity(VECTOR2(0, 0));
+	initializedMagnetEffect = true;
+}
+
+void Ball::resetMagnetBinding() {
+	magnetised = false;
+	initializedMagnetEffect = false;
 }
 
 float Ball::getBallAngle() {

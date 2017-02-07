@@ -53,7 +53,7 @@ void PongstarBase::initializeEntities() {
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	pickupManager->createPickup(effectNS::ENLARGE);
+	pickupManager->createPickup(effectNS::MAGNET);
 }
 
 void PongstarBase::update(float frameTime) {
@@ -68,13 +68,14 @@ void PongstarBase::update(float frameTime) {
 		if (!entity->getActive())
 			deleteEntityQueue.push(entity->getId());
 
-		if (entity->getMessage() != nullptr) {
-			messageManager->push(entity->getMessage());
-			entity->setMessage(nullptr);
+		while (entity->getMessageQueue().size() > 0) {
+			messageManager->push(entity->getMessageQueue().front());
+			entity->popMsg();
 		}
 	}
 
 	messageManager->resolve();
+	messageManager->update(frameTime);
 
 	while (deleteEntityQueue.size() > 0) {
 		int idToRemove = deleteEntityQueue.front();

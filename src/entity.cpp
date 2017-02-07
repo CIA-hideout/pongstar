@@ -20,7 +20,6 @@ Entity::Entity() : Image() {
 	rotatedBoxReady = false;
 	collisionType = entityNS::BOX;
 	gravity = entityNS::GRAVITY;
-	message = NULL;
 	effects = new Effects();
 }
 
@@ -444,4 +443,7 @@ void Entity::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 	effects->addEffect(effectType, duration);
 }
 
-void Entity::runEffects() {}
+void Entity::resetEffects() {
+	Effects* e = new Effects();
+	effects = e;
+}
