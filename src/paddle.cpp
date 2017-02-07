@@ -172,14 +172,14 @@ void Paddle::draw(COLOR_ARGB color) {
 	if (shield) {
 		VECTOR2 shieldPoints[2];
 		if (side == paddleNS::LEFT) {
-			shieldPoints[0] = VECTOR2(70, 0);
-			shieldPoints[1] = VECTOR2(70, GAME_HEIGHT);
+			shieldPoints[0] = VECTOR2(LEFT_SHIELD, 0);
+			shieldPoints[1] = VECTOR2(LEFT_SHIELD, GAME_HEIGHT);
 			shieldLine->Begin();
 			shieldLine->Draw(shieldPoints, 2, graphicsNS::ORANGE + graphicsNS::ALPHA25);
 		}
 		else {
-			shieldPoints[0] = VECTOR2(GAME_WIDTH - 70, 0);
-			shieldPoints[1] = VECTOR2(GAME_WIDTH - 70, GAME_HEIGHT);
+			shieldPoints[0] = VECTOR2(RIGHT_SHIELD, 0);
+			shieldPoints[1] = VECTOR2(RIGHT_SHIELD, GAME_HEIGHT);
 			shieldLine->Begin();
 			shieldLine->Draw(shieldPoints, 2, graphicsNS::BLUE + graphicsNS::ALPHA25);
 		}
