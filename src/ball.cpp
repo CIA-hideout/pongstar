@@ -146,10 +146,7 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 			case entityNS::PADDLE: {
-				/*if (getEffects()->getEffects().find(effectNS::BOOST) != getEffects()->getEffects().end())
-					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY*2);
-				else*/
-					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 			} break;
 
 			case entityNS::BUMPER: {
