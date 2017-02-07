@@ -11,6 +11,7 @@
 
 #include "scene.h"
 #include "menu.h"
+#include "credits.h"
 #include "classic.h"
 #include "timeAttack.h"
 #include "gameover.h"

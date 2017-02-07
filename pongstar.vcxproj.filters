@@ -117,6 +117,9 @@
     <ClInclude Include="src\gameover.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\credits.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\winmain.cpp">
@@ -207,6 +210,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\gameover.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\credits.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

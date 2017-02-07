@@ -80,6 +80,7 @@
     <ClInclude Include="src\bumper.h" />
     <ClInclude Include="src\classic.h" />
     <ClInclude Include="src\constants.h" />
+    <ClInclude Include="src\credits.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\effects.h" />
     <ClInclude Include="src\entityManager.h" />
@@ -113,6 +114,7 @@
     <ClCompile Include="src\ball.cpp" />
     <ClCompile Include="src\bumper.cpp" />
     <ClCompile Include="src\classic.cpp" />
+    <ClCompile Include="src\credits.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />
     <ClCompile Include="src\entityManager.cpp" />

@@ -8,8 +8,6 @@
 #include "fontManager.h"
 
 namespace creditsNS {
-	//std::vector<std::string> developers = { "IVAN", "JEROME", "CHESTER" };
-
 	const float SMALL_FONT_SIZE = 36.0;
 	const float MEDIUM_FONT_SIZE = 48.0;
 	const float LARGE_FONT_SIZE = 60.0;

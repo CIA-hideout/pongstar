@@ -118,6 +118,7 @@ void Pongstar::update() {
 				nextScene = new HighScore(audio, input, dataManager, fontManager);
 			} break;
 			case sceneNS::CREDITS: {
+				nextScene = new Credits(input, fontManager);
 			} break;
 			case sceneNS::GAMEOVER: {
 				nextScene = new Gameover(this, fontManager);
