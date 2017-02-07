@@ -1,6 +1,10 @@
 {
     "classic": [
         {
+            "name": "KIK",
+            "score": 7312
+        },
+        {
             "name": "JOHN",
             "score": 10000
         },
@@ -53,6 +57,10 @@
         {
             "name": "BOBBY",
             "score": 3
+        },
+        {
+            "name": "FIVX",
+            "score": 5
         },
         {
             "name": "JACOB",

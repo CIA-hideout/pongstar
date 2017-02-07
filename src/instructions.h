@@ -3,7 +3,6 @@
 
 #include "game.h"
 #include "scene.h"
-#include "input.h"
 #include "fontManager.h"
 #include "textureManager.h"
 

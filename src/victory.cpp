@@ -34,7 +34,6 @@ void Victory::update(float frameTime) {
 
 			nextSceneType = sceneNS::HIGH_SCORES;
 			sceneData.newHighScore.name = toUpperCase(name);
-			sceneData.hsDisplayMode = sceneData.gameMode == sceneNS::GM_CLASSIC ? sceneNS::HS_CLASSIC : sceneNS::HS_TIME_ATK;
 		} else {
 			nextSceneType = sceneNS::MENU;
 		}

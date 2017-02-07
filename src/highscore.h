@@ -1,30 +1,29 @@
 #ifndef _HIGHSCORE_H
 #define _HIGHSCORE_H
 
-#include <map>
-#include <string>
-#include <iterator>
-
-#include "gameError.h"
+#include "scene.h"
 #include "input.h"
 #include "fontManager.h"
-#include "scene.h"
 #include "dataManager.h"
 
 namespace highScoreNS {
-	const int nameStartX = 300;
-	const int scoreStartX = 750;
-	const int titleStartY = 20;
+	const float SMALL_FONT_SIZE = 36.0;
+	const float LARGE_FONT_SIZE = 48.0;
 
-	const int contentStartY = 100;
-	const int continueStartY = 640;
-	
-	const std::string enterToContStr = "PRESS ENTER TO CONTINUE";
-	const std::string escToBackStr = "PRESS ESC TO GO BACK";
+	const int OVERALL_Y_POS = 75;
+	const int SIDEBAR_X_POS = 130;
+	const int CLASSIC_Y_POS = 130;
+	const int TIME_ATK_Y_POS = 200;
 
-	// manage which highscore is showing if displayMode is set to both
-	enum RENDER_STATE { CLASSIC, TIME_ATK };
-	const RENDER_STATE initialRenderState = CLASSIC;
+	const int ESC_X_POS = 170;
+	const int ESC_Y_POS = 600;
+	const int RANK_X_POS = 580;
+	const int NAME_X_POS = 680;
+	const int SCORE_RIGHT_X_POS = 1200;
+	const int RANK_VERT_GAP = 10;
+
+	const int BLINKER_GAP = 20;
+	const float BLINK_INTERVAL = 0.2f;
 }
 
 class HighScore : public Scene {
@@ -33,16 +32,16 @@ private:
 	DataManager* dataManager;
 	FontManager* baseFm;
 
-	FontManager* titleFm;
-	FontManager* scoreFm;
+	FontManager* largeFm;
+	FontManager* smallFm;
 
-	highScoreNS::RENDER_STATE rs;	
+	float blinkTimer;
+	bool blink;
 
 	void addHighScore();
-	void renderBottomText(std::string bt);
 	void renderClassicHS();
 	void renderTimeAtkHS();
-	void renderBothHS();
+
 public:
 	HighScore();
 	HighScore(Input* i, DataManager* dm, FontManager* fm);

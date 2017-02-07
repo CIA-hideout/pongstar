@@ -10,10 +10,6 @@ namespace sceneNS {
 		MENU, INSTRUCTIONS, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
 	};
 
-	enum HS_DISPLAY_MODE {
-		HS_CLASSIC, HS_TIME_ATK, HS_BOTH
-	};
-
 	enum GAME_MODE {
 		GM_CLASSIC, GM_TIME_ATK
 	};
@@ -31,7 +27,7 @@ namespace sceneNS {
 		WINNER winner;
 		GAME_MODE gameMode;
 		NewHighScore newHighScore;
-		HS_DISPLAY_MODE hsDisplayMode;
+		bool escToMenu = false;
 	};
 }
 
@@ -40,6 +36,7 @@ protected:
 	sceneNS::TYPE sceneType = sceneNS::NONE;
 	sceneNS::TYPE nextSceneType = sceneNS::NONE;
 	sceneNS::SceneData sceneData = sceneNS::SceneData();
+
 public:
 	sceneNS::TYPE getSceneType() { return sceneType; }
 	sceneNS::TYPE getNextSceneType() { return nextSceneType; }

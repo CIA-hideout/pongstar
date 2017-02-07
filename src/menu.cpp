@@ -33,8 +33,6 @@ void Menu::initialize(sceneNS::SceneData sd) {
 	items.push_back(sceneNS::TIME_ATK);
 	items.push_back(sceneNS::HIGH_SCORES);
 	items.push_back(sceneNS::CREDITS);
-
-	sceneData.hsDisplayMode = sceneNS::HS_BOTH;
 }
 
 void Menu::update(float frameTime) {

@@ -49,17 +49,17 @@ void Instructions::render() {
 	instructions.draw();
 
 	if (gameMode == sceneNS::GM_CLASSIC) {
-		renderTitle("eleven", "points");
+		renderTitle("ELEVEN", "POINTS");
 	}
 	else {
-		renderTitle("sixty", "seconds");
+		renderTitle("SIXTY", "SECONDS");
 	}
 
 	float scale = instructionsNS::TEXT_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
 	textFm->setScale(fontNS::SABO_FILLED, scale);
 	textFm->setScale(fontNS::SABO, scale);
 
-	int textWidth = textFm->getTotalWidth(fontNS::SABO_FILLED, "press space");
+	int textWidth = textFm->getTotalWidth(fontNS::SABO_FILLED, "PRESS SPACE");
 	int textXpos = GAME_WIDTH / 2 - textWidth / 2;
 
 	if (blink) {
@@ -85,7 +85,7 @@ void Instructions::render() {
 		fontNS::WHITE,
 		textXpos,
 		instructionsNS::TEXT_Y_POS,
-		"press space"
+		"PRESS SPACE"
 	);
 }
 

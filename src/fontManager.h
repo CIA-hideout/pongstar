@@ -22,7 +22,7 @@ namespace fontNS {
 
 	const std::unordered_map<fontNS::FONT_NAME, std::vector<fontNS::FONT_COLOR>> initMap = {
 		{ fontNS::SABO, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED} },
-		{ fontNS::SABO_FILLED, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED, fontNS::BLUE, fontNS::ORANGE, fontNS::RED } }
+		{ fontNS::SABO_FILLED, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED, fontNS::GREY } }
 	};
 }
 

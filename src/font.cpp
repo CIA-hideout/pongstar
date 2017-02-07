@@ -18,9 +18,7 @@ Font::Font() {
 	kerning = 0;
 }
 
-Font::~Font() {
-
-}
+Font::~Font() {}
 
 bool Font::loadTextSprite(TextureManager* texture) {
 	return true;
@@ -46,8 +44,8 @@ bool Font::loadTextData(std::string fileName) {
 	for (int i = 0; i < sizeof(this->widths) / sizeof(this->widths[0]); i++) {
 		widths[i] = (int)buffer[i * 2];
 
-		if (i == 73) {		// If hit char 'I' frame, increase width by 20
-			widths[i] += 20;
+		if (i == 73 || i == 74) {		// 'I' or 'J' frame
+			widths[i] += 17;
 		}
 	}
 
@@ -62,8 +60,12 @@ void Font::print(int x, int y, std::string text) {
 		int frame = (int)text[i] - '!' + 1;
 		frame += 32;
 
-		if (frame == 73) {	// If 'I' frame
-			fx -= 11;
+		if (frame == 73) {	// 'I' frame
+			fx -= 8;
+		}
+
+		if (frame == 77) {	// 'M' frame
+			fx += 3;
 		}
 
 		setCurrentFrame(frame);
