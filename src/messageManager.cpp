@@ -37,14 +37,16 @@ void MessageManager::dispatch(Message* msg) {
 		case messageNS::RUN_EFFECT: {
 			dispatchRunEffect(msg);
 		} break;
+		case messageNS::END_EFFECT: {
+			dispatchEndEffect(msg);
+		} break;
 	}
 }
 
 void MessageManager::dispatchScore(Message* msg) {
-	printf("score msg %d\n", msg->getEntityId());
 	switch (msg->getScoreCmd()) {
 		case messageNS::INCREMENT: {
-			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ? 
+			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ?
 				entityManager->getPaddle(paddleNS::LEFT) : entityManager->getPaddle(paddleNS::RIGHT);
 			paddlePtr->setScore(paddlePtr->getScore() + 1);
 
@@ -56,20 +58,35 @@ void MessageManager::dispatchScore(Message* msg) {
 void MessageManager::dispatchPickup(Message* msg) {
 	Pickup* pickup = pickupManager->randomPickup();
 	pickup->setVelocity(
-		msg->getPickupCmd() == messageNS::MOVE_LEFT ? 
+		msg->getPickupCmd() == messageNS::MOVE_LEFT ?
 		VECTOR2(-pickupNS::VELOCITY, 0) :
 		VECTOR2(pickupNS::VELOCITY, 0)
 	);
 }
 
 void MessageManager::dispatchAddEffect(Message* msg) {
+	// id here is the collided entity id, !pickupId
+
 	switch (msg->getTargetType()) {
 		case messageNS::BALL: {
 			entityManager->getEntity(msg->getEntityId())->addEffect(msg->getEffectType(), msg->getDuration());
 		} break;
+		case messageNS::BOTH_P: {
+			std::vector<Paddle*> pv = entityManager->getPaddles();
+			for (size_t i = 0; i < pv.size(); i++) {
+				pv[i]->addEffect(msg->getEffectType(), msg->getDuration());
+			}
+		} break;
+		case messageNS::LEFT_P: {
+			entityManager->getPaddle(paddleNS::LEFT)->addEffect(msg->getEffectType(), msg->getDuration());
+		} break;
+		case messageNS::RIGHT_P: {
+			entityManager->getPaddle(paddleNS::RIGHT)->addEffect(msg->getEffectType(), msg->getDuration());
+		} break;
 	}
 }
 
+// Modifies entities directly
 void MessageManager::dispatchRunEffect(Message* msg) {
 	switch (msg->getEffectType()) {
 		case effectNS::MULTIPLY: {
@@ -88,6 +105,51 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 			newBall2->setY(currentBall->getY());
 			newVelocity = entityManager->getVelocityFromAngle(ballAngle - 30);
 			newBall2->setVelocity(newVelocity);
+		} break;
+
+		case effectNS::SHIELD: {
+			// Identify sending msg id, left or right paddle
+			Paddle* p = (Paddle*)entityManager->getEntity(msg->getEntityId());
+			paddleNS::SIDE side = p->getSide();
+
+			// get all balls
+			std::vector<Ball*> bv = entityManager->getBalls();
+
+			for (size_t i = 0; i < bv.size(); i++) {
+				if (side == paddleNS::LEFT)
+					bv[i]->setLeftShield(true);
+				else
+					bv[i]->setRightShield(true);
+			}
+
+		} break;
+
+		default: break;
+	}
+}
+
+// Modifies entities directly
+void MessageManager::dispatchEndEffect(Message* msg) {
+	switch (msg->getEffectType()) {
+		case effectNS::SHIELD: {
+			// Identify paddle target that shield has been hit
+
+			Paddle* p = msg->getTargetType() ==
+				messageNS::LEFT_P ?
+				entityManager->getPaddle(paddleNS::LEFT) :
+				entityManager->getPaddle(paddleNS::RIGHT);
+
+			p->setShield(false);
+
+			// notify balls that shield is off
+			std::vector<Ball*> bv = entityManager->getBalls();
+			for (size_t i = 0; i < bv.size(); i++) {
+				if (p->getSide() == paddleNS::LEFT)
+					bv[i]->setLeftShield(false);
+				else
+					bv[i]->setRightShield(false);
+			}
+
 		} break;
 
 		default: break;

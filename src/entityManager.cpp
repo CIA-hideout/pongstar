@@ -53,6 +53,14 @@ Paddle* EntityManager::getPaddle(paddleNS::SIDE s) {
 	return s == paddleNS::LEFT ? (Paddle*)entityMap[leftPaddleId] : (Paddle*)entityMap[rightPaddleId];
 }
 
+std::vector<Paddle*> EntityManager::getPaddles() {	
+	std::vector<Paddle*> pv;
+	pv.push_back(getPaddle(paddleNS::LEFT));
+	pv.push_back(getPaddle(paddleNS::RIGHT));
+
+	return pv;
+}
+
 void EntityManager::deleteEntity(int id) {
 	entityMap.erase(id);
 }
@@ -64,14 +72,24 @@ Ball* EntityManager::createBall() {
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
 
 	addEntity(ball);
-	ballCount++;
+	ballIds.push_back(ball->getId());
 	return ball;
 }
 
+std::vector<Ball*> EntityManager::getBalls() {
+	std::vector<Ball*> bv;
+
+	for (size_t i = 0; i < ballIds.size(); i++) {
+		bv.push_back((Ball*)entityMap[ballIds[i]]);
+	}
+
+	return bv;
+}
+
 void EntityManager::deleteBall(int id) {
-	if (ballCount > 1) {
+	if (ballIds.size() > 1) {
 		entityMap[id]->setActive(false);
-		ballCount--;
+		ballIds.erase(std::remove(ballIds.begin(), ballIds.end(), id), ballIds.end());
 	} else
 		getEntity(id)->setVisible(true);
 }

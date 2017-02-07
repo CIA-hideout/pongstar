@@ -26,8 +26,8 @@ void PongstarBase::initialize(sceneNS::SceneData sd) {
 void PongstarBase::initializeEntities() {
 	ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
-	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
+	Paddle* paddle1 = new Paddle(game->getGraphics(), controls.p1, paddleNS::LEFT);
+	Paddle* paddle2 = new Paddle(game->getGraphics(), controls.p2, paddleNS::RIGHT);
 	Bumper* bumper = new Bumper();
 
 	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[textureNS::PADDLE]))
@@ -53,7 +53,7 @@ void PongstarBase::initializeEntities() {
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	pickupManager->createPickup(effectNS::SLOW);
+	pickupManager->createPickup(effectNS::SHIELD);
 }
 
 void PongstarBase::update(float frameTime) {

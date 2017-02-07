@@ -10,7 +10,6 @@
 #include "ball.h"
 #include "paddle.h"
 #include "bumper.h"
-#include "pickup.h"
 #include "textureManager.h"
 
 namespace textureNS {
@@ -39,7 +38,7 @@ private:
 
 	int leftPaddleId;
 	int rightPaddleId;
-	int ballCount;
+	std::vector<int> ballIds;
 
 	bool paddleIdExist;
 	
@@ -55,14 +54,17 @@ public:
 
 	// Ball
 	Ball* createBall();
-	int getBallCount() { return ballCount; };
+	std::vector<Ball*> getBalls();
+	int getBallCount() { return ballIds.size(); };
 	void deleteBall(int id);	// validate if ball can be deleted
 	VECTOR2 getVelocityFromAngle(float angle);
+
+	Paddle* getPaddle(paddleNS::SIDE side);
+	std::vector<Paddle*> getPaddles();
 
 	// Entities
 	void addEntity(Entity* e);
 	Entity* getEntity(int id);
-	Paddle* getPaddle(paddleNS::SIDE side);
 	void deleteEntity(int id);
 };
 

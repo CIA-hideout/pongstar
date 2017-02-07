@@ -34,6 +34,7 @@ public:
 	void dispatchPickup(Message* msg);
 	void dispatchAddEffect(Message* msg);
 	void dispatchRunEffect(Message* msg);
+	void dispatchEndEffect(Message* msg);
 
 	void resolve();
 };

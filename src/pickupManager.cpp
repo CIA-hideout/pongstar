@@ -19,7 +19,8 @@ int PickupManager::getRandEffectArrIndex() {
 }
 
 Pickup* PickupManager::randomPickup() {
-	effectNS::EffectData data = effectDataNS::effectArray[getRandEffectArrIndex()];
+	//effectNS::EffectData data = effectDataNS::effectArray[getRandEffectArrIndex()];
+	effectNS::EffectData data = effectDataNS::effectArray[2];
 	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration);
 
 	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, pickupTexture))

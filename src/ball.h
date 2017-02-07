@@ -16,16 +16,25 @@ namespace ballNS {
 
 class Ball : public Entity {
 private:
+	bool leftShield;
+	bool rightShield;
+
 public:
 	Ball();
 	~Ball();
+
+	void setLeftShield(bool s) { leftShield = s; };
+	void setRightShield(bool s) { rightShield = s; }
+
+	bool getLeftShield() { return leftShield; }
+	bool getRightShield() { return rightShield; }
 
 	void update(float frameTime);
 	void resetBall();
 	void wallCollision();
 	void bumperCollision(Entity &bumper, VECTOR2 &collisionVector);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
-
+	
 	void runEffects();
 
 	float getBallAngle();

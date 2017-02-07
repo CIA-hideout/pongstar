@@ -3,6 +3,7 @@
 
 #include "entity.h"
 #include "dataManager.h"
+#include "graphics.h"
 
 namespace paddleNS {
 	const int HEIGHT = 120;
@@ -19,22 +20,32 @@ private:
 	PaddleControls controls;
 	int score;
 	paddleNS::SIDE side;
+	bool shield;
+
+	LP_LINE shieldLine;
+
 public:	
 	Paddle();
-	Paddle(PaddleControls pc, paddleNS::SIDE s);
+	Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s);
 
 	~Paddle();
+
+	void draw(COLOR_ARGB color = graphicsNS::WHITE);
 	
 	// getters
 	int getScore() { return score; }
 	paddleNS::SIDE getSide() { return side; }
+	bool getShieldOn() { return shield; }
 
 	// setters
 	void setScore(int s) { score = s; }
 	void setSide(paddleNS::SIDE s) { side = s; }
+	void setShield(bool s) { shield = s; }
 
 	void update(float frameTime);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+
+	void runEffects();
 };
 
 #endif
