@@ -16,6 +16,8 @@ namespace ballNS {
 
 class Ball : public Entity {
 private:
+	//float currentVelocityX;
+	//float currentVelocityY;
 public:
 	Ball();
 	~Ball();

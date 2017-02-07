@@ -119,6 +119,9 @@ public:
 	// Return message
 	virtual Message* getMessage() { return message; }
 
+	// Return effects
+	virtual Effects* getEffects() { return effects; }
+
 	////////////////////////////////////////
 	//           Set functions            //
 	////////////////////////////////////////
