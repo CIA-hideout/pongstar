@@ -7,6 +7,7 @@
 #include "game.h"
 #include "dataManager.h"
 #include "fontManager.h"
+#include "entityManager.h"
 
 #include "scene.h"
 #include "menu.h"

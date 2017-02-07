@@ -10,8 +10,8 @@ Classic::~Classic() {}
 void Classic::update(float frameTime) {
 	PongstarBase::update(frameTime);
 
-	int leftPaddleScore = messageManager->getPaddle(paddleNS::LEFT)->getScore();
-	int rightPaddleScore = messageManager->getPaddle(paddleNS::RIGHT)->getScore();
+	int leftPaddleScore = entityManager->getPaddle(paddleNS::LEFT)->getScore();
+	int rightPaddleScore = entityManager->getPaddle(paddleNS::RIGHT)->getScore();
 	
 	if (leftPaddleScore == pongstarNS::POINTS_TO_WIN || rightPaddleScore == pongstarNS::POINTS_TO_WIN) {
 		nextSceneType = sceneNS::VICTORY;

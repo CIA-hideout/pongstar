@@ -1,4 +1,5 @@
 #include "ball.h"
+#include "bumper.h"
 
 Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
@@ -37,12 +38,31 @@ void Ball::resetBall() {
 void Ball::wallCollision() {
 	Message* msgPtr = nullptr;
 
-	// Collision with right wall
-	if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale) {
+	// Collide with right wall and shield is on
+	if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale && rightShield) {
+		spriteData.x = RIGHT_WALL - ballNS::WIDTH * spriteData.scale;
+		velocity.x = -velocity.x;
+
+		// dispatch ms to turn off right shield for paddle and other balls
+		msgPtr = new Message(messageNS::END_EFFECT, messageNS::RIGHT_P, effectNS::SHIELD, id);
+		setMessage(msgPtr);
+	}
+	// Collide with right wall
+	else if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale) {
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
 		setMessage(msgPtr);
 		setVisible(false);
 		resetBall();
+	}
+
+	// Collision with left wall and shield is on
+	if (spriteData.x < LEFT_WALL && leftShield) {
+		spriteData.x = LEFT_WALL;
+		velocity.x = -velocity.x;
+		
+		// dispatch msg to turn off left shield for paddle and other balls
+		msgPtr = new Message(messageNS::END_EFFECT, messageNS::LEFT_P, effectNS::SHIELD, id);
+		setMessage(msgPtr);
 	}
 	// Collision with left wall
 	else if (spriteData.x < LEFT_WALL) {

@@ -4,7 +4,7 @@
 #include "effects.h"
 
 namespace messageNS {
-	enum MESSAGE_TYPE { SCORE, PICKUP, ADD_EFFECT, RUN_EFFECT };
+	enum MESSAGE_TYPE { SCORE, PICKUP, ADD_EFFECT, RUN_EFFECT, END_EFFECT };
 	enum TARGET_TYPE { LEFT_P, RIGHT_P, BOTH_P, BALL, NONE };
 	enum SCORE_CMD { INCREMENT };
 	enum PICKUP_CMD { MOVE_LEFT, MOVE_RIGHT };
@@ -25,7 +25,7 @@ public:
 	Message(messageNS::MESSAGE_TYPE mt, messageNS::PICKUP_CMD pc); // pickup
 	Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, messageNS::SCORE_CMD sc, int id); // score
 	Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et, int id, float duration); // add effect
-	Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et, int id); // run effects
+	Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et, int id); // run effects and end effects
 
 	~Message();
 

@@ -10,14 +10,14 @@ PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureMan
 PongstarBase::~PongstarBase() {}
 
 void PongstarBase::initialize(sceneNS::SceneData sd) {
-	ballManager = new BallManager(game, tmMap[pongstarNS::BALL], &entityVector);
-	pickupManager = new PickupManager(game, tmMap[pongstarNS::PICKUPS], &entityVector);
-	messageManager = new MessageManager(pickupManager, ballManager, &entityVector);
+	entityManager = new EntityManager(game, &tmMap);
+	pickupManager = new PickupManager(game, tmMap[textureNS::PICKUPS], entityManager);
+	messageManager = new MessageManager(pickupManager, entityManager);
 
-	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[pongstarNS::DIVIDER]))
+	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[textureNS::DIVIDER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing divider"));
 
-	if (!border.initialize(game->getGraphics(), 0, 0, 0, tmMap[pongstarNS::BORDER]))
+	if (!border.initialize(game->getGraphics(), 0, 0, 0, tmMap[textureNS::BORDER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing border"));
 
 	initializeEntities();
@@ -26,17 +26,17 @@ void PongstarBase::initialize(sceneNS::SceneData sd) {
 void PongstarBase::initializeEntities() {
 	ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle* paddle1 = new Paddle(controls.p1, paddleNS::LEFT);
-	Paddle* paddle2 = new Paddle(controls.p2, paddleNS::RIGHT);
+	Paddle* paddle1 = new Paddle(game->getGraphics(), controls.p1, paddleNS::LEFT);
+	Paddle* paddle2 = new Paddle(game->getGraphics(), controls.p2, paddleNS::RIGHT);
 	Bumper* bumper = new Bumper();
 
-	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
+	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[textureNS::PADDLE]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle1"));
 
-	if (!paddle2->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[pongstarNS::PADDLE]))
+	if (!paddle2->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[textureNS::PADDLE]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
 
-	if (!bumper->initialize(game, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[pongstarNS::BUMPER]))
+	if (!bumper->initialize(game, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[textureNS::BUMPER]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
 
 	paddle1->setX((float)paddleNS::SIDE_SPACE);
@@ -44,39 +44,41 @@ void PongstarBase::initializeEntities() {
 	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
 	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 
-	entityVector.push_back(paddle1);
-	entityVector.push_back(paddle2);
-	entityVector.push_back(bumper);
+	entityManager->addEntity(paddle1);
+	entityManager->addEntity(paddle2);
+	entityManager->addEntity(bumper);
 
-	Ball* ball = ballManager->createBall();
+	Ball* ball = entityManager->createBall();
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	pickupManager->createPickup(effectNS::SLOW);
+	pickupManager->createPickup(effectNS::SHIELD);
 }
 
 void PongstarBase::update(float frameTime) {
 	Input* input = game->getInput();
+	std::map<int, Entity*>* eMap = entityManager->getEntityMap();
+	Entity* entity = new Entity();
 
-	for (size_t i = 0; i < entityVector.size(); ++i) {
-		entityVector[i]->update(frameTime);
+	for (auto& x : *eMap) {
+		entity = x.second;
+		entity->update(frameTime);
 
-		if (!entityVector[i]->getActive()) {
-			deleteEntityQueue.push(i);
-		}
+		if (!entity->getActive())
+			deleteEntityQueue.push(entity->getId());
 
-		if (entityVector[i]->getMessage() != NULL) {
-			messageManager->push(entityVector[i]->getMessage());
-			entityVector[i]->setMessage(NULL);
+		if (entity->getMessage() != nullptr) {
+			messageManager->push(entity->getMessage());
+			entity->setMessage(nullptr);
 		}
 	}
 
 	messageManager->resolve();
 
 	while (deleteEntityQueue.size() > 0) {
-		int indexToRemove = deleteEntityQueue.front();
-		entityVector.erase(entityVector.begin() + indexToRemove);
+		int idToRemove = deleteEntityQueue.front();
+		entityManager->deleteEntity(idToRemove);
 		deleteEntityQueue.pop();
 	}
 
@@ -96,11 +98,10 @@ void PongstarBase::ai() {}
 void PongstarBase::collisions() {
 	VECTOR2 collisionVector;
 
-	for (size_t i = 0; i < entityVector.size(); ++i) {
-		for (size_t j = 0; j < entityVector.size(); ++j) {
-			if (entityVector[i]->getId() != entityVector[j]->getId()) {
-				entityVector[i]->collidesWith(*entityVector[j], collisionVector);
-			}
+	for (auto& x : *entityManager->getEntityMap()) {
+		for (auto& y : *entityManager->getEntityMap()) {
+			if (x.second->getId() != y.second->getId())
+				x.second->collidesWith(*y.second, collisionVector);
 		}
 	}
 }
@@ -108,14 +109,14 @@ void PongstarBase::collisions() {
 void PongstarBase::render() {
 	divider.draw();
 
-	for (size_t i = 0; i < entityVector.size(); ++i) {
-		entityVector[i]->draw();
+	for (auto& x : *entityManager->getEntityMap()) {
+		x.second->draw();
 	}
 
 	border.draw();
 
-	std::string leftPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::LEFT)->getScore());
-	std::string rightPaddleScore = std::to_string(messageManager->getPaddle(paddleNS::RIGHT)->getScore());
+	std::string leftPaddleScore = std::to_string(entityManager->getPaddle(paddleNS::LEFT)->getScore());
+	std::string rightPaddleScore = std::to_string(entityManager->getPaddle(paddleNS::RIGHT)->getScore());
 
 	fontManager->print(
 		fontNS::SABO_FILLED,

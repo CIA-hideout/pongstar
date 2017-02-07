@@ -8,6 +8,7 @@
 #include "game.h"
 #include "gameError.h"
 #include "textureManager.h"
+#include "entityManager.h"
 #include "entity.h"
 #include "pickup.h"
 
@@ -15,7 +16,7 @@ namespace effectDataNS {
 	const effectNS::EffectData effectArray[] = {
 		effectNS::EffectData(effectNS::MAGNET, 0, 1.0f),
 		effectNS::EffectData(effectNS::INVERT, 1, 0.0f),
-		effectNS::EffectData(effectNS::SHIELD, 2, 1.0f),
+		effectNS::EffectData(effectNS::SHIELD, 2, 0.0f),
 		effectNS::EffectData(effectNS::MULTIPLY, 3, 0.0f),
 		effectNS::EffectData(effectNS::BOOST, 4, 3.0f),
 		effectNS::EffectData(effectNS::SLOW, 5, 3.0f),
@@ -31,14 +32,14 @@ class PickupManager {
 private:
 	Game* game;
 	TextureManager* pickupTexture;
-	std::vector<Entity*>* entityVector;
+	EntityManager* entityManager;
 
 public:
 	PickupManager();
-	PickupManager(Game* g, TextureManager* pt, std::vector<Entity*>* ev);
+	PickupManager(Game* g, TextureManager* pt, EntityManager* em);
 
 	~PickupManager();
-	
+
 	int getRandYSpawn();
 	int getRandEffectArrIndex();
 

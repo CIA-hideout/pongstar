@@ -47,7 +47,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 					targetType = messageNS::BALL;
 					break;
 				case effectNS::MAGNET:
+				case effectNS::SHIELD:
 					targetType = messageNS::BOTH_P;
+					break;
 			}
 		}
 		else if (ent.getEntityType() == entityNS::PADDLE) {
@@ -59,6 +61,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				case effectNS::ENLARGE:
 				case effectNS::BOOST:
 				case effectNS::MAGNET:
+				case effectNS::SHIELD:
 					targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::RIGHT_P : messageNS::LEFT_P;
 					break;
 
@@ -69,7 +72,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 					break;
 			}
 		}
-		else {
+		else {	// collide with other entities, ex. bumper
 			return true;
 		}
 

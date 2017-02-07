@@ -11,22 +11,20 @@
 #include "entity.h"
 #include "paddle.h"
 #include "ball.h"
-#include "ballManager.h"
 #include "pickupManager.h"
 
 class MessageManager {
 private:
 	Game* game;
 	std::queue<Message*> messageQueue;
-	std::vector<Entity*>* entityVector;
 
 	// Components
-	BallManager* ballManager;
+	EntityManager* entityManager;
 	PickupManager* pickupManager;
 
 public:
 	MessageManager();
-	MessageManager(PickupManager* pm, BallManager* bm, std::vector<Entity*>* ev);
+	MessageManager(PickupManager* pm, EntityManager* em);
 	~MessageManager();
 
 	void push(Message* msg);
@@ -36,11 +34,9 @@ public:
 	void dispatchPickup(Message* msg);
 	void dispatchAddEffect(Message* msg);
 	void dispatchRunEffect(Message* msg);
+	void dispatchEndEffect(Message* msg);
 
 	void resolve();
-
-	Paddle* getPaddle(paddleNS::SIDE s);
-	Entity* getEntity(int id);
 };
 
 #endif

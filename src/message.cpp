@@ -25,7 +25,7 @@ Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS
 	duration = d;
 }
 
-// constructor for MESSAGE_TYPE RUN_EFFECT messages
+// constructor for MESSAGE_TYPE RUN_EFFECT and END_EFFECT messages
 Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS::EFFECT_TYPE et, int id) {
 	messageType = mt;
 	targetType = tt;
