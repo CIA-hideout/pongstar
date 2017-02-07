@@ -37,5 +37,5 @@ void TimeAttack::render() {
 		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, timeLeft) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
 		timeLeft
-		);
+	);
 }

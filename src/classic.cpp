@@ -20,3 +20,17 @@ void Classic::update(float frameTime) {
 		sceneData.newHighScore.score = elapsedTime;
 	}
 }
+
+void Classic::render() {
+	PongstarBase::render();
+
+	std::string stopwatch = std::to_string(elapsedTime / 1000);
+
+	fontManager->print(
+		fontNS::SABO_FILLED,
+		fontNS::WHITE,
+		GAME_WIDTH / 2 - fontManager->getTotalWidth(fontNS::SABO_FILLED, stopwatch) / 2 - fontNS::CENTER_OFFSET,
+		HUD_Y_POS,
+		stopwatch
+	);
+}
