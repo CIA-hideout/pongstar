@@ -140,7 +140,7 @@ void Paddle::runEffects() {
 					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 0.5f;
 				} break;
 				case effectNS::INVERT: {	
-					inverted = (currentEffect.second == 0) ? false : true;
+					inverted = currentEffect.second != 0;
 				} break;
 				case effectNS::SHIELD: {
 					// Notify balls
@@ -149,10 +149,10 @@ void Paddle::runEffects() {
 					setMessage(msgPtr);
 				} break;
 				case effectNS::BOOST: {
-					boosted = (currentEffect.second == 0) ? false : true;
+					boosted = currentEffect.second != 0;
 				} break;
 				case effectNS::SLOW: {
-					slowed = (currentEffect.second == 0) ? false : true;
+					slowed = currentEffect.second != 0;
 				} break;
 				case effectNS::MAGNET: {
 					magnetised = true;
