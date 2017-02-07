@@ -5,6 +5,7 @@
 #include "input.h"
 #include "fontManager.h"
 #include "dataManager.h"
+#include "audio.h"
 
 namespace highScoreNS {
 	const float SMALL_FONT_SIZE = 36.0;
@@ -28,6 +29,7 @@ namespace highScoreNS {
 
 class HighScore : public Scene {
 private:
+	Audio* audio;
 	Input* input;
 	DataManager* dataManager;
 	FontManager* baseFm;
@@ -44,7 +46,7 @@ private:
 
 public:
 	HighScore();
-	HighScore(Input* i, DataManager* dm, FontManager* fm);
+	HighScore(Audio* a, Input* i, DataManager* dm, FontManager* fm);
 	~HighScore();
 
 	// Interface

@@ -89,11 +89,15 @@ void Pongstar::update() {
 		currSceneType == sceneNS::CREDITS ||
 		currSceneType == sceneNS::HIGH_SCORES;
 
-	if (input->wasKeyPressed(ESC_KEY) && allowEsc && gameStack->size() > 1 && !escToMenu)
+	if (input->wasKeyPressed(ESC_KEY) && allowEsc && gameStack->size() > 1 && !escToMenu) {
 		gameStack->pop();
+		audio->playCue(ESC_CUE);
+	}
 
-	if (input->wasKeyPressed(ESC_KEY) && allowEsc && escToMenu)
+	if (input->wasKeyPressed(ESC_KEY) && allowEsc && escToMenu) {
 		gameStack->top()->setNextSceneType(sceneNS::MENU);
+		audio->playCue(ESC_CUE);
+	}
 
 	if (gameStack->top()->getNextSceneType() != sceneNS::NONE) {
 		sceneNS::TYPE nextSceneType = gameStack->top()->getNextSceneType();
@@ -102,7 +106,7 @@ void Pongstar::update() {
 
 		switch (nextSceneType) {
 			case sceneNS::INSTRUCTIONS: {
-				nextScene = new Instructions(this, fontManager);
+				nextScene = new Instructions(audio, this, fontManager);
 			} break;
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);
@@ -111,12 +115,12 @@ void Pongstar::update() {
 				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::HIGH_SCORES: {
-				nextScene = new HighScore(input, dataManager, fontManager);
+				nextScene = new HighScore(audio, input, dataManager, fontManager);
 			} break;
 			case sceneNS::CREDITS: {
 			} break;
 			case sceneNS::VICTORY: {
-				nextScene = new Victory(graphics, input, fontManager);
+				nextScene = new Victory(audio, graphics, input, fontManager);
 			} break;
 
 			case sceneNS::MENU:

@@ -15,7 +15,7 @@ int PickupManager::getRandYSpawn() {
 }
 
 int PickupManager::getRandEffectArrIndex() {
-	return randInt(0, effectDataNS::EFFECT_ARR_SIZE);
+	return randInt(0, effectDataNS::EFFECT_ARR_SIZE - 1);
 }
 
 Pickup* PickupManager::randomPickup() {

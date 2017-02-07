@@ -2,9 +2,9 @@
 
 Victory::Victory() {}
 
-Victory::Victory(Graphics* g, Input* i, FontManager* fm) {
+Victory::Victory(Audio* a, Graphics* g, Input* i, FontManager* fm) {
 	sceneType = sceneNS::VICTORY;
-
+	audio = a;
 	graphics = g;
 	input = i;
 	baseFm = fm;
@@ -28,6 +28,7 @@ void Victory::initialize(sceneNS::SceneData sd) {
 
 void Victory::update(float frameTime) {
 	if (input->wasKeyPressed(ENTER_KEY)) {
+		audio->playCue(ENTER_CUE);
 		if (sceneData.winner != sceneNS::W_DRAW) {
 			// Remove enter char
 			std::string name = input->getTextIn().substr(0, input->getTextIn().size() - 1);
@@ -37,7 +38,6 @@ void Victory::update(float frameTime) {
 		} else {
 			nextSceneType = sceneNS::MENU;
 		}
-
 		input->clearTextIn();
 	}
 }

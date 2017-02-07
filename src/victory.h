@@ -6,6 +6,7 @@
 #include "input.h"
 #include "fontManager.h"
 #include "scene.h"
+#include "audio.h"
 
 namespace victoryNS {
 	const int gameCenterX = GAME_WIDTH / 2;
@@ -40,6 +41,7 @@ namespace victoryNS {
 
 class Victory : public Scene {
 private:
+	Audio* audio;
 	Graphics* graphics;
 	Input* input;
 	FontManager* baseFm;
@@ -52,7 +54,7 @@ private:
 	void renderTxb();
 public:
 	Victory();
-	Victory(Graphics* g, Input* i, FontManager* fm);
+	Victory(Audio* a, Graphics* g, Input* i, FontManager* fm);
 	~Victory();
 
 	// Interface
