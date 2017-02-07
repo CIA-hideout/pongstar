@@ -66,4 +66,25 @@ const char INSTRUCTIONS[] = "resources\\screens\\Instructions.png";
 
 const int HUD_Y_POS = 12;
 
+// audio files required by audio.cpp
+// WAVE_BANK must be location of .xwb file.
+const char WAVE_BANK[] = "audio\\Win\\Wave Bank.xwb";
+// SOUND_BANK must be location of .xsb file.
+const char SOUND_BANK[] = "audio\\Win\\Sound Bank.xsb";
+// XGS_FILE must be location of .xgs file.
+const char XGS_FILE[] = "audio\\Win\\pongstar.xgs";
+
+// audio cues
+const char HIT_BUMPER_CUE[] = "hit-bumper";
+const char HIT_PADDLE_CUE[] = "hit-paddle";
+const char HIT_WALL_CUE[] = "hit-wall";
+
+const char ENLARGE_CUE[] = "enlarge";
+const char SHRINK_CUE[] = "shrink";
+const char BOOST_CUE[] = "boost";
+const char SLOW_CUE[] = "slow";
+const char MULTIPLY_CUE[] = "multiply";
+const char SHIELD_CUE[] = "shield";
+const char MAGNET_CUE[] = "magnet";
+
 #endif

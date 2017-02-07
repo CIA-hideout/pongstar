@@ -39,6 +39,7 @@ bool Entity::initialize(Game *gamePtr, int width, int height, int ncols,
 	id = currentId;
 
 	input = gamePtr->getInput();                // the input system
+	audio = gamePtr->getAudio();				// the audio system
 	return(Image::initialize(gamePtr->getGraphics(), width, height, ncols, textureM));
 }
 

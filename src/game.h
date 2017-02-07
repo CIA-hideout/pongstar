@@ -6,6 +6,7 @@
 #include <mmsystem.h>
 #include "graphics.h"
 #include "input.h"
+#include "audio.h"
 #include "constants.h"
 #include "gameError.h"
 
@@ -13,6 +14,7 @@ class Game {
 protected:
 	Graphics *graphics;         // pointer to Graphics
 	Input   *input;             // pointer to Input
+	Audio	*audio;				// pointer to Audio
 	HWND    hwnd;               // window handle
 	HRESULT hr;                 // standard return type
 	LARGE_INTEGER timeStart;    // Performance Counter start value
@@ -65,6 +67,9 @@ public:
 
 	// Exit the game
 	void exitGame() { PostMessage(hwnd, WM_DESTROY, 0, 0); }
+
+	// Return pointer to audio
+	Audio* getAudio() { return audio; }
 
 	// Pure virtual function declarations
 	// These functions MUST be written in any class that inherits from Game

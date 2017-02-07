@@ -12,9 +12,10 @@ const char* sceneToString(sceneNS::TYPE s) {
 
 Menu::Menu() {};
 
-Menu::Menu(Input* i, FontManager* fm) {
+Menu::Menu(Audio* a, Input* i, FontManager* fm) {
 	sceneType = sceneNS::MENU;
 
+	audio = a;
 	input = i;
 	baseFm = fm;
 }

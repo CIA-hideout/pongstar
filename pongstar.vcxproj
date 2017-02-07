@@ -75,6 +75,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\audio.h" />
     <ClInclude Include="src\ball.h" />
     <ClInclude Include="src\bumper.h" />
     <ClInclude Include="src\classic.h" />
@@ -108,6 +109,7 @@
     <ClInclude Include="src\victory.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\audio.cpp" />
     <ClCompile Include="src\ball.cpp" />
     <ClCompile Include="src\bumper.cpp" />
     <ClCompile Include="src\classic.cpp" />

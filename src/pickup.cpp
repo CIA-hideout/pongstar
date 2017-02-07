@@ -36,6 +36,22 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	messageNS::TARGET_TYPE targetType = messageNS::NONE;
 
 	if (Entity::collidesWith(ent, collisionVector)) {
+		// sound
+		if (ent.getEntityType() == entityNS::BALL || ent.getEntityType() == entityNS::PADDLE) {
+			if (effectType == effectNS::ENLARGE)
+				audio->playCue(ENLARGE_CUE);
+			else if (effectType == effectNS::SHRINK)
+				audio->playCue(SHRINK_CUE);
+			else if (effectType == effectNS::BOOST)
+				audio->playCue(BOOST_CUE);
+			else if (effectType == effectNS::SLOW)
+				audio->playCue(SLOW_CUE);
+			else if (effectType == effectNS::SHIELD)
+				audio->playCue(SHIELD_CUE);
+			else if (effectType == effectNS::MAGNET)
+				audio->playCue(MAGNET_CUE);
+		}
+
 		if (ent.getEntityType() == entityNS::BALL) {
 			switch (getEffectType()) {
 				case effectNS::MULTIPLY:

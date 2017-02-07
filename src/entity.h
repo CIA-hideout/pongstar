@@ -4,6 +4,7 @@
 
 #include "image.h"
 #include "input.h"
+#include "audio.h"
 #include "game.h"
 #include "effects.h"
 #include "message.h"
@@ -36,6 +37,7 @@ protected:
 	float   force;          // Force of gravity
 	float   gravity;        // gravitational constant of the game universe
 	Input   *input;         // pointer to the input system
+	Audio	*audio;
 	HRESULT hr;             // standard return type
 	bool    active;         // only active entities may collide
 	bool    rotatedBoxReady;    // true when rotated collision box is ready

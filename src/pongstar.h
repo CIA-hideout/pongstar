@@ -26,6 +26,8 @@ private:
 
 	std::stack<Scene*>* gameStack;
 
+	bool muted;
+
 public:
 	// Constructor
 	Pongstar();
