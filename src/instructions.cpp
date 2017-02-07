@@ -2,7 +2,8 @@
 
 Instructions::Instructions() {}
 
-Instructions::Instructions(Game* g, FontManager* fm) {
+Instructions::Instructions(Audio* a, Game* g, FontManager* fm) {
+	audio = a;
 	sceneType = sceneNS::INSTRUCTIONS;
 	game = g;
 	baseFm = fm;
@@ -28,6 +29,7 @@ void Instructions::update(float frameTime) {
 	Input* input = game->getInput();
 
 	if (input->wasKeyPressed(SPACE_KEY)) {
+		audio->playCue(ENTER_CUE);
 		if (gameMode == sceneNS::GM_CLASSIC) {
 			nextSceneType = sceneNS::CLASSIC;
 		}

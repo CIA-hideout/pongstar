@@ -77,9 +77,10 @@ const char SOUND_BANK[] = "audio\\Win\\Sound Bank.xsb";
 const char XGS_FILE[] = "audio\\Win\\pongstar.xgs";
 
 // audio cues
-const char HIT_BUMPER_CUE[] = "hit-bumper";
-const char HIT_PADDLE_CUE[] = "hit-paddle";
-const char HIT_WALL_CUE[] = "hit-wall";
+const char NAVIGATION_CUE[] = "navigation";
+const char ENTER_CUE[] = "enter";
+const char ESC_CUE[] = "esc";
+const char HIT_CUE[] = "hit";
 
 const char ENLARGE_CUE[] = "enlarge";
 const char SHRINK_CUE[] = "shrink";
@@ -88,5 +89,6 @@ const char SLOW_CUE[] = "slow";
 const char MULTIPLY_CUE[] = "multiply";
 const char SHIELD_CUE[] = "shield";
 const char MAGNET_CUE[] = "magnet";
+const char INVERT_CUE[] = "invert";
 
 #endif

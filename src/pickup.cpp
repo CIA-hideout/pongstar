@@ -50,6 +50,10 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				audio->playCue(SHIELD_CUE);
 			else if (effectType == effectNS::MAGNET)
 				audio->playCue(MAGNET_CUE);
+			else if (effectType == effectNS::INVERT)
+				audio->playCue(INVERT_CUE);
+			else if (effectType == effectNS::MULTIPLY)
+				audio->playCue(MULTIPLY_CUE);
 		}
 
 		if (ent.getEntityType() == entityNS::BALL) {

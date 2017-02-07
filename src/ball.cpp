@@ -12,7 +12,7 @@ Ball::Ball() : Entity() {
 
 	leftShield = false;
 	rightShield = false;
-	magnetised = false; 
+	magnetised = false;
 	initializedMagnetEffect = false;
 }
 
@@ -27,6 +27,7 @@ void Ball::update(float frameTime) {
 	if (velocity.x == 0 && velocity.y == 0) {
 		if (input->wasKeyPressed(SPACE_KEY)) {
 			velocity.x = randBool() ? ballNS::VELOCITY : -ballNS::VELOCITY;
+			audio->playCue(HIT_CUE);
 		}
 	}
 
@@ -69,7 +70,7 @@ void Ball::wallCollision() {
 	if (spriteData.x < LEFT_SHIELD && leftShield) {
 		spriteData.x = LEFT_SHIELD;
 		velocity.x = -velocity.x;
-		
+
 		// dispatch msg to turn off left shield for paddle and other balls
 		msgPtr = new Message(messageNS::END_EFFECT, messageNS::LEFT_P, effectNS::SHIELD, id);
 		pushMsg(msgPtr);
@@ -81,18 +82,18 @@ void Ball::wallCollision() {
 		setVisible(false);
 		resetBall();
 	}
-		
+
 	// Collision with bottom wall
 	if (spriteData.y > BOTTOM_WALL - ballNS::HEIGHT * spriteData.scale) {
 		spriteData.y = BOTTOM_WALL - ballNS::HEIGHT * spriteData.scale;
 		velocity.y = -velocity.y;
-		audio->playCue(HIT_WALL_CUE);
+		audio->playCue(HIT_CUE);
 	}
 	// Collision with top wall
 	else if (spriteData.y < TOP_WALL) {
 		spriteData.y = TOP_WALL;
 		velocity.y = -velocity.y;
-		audio->playCue(HIT_WALL_CUE);
+		audio->playCue(HIT_CUE);
 	}
 }
 
@@ -125,7 +126,7 @@ void Ball::runEffects() {
 				case effectNS::ENLARGE: {
 					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 2.0f;
 				} break;
-				
+
 				case effectNS::SHRINK: {
 					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 0.5f;
 				} break;
@@ -159,7 +160,7 @@ void Ball::runEffects() {
 				} break;
 
 				case effectNS::INVERT: {
-					velocity = VECTOR2 (-velocity.x, -velocity.y);	
+					velocity = VECTOR2 (-velocity.x, -velocity.y);
 					currentEffect.second = 0.0;
 				} break;
 
@@ -181,19 +182,18 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 			case entityNS::PADDLE: {
 				if (!magnetised) {
 					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-					audio->playCue(HIT_PADDLE_CUE);
+					audio->playCue(HIT_CUE);
 				}
 
 				if (magnetised && !initializedMagnetEffect) {
 					initMagnetEffect(ent.getId());
 				}
-			} break;
 
 			case entityNS::BUMPER: {
 				bumperCollision(ent, collisionVector);
 				Bumper* bumper = (Bumper*)&ent;
 				bumper->randomLocationBumper();
-				audio->playCue(HIT_BUMPER_CUE);
+				audio->playCue(HIT_CUE);
 			} break;
 
 			default: break;

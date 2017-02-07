@@ -39,39 +39,39 @@ void Paddle::update(float frameTime) {
 	if (inverted == true) {
 		if (boosted == true) {
 			if (input->isKeyDown(controls.up)) {
-				if (getY() < TOP_WALL) {
+				if (getY() + paddleNS::HEIGHT < BOTTOM_WALL) {
 					yVelocity = paddleNS::VELOCITY * 2;
 				}
 			}
 
 			if (input->isKeyDown(controls.down)) {
-				if (getY() + paddleNS::HEIGHT > BOTTOM_WALL) {
+				if (getY() > TOP_WALL) {
 					yVelocity = -paddleNS::VELOCITY * 2;
 				}
 			}
 		}
 		else if (slowed == true) {
 			if (input->isKeyDown(controls.up)) {
-				if (getY() < TOP_WALL) {
+				if (getY() + paddleNS::HEIGHT < BOTTOM_WALL) {
 					yVelocity = paddleNS::VELOCITY * 0.5;
 				}
 			}
 
 			if (input->isKeyDown(controls.down)) {
-				if (getY() + paddleNS::HEIGHT > BOTTOM_WALL) {
+				if (getY() > TOP_WALL) {
 					yVelocity = -paddleNS::VELOCITY * 0.5;
 				}
 			}
 		}
 		else {
 			if (input->isKeyDown(controls.up)) {
-				if (getY() < TOP_WALL) {
+				if (getY() + paddleNS::HEIGHT < BOTTOM_WALL) {
 					yVelocity = paddleNS::VELOCITY;
 				}
 			}
 
 			if (input->isKeyDown(controls.down)) {
-				if (getY() + paddleNS::HEIGHT > BOTTOM_WALL) {
+				if (getY() > TOP_WALL) {
 					yVelocity = -paddleNS::VELOCITY;
 				}
 			}

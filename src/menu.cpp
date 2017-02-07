@@ -39,23 +39,28 @@ void Menu::initialize(sceneNS::SceneData sd) {
 void Menu::update(float frameTime) {
 	if (input->wasKeyPressed(UP_KEY)) {
 		selectedItemIndex = selectedItemIndex == 0 ? items.size() - 1 : selectedItemIndex - 1;
+		audio->playCue(NAVIGATION_CUE);
 	}
 
 	if (input->wasKeyPressed(DOWN_KEY)) {
 		selectedItemIndex = selectedItemIndex == items.size() - 1 ? 0 : selectedItemIndex + 1;
+		audio->playCue(NAVIGATION_CUE);
 	}
 
 	if (input->wasKeyPressed(ENTER_KEY)) {
 		if (items[selectedItemIndex] == sceneNS::CLASSIC) {
 			sceneData.gameMode = sceneNS::GM_CLASSIC;
 			nextSceneType = sceneNS::INSTRUCTIONS;
+			audio->playCue(ENTER_CUE);
 		}
 		else if (items[selectedItemIndex] == sceneNS::TIME_ATK) {
 			sceneData.gameMode = sceneNS::GM_TIME_ATK;
 			nextSceneType = sceneNS::INSTRUCTIONS;
+			audio->playCue(ENTER_CUE);
 		}
 		else {
 			nextSceneType = items[selectedItemIndex];
+			audio->playCue(ENTER_CUE);
 		}
 	}
 

@@ -17,6 +17,7 @@ namespace instructionsNS {
 
 class Instructions : public Scene {
 private:
+	Audio* audio;
 	Game* game;
 	FontManager* baseFm;
 	sceneNS::GAME_MODE gameMode;
@@ -32,7 +33,7 @@ private:
 
 public:
 	Instructions();
-	Instructions(Game* g, FontManager* fm);
+	Instructions(Audio* a, Game* g, FontManager* fm);
 	~Instructions();
 
 	void initialize(sceneNS::SceneData sd);
