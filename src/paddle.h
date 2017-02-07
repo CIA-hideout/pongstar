@@ -21,6 +21,10 @@ private:
 	int score;
 	paddleNS::SIDE side;
 	bool shield;
+	bool boosted;
+	bool slowed;
+	bool inverted;
+	bool magnetised;
 
 	LP_LINE shieldLine;
 
@@ -30,7 +34,7 @@ public:
 
 	~Paddle();
 
-	void draw(COLOR_ARGB color = graphicsNS::WHITE);
+	void draw(COLOR_ARGB color);
 	
 	// getters
 	int getScore() { return score; }

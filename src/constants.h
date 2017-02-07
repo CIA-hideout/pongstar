@@ -42,6 +42,8 @@ const int TOP_WALL = WALL_PADDING;
 const int BOTTOM_WALL = GAME_HEIGHT - WALL_PADDING;
 const int LEFT_WALL = WALL_PADDING;
 const int RIGHT_WALL = GAME_WIDTH - WALL_PADDING;
+const int LEFT_SHIELD = 70;
+const int RIGHT_SHIELD = GAME_WIDTH - 70;
 
 // Key Mappings
 const UCHAR ESC_KEY = VK_ESCAPE;
