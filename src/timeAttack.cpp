@@ -15,7 +15,7 @@ void TimeAttack::update(float frameTime) {
 
 	if (elapsedTime >= pongstarNS::TIME_PER_GAME) {
 		nextSceneType = sceneNS::VICTORY;
-		sceneData.modePlayed = sceneNS::GM_TIME_ATK;
+		sceneData.gameMode = sceneNS::GM_TIME_ATK;
 
 		if (leftPaddleScore == rightPaddleScore)
 			sceneData.winner = sceneNS::W_DRAW;

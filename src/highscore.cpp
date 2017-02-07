@@ -4,142 +4,223 @@ HighScore::HighScore() {}
 
 HighScore::HighScore(Input* i, DataManager* dm, FontManager* fm) {
 	sceneType = sceneNS::HIGH_SCORES;
-
 	input = i;
-	dataManager = dm;
 	baseFm = fm;
+	dataManager = dm;
 }
 
 HighScore::~HighScore() {}
 
 void HighScore::addHighScore() {
-	HighScoreJson hsj;
-	HighScoreMap hsm;
+	HighScoreJson hsJson;
+	HighScoreMap hsMap;
 
-	hsj = dataManager->getHighScoreJson();
-	hsm = sceneData.modePlayed == sceneNS::GM_CLASSIC ? hsj.classic : hsj.timeAttack;
-	hsm[sceneData.newHighScore.score] = sceneData.newHighScore.name;
+	hsJson = dataManager->getHighScoreJson();
+	hsMap = sceneData.gameMode == sceneNS::GM_CLASSIC ? hsJson.classic : hsJson.timeAttack;
+	hsMap[sceneData.newHighScore.score] = sceneData.newHighScore.name;
 
-	if (sceneData.modePlayed == sceneNS::GM_CLASSIC)
-		hsj.classic = hsm;
+	if (sceneData.gameMode == sceneNS::GM_CLASSIC)
+		hsJson.classic = hsMap;
 	else
-		hsj.timeAttack = hsm;
+		hsJson.timeAttack = hsMap;
 
-	dataManager->setHighScoreJson(hsj);
+	sceneData.escToMenu = true;
+	dataManager->setHighScoreJson(hsJson);
 }
 
 void HighScore::initialize(sceneNS::SceneData sd) {
 	sceneData = sd;
+	blink = true;
 
-	titleFm = new FontManager(*baseFm);
-	scoreFm = new FontManager(*baseFm);
+	largeFm = new FontManager(*baseFm);
+	smallFm = new FontManager(*baseFm);
 
-	scoreFm->setScale(fontNS::SABO_FILLED, 0.4f);
+	float scale = highScoreNS::SMALL_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	smallFm->setScale(fontNS::SABO_FILLED, scale);
+	smallFm->setScale(fontNS::SABO, scale);
 
-	if (sd.hsDisplayMode != sceneNS::HS_BOTH)
+	scale = highScoreNS::LARGE_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	largeFm->setScale(fontNS::SABO_FILLED, scale);
+	largeFm->setScale(fontNS::SABO, scale);
+
+	// Add score to json
+	if (sd.newHighScore.score != NULL)
 		addHighScore();
-	else
-		rs = highScoreNS::initialRenderState;
 }
-
 
 void HighScore::update(float frameTime) {
 	if (input->wasKeyPressed(ENTER_KEY))
 		nextSceneType = sceneNS::MENU;
 
-	if (sceneNS::HS_BOTH) {
-		if (input->wasKeyPressed(LEFT_KEY) || input->wasKeyPressed(RIGHT_KEY))
-			if (rs == highScoreNS::CLASSIC)
-				rs = highScoreNS::TIME_ATK;
-			else
-				rs = highScoreNS::CLASSIC;
+	if (input->wasKeyPressed(UP_KEY) || input->wasKeyPressed(DOWN_KEY)) {
+		if (sceneData.gameMode == sceneNS::GM_CLASSIC)
+			sceneData.gameMode = sceneNS::GM_TIME_ATK;
+		else
+			sceneData.gameMode = sceneNS::GM_CLASSIC;
+	}
+
+	if (blinkTimer < highScoreNS::BLINK_INTERVAL) {
+		blinkTimer += frameTime;
+	}
+	else {
+		blink = !blink;
+		blinkTimer = 0.0;
 	}
 }
 
-void HighScore::renderBottomText(std::string bt) {
-	scoreFm->print(
-		fontNS::SABO_FILLED,
-		fontNS::WHITE,
-		GAME_WIDTH / 2 - scoreFm->getTotalWidth(fontNS::SABO_FILLED, bt) / 2 - fontNS::CENTER_OFFSET,
-		highScoreNS::continueStartY,
-		bt
-		);
-}
-
+// Display fastest time to get 11 points
 void HighScore::renderClassicHS() {
-	titleFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::nameStartX, highScoreNS::titleStartY, "CLASSIC");
-	titleFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::scoreStartX, highScoreNS::titleStartY, "TIME");
-
-	// Display fastest time to get 11 points
 	HighScoreMap classicMap = dataManager->getHighScoreJson().classic;
-	int index, startHeight, wholeTime, decimalTime;
+	int index, startHeight, wholeTime, decimalTime, timeXpos;
+
+	int height = largeFm->getHeight(fontNS::SABO_FILLED) + highScoreNS::RANK_VERT_GAP;
 
 	// show content:
 	for (HighScoreMap::iterator it = classicMap.begin(); it != classicMap.end(); ++it) {
-		char nameStr[512], timeStr[512];
+		char rankStr[512], nameStr[512], timeStr[512];
 
 		index = std::distance(classicMap.begin(), it);
-		startHeight = highScoreNS::contentStartY + index * scoreFm->getHeight(fontNS::SABO_FILLED);
+		startHeight = highScoreNS::OVERALL_Y_POS + index * height;
 	
 		wholeTime = it->first / 1000;			// get first 2 digit for seconds
 		decimalTime = it->first % 1000 / 10;	// get first 2 digit after conversion to decimal
-		sprintf(nameStr, "%i. %s", index + 1, it->second.c_str());
+		sprintf(rankStr, "%i", index + 1);
+		sprintf(nameStr, "%s", it->second.c_str());
 		sprintf(timeStr, "%i. %02i", wholeTime, decimalTime);
-	
-		scoreFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::nameStartX, startHeight, nameStr);
-		scoreFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::scoreStartX, startHeight, timeStr);
 
-		if (index == 9) 
-			break;
+		timeXpos = highScoreNS::SCORE_RIGHT_X_POS - largeFm->getTotalWidth(fontNS::SABO_FILLED, timeStr);
+	
+		largeFm->print(fontNS::SABO_FILLED, fontNS::GREY, highScoreNS::RANK_X_POS, startHeight, rankStr);
+		largeFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::NAME_X_POS, startHeight, nameStr);
+		largeFm->print(fontNS::SABO_FILLED, fontNS::WHITE, timeXpos, startHeight, timeStr);
+
+		if (index == 9) break;
 	}
 }
 
+// Display highest score in 60 seconds
 void HighScore::renderTimeAtkHS() {
-	titleFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::nameStartX, highScoreNS::titleStartY, "TIME ATTACK");
-	titleFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::scoreStartX, highScoreNS::titleStartY, "SCORE");
-
-	// Display highest score in 60 seconds
 	HighScoreMap timeAtkMap = dataManager->getHighScoreJson().timeAttack;
-	int index, startHeight;
+	int index, startHeight, scoreXpos;
+
+	int height = largeFm->getHeight(fontNS::SABO_FILLED) + highScoreNS::RANK_VERT_GAP;
 
 	for (HighScoreMap::reverse_iterator it = timeAtkMap.rbegin(); it != timeAtkMap.rend(); ++it) {
-		char nameStr[512];
+		char rankStr[512], nameStr[512];
 		
 		index = std::distance(timeAtkMap.rbegin(), it);
-		startHeight = highScoreNS::contentStartY + index * scoreFm->getHeight(fontNS::SABO_FILLED);
+		startHeight = highScoreNS::OVERALL_Y_POS + index * height;
 		
-		sprintf(nameStr, "%i. %s", index + 1, it->second.c_str());
+		sprintf(rankStr, "%i", index + 1);
+		sprintf(nameStr, "%s", it->second.c_str());
 
-		scoreFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::nameStartX, startHeight, nameStr);
-		scoreFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::scoreStartX, startHeight, std::to_string(it->first));
+		scoreXpos = highScoreNS::SCORE_RIGHT_X_POS - largeFm->getTotalWidth(fontNS::SABO_FILLED, std::to_string(it->first));
 
-		if (index == 9)
-			break;
+		largeFm->print(fontNS::SABO_FILLED, fontNS::GREY, highScoreNS::RANK_X_POS, startHeight, rankStr);
+		largeFm->print(fontNS::SABO_FILLED, fontNS::WHITE, highScoreNS::NAME_X_POS, startHeight, nameStr);
+		largeFm->print(fontNS::SABO_FILLED, fontNS::WHITE, scoreXpos, startHeight, std::to_string(it->first));
+
+		if (index == 9) break;
 	}
-}
-
-void HighScore::renderBothHS() {
-	if (rs == highScoreNS::CLASSIC)
-		renderClassicHS();
-	else
-		renderTimeAtkHS();
 }
 
 void HighScore::render() {
-	switch (sceneData.hsDisplayMode) {
-		case sceneNS::HS_CLASSIC: {
-			renderClassicHS();
-			renderBottomText(highScoreNS::enterToContStr);
-		} break;
-		case sceneNS::HS_TIME_ATK: {
-			renderTimeAtkHS();
-			renderBottomText(highScoreNS::enterToContStr);
-		} break;
-		case sceneNS::HS_BOTH: {
-			renderBothHS();
-			renderBottomText(highScoreNS::escToBackStr);
-		} break;
-		default:
-			throw(GameError(gameErrorNS::FATAL_ERROR, "Invalid highscore display mode"));
+	// Render 'HIGHSCORES' text
+	smallFm->setKerning(fontNS::SABO_FILLED, 10);
+	smallFm->setKerning(fontNS::SABO, 10);
+
+	smallFm->print(
+		fontNS::SABO_FILLED,
+		fontNS::RED,
+		highScoreNS::SIDEBAR_X_POS,
+		highScoreNS::OVERALL_Y_POS,
+		"HIGH"
+	);
+
+	smallFm->print(
+		fontNS::SABO,
+		fontNS::RED,
+		highScoreNS::SIDEBAR_X_POS + smallFm->getTotalWidth(fontNS::SABO_FILLED, "HIGH"),
+		highScoreNS::OVERALL_Y_POS,
+		"SCORES"
+	);
+
+	// Render 'CLASSIC' & 'TIME ATTACK' text
+	largeFm->setKerning(fontNS::SABO_FILLED, 0);
+	largeFm->setKerning(fontNS::SABO, 0);
+
+	largeFm->print(
+		fontNS::SABO_FILLED,
+		fontNS::WHITE,
+		highScoreNS::SIDEBAR_X_POS,
+		highScoreNS::CLASSIC_Y_POS,
+		"CLASSIC"
+	);
+
+	largeFm->print(
+		fontNS::SABO_FILLED,
+		fontNS::WHITE,
+		highScoreNS::SIDEBAR_X_POS,
+		highScoreNS::TIME_ATK_Y_POS,
+		"TIME ATTACK"
+	);
+
+	// Render marker indicating game mode
+	int markerWidth = largeFm->getTotalWidth(fontNS::SABO, "-");
+	int markerYpos = (sceneData.gameMode == sceneNS::GM_CLASSIC) ? highScoreNS::CLASSIC_Y_POS : highScoreNS::TIME_ATK_Y_POS;
+
+	largeFm->print(
+		fontNS::SABO,
+		fontNS::ORANGE,
+		highScoreNS::SIDEBAR_X_POS - markerWidth - highScoreNS::BLINKER_GAP,
+		markerYpos - 6,
+		"-"
+	);
+
+	largeFm->print(
+		fontNS::SABO,
+		fontNS::BLUE,
+		highScoreNS::SIDEBAR_X_POS - markerWidth - highScoreNS::BLINKER_GAP,
+		markerYpos + 6,
+		"-"
+	);
+
+	// Render 'PRESS ESC' text and blinkers
+	smallFm->setKerning(fontNS::SABO_FILLED, 0);
+	smallFm->setKerning(fontNS::SABO, 0);
+
+	int escWidth = smallFm->getTotalWidth(fontNS::SABO_FILLED, "PRESS ESC");
+
+	if (blink) {
+		smallFm->print(
+			fontNS::SABO,
+			fontNS::ORANGE,
+			highScoreNS::ESC_X_POS - smallFm->getTotalWidth(fontNS::SABO, "-") - highScoreNS::BLINKER_GAP,
+			highScoreNS::ESC_Y_POS,
+			"-"
+		);
+
+		smallFm->print(
+			fontNS::SABO,
+			fontNS::BLUE,
+			highScoreNS::ESC_X_POS + escWidth + highScoreNS::BLINKER_GAP,
+			highScoreNS::ESC_Y_POS,
+			"-"
+		);
+	}
+
+	smallFm->print(
+		fontNS::SABO_FILLED,
+		fontNS::WHITE,
+		highScoreNS::ESC_X_POS,
+		highScoreNS::ESC_Y_POS,
+		"PRESS ESC"
+	);
+
+	if (sceneData.gameMode == sceneNS::GM_CLASSIC) {
+		renderClassicHS();
+	}
+	else {
+		renderTimeAtkHS();
 	}
 }

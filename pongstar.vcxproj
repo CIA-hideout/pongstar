@@ -83,6 +83,7 @@
     <ClInclude Include="src\effects.h" />
     <ClInclude Include="src\entityManager.h" />
     <ClInclude Include="src\highscore.h" />
+    <ClInclude Include="src\instructions.h" />
     <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\message.h" />
     <ClInclude Include="src\messageManager.h" />
@@ -114,6 +115,7 @@
     <ClCompile Include="src\effects.cpp" />
     <ClCompile Include="src\entityManager.cpp" />
     <ClCompile Include="src\highscore.cpp" />
+    <ClCompile Include="src\instructions.cpp" />
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\message.cpp" />
     <ClCompile Include="src\messageManager.cpp" />

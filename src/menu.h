@@ -3,15 +3,17 @@
 
 #include <vector>
 
+#include "scene.h"
 #include "input.h"
 #include "fontManager.h"
-#include "scene.h"
 
 namespace menuNS {
-	const int TITLE_Y_POS = 70;
-	const int MENU_Y_POS = 250;
-	const int HEIGHT_BETWEEN_ITEM = 90;
-	const int DIST_BTWN_MINUS_AND_ITEM = 20;
+	const int TITLE_Y_POS = 140;
+	const float TITLE_FONT_SIZE = 96.0;
+	const int MENU_Y_POS = 360;
+	const float MENU_FONT_SIZE = 48.0;
+	const int MENU_VERT_GAP = 30;
+	const int BLINKER_GAP = 20;
 	const float BLINK_INTERVAL = 0.2f;
 }
 
@@ -32,7 +34,7 @@ private:
 
 public:
 	Menu();
-	Menu::Menu(Input* i, FontManager* fm);
+	Menu(Input* i, FontManager* fm);
 	~Menu();
 	
 	// Interface

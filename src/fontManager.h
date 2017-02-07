@@ -10,18 +10,19 @@
 #include "textureManager.h"
 
 namespace fontNS {
+	const float DEFAULT_FONT_SIZE = 128.0;
 	const int CHAR_WIDTH = 128;
 	const int CHAR_HEIGHT = 128;
 	const int NCOLS = 16;
 
 	enum FONT_NAME { SABO, SABO_FILLED };
-	enum FONT_COLOR { WHITE, BLUE, ORANGE, RED };
+	enum FONT_COLOR { WHITE, BLUE, ORANGE, RED, GREY };
 	const int CENTER_OFFSET = 11;
 	const int CENTER_OFFSET_MAX_SCALE = 11 / 4 * 10;
 
 	const std::unordered_map<fontNS::FONT_NAME, std::vector<fontNS::FONT_COLOR>> initMap = {
-		{ fontNS::SABO, { fontNS::WHITE } },
-		{ fontNS::SABO_FILLED, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED } }
+		{ fontNS::SABO, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED} },
+		{ fontNS::SABO_FILLED, { fontNS::WHITE, fontNS::BLUE, fontNS::ORANGE, fontNS::RED, fontNS::GREY } }
 	};
 }
 
