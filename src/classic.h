@@ -11,6 +11,7 @@ public:
 	~Classic();
 
 	void update(float frameTime);
+	void render();
 };
 
 #endif
