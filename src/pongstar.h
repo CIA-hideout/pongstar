@@ -13,7 +13,7 @@
 #include "menu.h"
 #include "classic.h"
 #include "timeAttack.h"
-#include "victory.h"
+#include "gameover.h"
 #include "highscore.h"
 #include "instructions.h"
 

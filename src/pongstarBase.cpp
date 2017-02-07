@@ -53,7 +53,7 @@ void PongstarBase::initializeEntities() {
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	pickupManager->createPickup(effectNS::MAGNET);
+	pickupManager->createPickup(effectNS::MULTIPLY);
 }
 
 void PongstarBase::update(float frameTime) {

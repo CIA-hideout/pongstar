@@ -44,8 +44,12 @@ bool Font::loadTextData(std::string fileName) {
 	for (int i = 0; i < sizeof(this->widths) / sizeof(this->widths[0]); i++) {
 		widths[i] = (int)buffer[i * 2];
 
-		if (i == 73 || i == 74) {		// 'I' or 'J' frame
+		if (i == 73 || i == 74) {	// 'I' or 'J' frame
 			widths[i] += 17;
+		} else if (i == 46) {		// '.' frame
+			widths[i] += 30;
+		} else if (i == 49) {
+			widths[i] += 7;
 		}
 	}
 
@@ -62,10 +66,12 @@ void Font::print(int x, int y, std::string text) {
 
 		if (frame == 73) {	// 'I' frame
 			fx -= 8;
-		}
-
-		if (frame == 77) {	// 'M' frame
+		} else if (frame == 77) {	// 'M' frame
 			fx += 3;
+		} else if (frame == 46) {	// '.' frame
+			fx -= 7;
+		} else if (frame == 49) {
+			fx -= 5;
 		}
 
 		setCurrentFrame(frame);
@@ -98,7 +104,7 @@ int Font::getTotalWidth(std::string text) {
 }
 
 int Font::getHeight() {
-	return textureManager->getHeight() / cols * spriteData.scale;
+	return (int)(textureManager->getHeight() / cols * spriteData.scale);
 }
 
 void Font::draw() {

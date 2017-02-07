@@ -3,6 +3,7 @@
 TimeAttack::TimeAttack(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t) : 
 PongstarBase(g, dm, fm, t) {
 	sceneType = sceneNS::TIME_ATK;
+	sceneData.gameMode = sceneNS::GM_TIME_ATK;
 }
 
 TimeAttack::~TimeAttack() {}
@@ -11,18 +12,13 @@ void TimeAttack::update(float frameTime) {
 	PongstarBase::update(frameTime);
 
 	int leftPaddleScore = entityManager->getPaddle(paddleNS::LEFT)->getScore();
-	int rightPaddleScore =entityManager->getPaddle(paddleNS::RIGHT)->getScore();
+	int rightPaddleScore = entityManager->getPaddle(paddleNS::RIGHT)->getScore();
 
 	if (elapsedTime >= pongstarNS::TIME_PER_GAME) {
-		nextSceneType = sceneNS::VICTORY;
-		sceneData.gameMode = sceneNS::GM_TIME_ATK;
+		nextSceneType = sceneNS::GAMEOVER;
 
-		if (leftPaddleScore == rightPaddleScore)
-			sceneData.winner = sceneNS::W_DRAW;
-		else {
-			sceneData.winner = leftPaddleScore > rightPaddleScore ? sceneNS::W_LEFT : sceneNS::W_RIGHT;
-			sceneData.newHighScore.score = leftPaddleScore > rightPaddleScore ? leftPaddleScore : rightPaddleScore;
-		}
+		sceneData.scores.p1Score = leftPaddleScore;
+		sceneData.scores.p2Score = rightPaddleScore;
 	}
 }
 

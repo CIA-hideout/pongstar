@@ -62,7 +62,7 @@ void Pongstar::initialize(HWND hwnd) {
 	//Menu* menu = new Menu(audio ,input, fontManager);
 	//menu->initialize(sd);
 	//gameStack->push(menu);
-	
+
 	Classic* classic = new Classic(this, dataManager, fontManager, tmMap);
 	classic->initialize(sd);
 	gameStack->push(classic);
@@ -119,8 +119,8 @@ void Pongstar::update() {
 			} break;
 			case sceneNS::CREDITS: {
 			} break;
-			case sceneNS::VICTORY: {
-				nextScene = new Victory(audio, graphics, input, fontManager);
+			case sceneNS::GAMEOVER: {
+				nextScene = new Gameover(this, fontManager);
 			} break;
 
 			case sceneNS::MENU:

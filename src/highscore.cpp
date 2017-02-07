@@ -17,8 +17,17 @@ void HighScore::addHighScore() {
 	HighScoreMap hsMap;
 
 	hsJson = dataManager->getHighScoreJson();
-	hsMap = sceneData.gameMode == sceneNS::GM_CLASSIC ? hsJson.classic : hsJson.timeAttack;
-	hsMap[sceneData.newHighScore.score] = sceneData.newHighScore.name;
+	int score;
+
+	if (sceneData.gameMode == sceneNS::GM_CLASSIC) {
+		hsMap = hsJson.classic;
+		score = sceneData.scores.time;
+	} else {
+		hsMap = hsJson.timeAttack;
+		score = (sceneData.scores.p1Score > sceneData.scores.p2Score) ? sceneData.scores.p1Score : sceneData.scores.p2Score;
+	}
+
+	hsMap[score] = sceneData.scores.name;
 
 	if (sceneData.gameMode == sceneNS::GM_CLASSIC)
 		hsJson.classic = hsMap;
@@ -36,16 +45,16 @@ void HighScore::initialize(sceneNS::SceneData sd) {
 	largeFm = new FontManager(*baseFm);
 	smallFm = new FontManager(*baseFm);
 
-	float scale = highScoreNS::SMALL_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	float scale = highScoreNS::LARGE_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	largeFm->setScale(fontNS::SABO_FILLED, scale);
+	largeFm->setScale(fontNS::SABO, scale);
+	
+	scale = highScoreNS::SMALL_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
 	smallFm->setScale(fontNS::SABO_FILLED, scale);
 	smallFm->setScale(fontNS::SABO, scale);
 
-	scale = highScoreNS::LARGE_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
-	largeFm->setScale(fontNS::SABO_FILLED, scale);
-	largeFm->setScale(fontNS::SABO, scale);
-
 	// Add score to json
-	if (sd.newHighScore.score != NULL)
+	if (sd.scores.name != "")
 		addHighScore();
 }
 
@@ -90,7 +99,7 @@ void HighScore::renderClassicHS() {
 		decimalTime = it->first % 1000 / 10;	// get first 2 digit after conversion to decimal
 		sprintf(rankStr, "%i", index + 1);
 		sprintf(nameStr, "%s", it->second.c_str());
-		sprintf(timeStr, "%i. %02i", wholeTime, decimalTime);
+		sprintf(timeStr, "%i.%02i", wholeTime, decimalTime);
 
 		timeXpos = highScoreNS::SCORE_RIGHT_X_POS - largeFm->getTotalWidth(fontNS::SABO_FILLED, timeStr);
 	
