@@ -29,7 +29,7 @@ void Ball::update(float frameTime) {
 
 void Ball::resetBall() {
 	velocity = VECTOR2(0, 0);
-
+	effects = new Effects();
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
 }
@@ -94,6 +94,42 @@ void Ball::runEffects() {
 					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 2.0f;
 				} break;
 				
+				case effectNS::SHRINK: {
+					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 0.5f;
+				} break;
+
+				case effectNS::BOOST: {
+					float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+					float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+					VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio * 2, ballNS::VELOCITY * yRatio * 2);
+					velocity = newVelocity;
+
+					if (currentEffect.second == 0) {
+						float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+						float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+						VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio );
+						velocity = newVelocity;
+					}
+				} break;
+
+				case effectNS::SLOW: {
+					float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+					float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+					VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio * 0.5, ballNS::VELOCITY * yRatio * 0.5);
+					velocity = newVelocity;
+
+					if (currentEffect.second == 0) {
+						float xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+						float yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+						VECTOR2 newVelocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio );
+						velocity = newVelocity;
+					}
+				} break;
+
+				case effectNS::INVERT: {
+					velocity = VECTOR2 (-velocity.x, -velocity.y);	
+				} break;
+
 				case effectNS::MULTIPLY: {
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
 					setMessage(msgPtr);
