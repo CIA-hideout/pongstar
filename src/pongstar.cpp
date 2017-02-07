@@ -17,7 +17,7 @@ const char* textureToString(textureNS::TEXTURE t) {
 //=============================================================================
 Pongstar::Pongstar() {
 	gameStack = new std::stack<Scene*>;
-	muted = true ;
+	muted = false;
 }
 
 //=============================================================================

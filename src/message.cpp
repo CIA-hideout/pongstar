@@ -40,4 +40,9 @@ Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::MAGNET_CMD mc, int pi, i
 	ballId = bi;
 }
 
+Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::OTHERS_CMD oc) {
+	messageType = mt;
+	othersCmd = oc;
+}
+
 Message::~Message() {}

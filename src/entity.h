@@ -149,9 +149,12 @@ public:
 
 	// Set radius of collision circle.
 	virtual void setCollisionRadius(float r)    { radius = r; }
+	
+	// Set effects
+	virtual void setEffects(Effects* e) { effects = e; }
 
 	// Set message
-	virtual void setMessage(std::queue<Message*> mq) { messageQueue = mq; }
+	virtual void setMessageQueue(std::queue<Message*> mq) { messageQueue = mq; }
 
 	////////////////////////////////////////
 	//         Other functions            //
@@ -191,7 +194,8 @@ public:
 	void gravityForce(Entity *other, float frameTime);
 
 	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);
-	virtual void runEffects();
+	virtual void runEffects() {};
+	virtual void resetEffects();
 
 	void pushMsg(Message* msg) { messageQueue.push(msg); }
 	void popMsg() { messageQueue.pop(); }

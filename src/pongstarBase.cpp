@@ -75,6 +75,7 @@ void PongstarBase::update(float frameTime) {
 	}
 
 	messageManager->resolve();
+	messageManager->update(frameTime);
 
 	while (deleteEntityQueue.size() > 0) {
 		int idToRemove = deleteEntityQueue.front();

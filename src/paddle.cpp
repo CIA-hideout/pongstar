@@ -123,12 +123,8 @@ void Paddle::update(float frameTime) {
 	setVelocity(VECTOR2(0, yVelocity));
 
 	if (magnetised && magnetBall != nullptr) {
-		//printf("magnetball\n");
 		magnetBall->setVelocity(VECTOR2(0, yVelocity));
 		magnetBallId = magnetBall->getId();
-	} else {
-		//printf("%i\n", magnetised);
-		//printf("nullptr\n");
 	}
 
 	if (magnetTimerStarted) {
@@ -242,4 +238,14 @@ void Paddle::draw(COLOR_ARGB color) {
 		magnetLine->Draw(magnetPoints, 2, graphicsNS::WHITE);
 		magnetLine->End();
 	}
+}
+
+void Paddle::resetEffects() {
+	Entity::resetEffects();
+	
+	shield = false;
+	boosted = false;
+	slowed = false;
+	inverted = false;
+	magnetised = false;
 }

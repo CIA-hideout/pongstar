@@ -5,6 +5,10 @@ MessageManager::MessageManager() {}
 MessageManager::MessageManager(PickupManager* pm, EntityManager* em) {
 	pickupManager = pm;
 	entityManager = em;
+	
+	magnetDelayTimer = messageManagerNS::MAGNET_DELAY_TIMER;
+	startedTimer = false;
+	magnetiseBallId = 0;
 }
 
 MessageManager::~MessageManager() {}
@@ -43,6 +47,9 @@ void MessageManager::dispatch(Message* msg) {
 		case messageNS::MAGNET_EFFECT: {
 			dispatchMagnetEffect(msg);
 		} break;
+		case messageNS::OTHERS: {
+			dispatchOthers(msg);
+		}
 		default: break;
 	}
 }
@@ -187,9 +194,8 @@ void MessageManager::dispatchMagnetEffect(Message* msg) {
 	int paddleId = msg->getPaddleId();
 	int ballId = msg->getBallId();
 
-	printf("map size %i\n", entityManager->getEntityMap()->size()); 
-
 	Paddle* p = (Paddle*)entityManager->getEntity(paddleId);
+	Paddle* otherP = entityManager->getPaddle(p->getSide() == paddleNS::LEFT ? paddleNS::RIGHT : paddleNS::LEFT);
 	Ball* b = (Ball*)entityManager->getEntity(ballId);
 
 	switch (msg->getMagnetCmd()) {
@@ -203,11 +209,49 @@ void MessageManager::dispatchMagnetEffect(Message* msg) {
 
 	} break;
 	case messageNS::UNBIND: {
-		b->setMagnetised(false);
+		b->resetMagnetBinding();
 		printf("unbind\n");
 		p->setMagnetised(false);
 		p->setMagnetBall(nullptr);
+
+		if (otherP->getMagnetised()) {
+			startedTimer = true;
+			magnetiseBallId = b->getId();
+		}
+		
 	} break;
 	default: break;
+	}
+}
+
+void MessageManager::dispatchOthers(Message* msg) {
+	switch (msg->getOthersCmd()) {
+	case messageNS::CLEAN_UP: {
+		std::vector<Ball*> balls = entityManager->getBalls();
+
+		if (balls.size() == 1) {
+			Effects* effects = new Effects();
+			std::vector<Paddle*> paddles = entityManager->getPaddles();
+			for (size_t i = 0; i < paddles.size(); i++) {
+				paddles[i]->resetEffects();				
+			}
+		}
+	} break;
+	default: break;
+	}
+}
+
+void MessageManager::update(float frameTime) {
+	if (startedTimer)
+		magnetDelayTimer -= frameTime;
+
+	if (magnetDelayTimer <= 0) {
+		// Set ball to magnetized
+		Ball* b = (Ball*)entityManager->getEntity(magnetiseBallId);
+		b->setMagnetised(true);
+
+		magnetDelayTimer = messageManagerNS::MAGNET_DELAY_TIMER;
+		startedTimer = false;
+		magnetiseBallId = 0;
 	}
 }

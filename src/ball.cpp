@@ -39,6 +39,10 @@ void Ball::resetBall() {
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
 	spriteData.scale = 1.0f;
+
+	// reset paddle effects
+	Message *msgPtr = new Message(messageNS::OTHERS, messageNS::CLEAN_UP);
+	pushMsg(msgPtr);
 }
 
 void Ball::wallCollision() {
@@ -178,12 +182,10 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				if (!magnetised) {
 					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 					audio->playCue(HIT_PADDLE_CUE);
-					printf("not magnetized\n");
 				}
 
 				if (magnetised && !initializedMagnetEffect) {
 					initMagnetEffect(ent.getId());
-					printf("initMagnetEffect\n");
 				}
 			} break;
 
@@ -207,6 +209,11 @@ void Ball::initMagnetEffect(int targetPaddleId) {
 	pushMsg(msgPtr);
 	setVelocity(VECTOR2(0, 0));
 	initializedMagnetEffect = true;
+}
+
+void Ball::resetMagnetBinding() {
+	magnetised = false;
+	initializedMagnetEffect = false;
 }
 
 float Ball::getBallAngle() {

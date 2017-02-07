@@ -63,6 +63,7 @@ public:
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 
 	void runEffects();
+	void resetEffects();
 	void startMagnetTimer() { magnetTimerStarted = true; };
 };
 
