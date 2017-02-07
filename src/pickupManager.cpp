@@ -2,10 +2,10 @@
 
 PickupManager::PickupManager() {}
 
-PickupManager::PickupManager(Game* g, TextureManager* pt, std::vector<Entity*>* ev) {
+PickupManager::PickupManager(Game* g, TextureManager* pt, EntityManager* em) {
 	game = g;
 	pickupTexture = pt;
-	entityVector = ev;
+	entityManager = em;
 }
 
 PickupManager::~PickupManager() {}
@@ -28,7 +28,7 @@ Pickup* PickupManager::randomPickup() {
 	pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE) / 2);
 	pickup->setY((float)getRandYSpawn());
 
-	entityVector->push_back(pickup);
+	entityManager->addEntity(pickup);
 	return pickup;
 }
 
@@ -43,7 +43,7 @@ Pickup* PickupManager::createPickup(effectNS::EFFECT_TYPE et) {
 	pickup->setX(GAME_WIDTH * 3 / 4);
 	pickup->setY(GAME_HEIGHT / 2 - (pickupNS::HEIGHT * pickupNS::SCALE) / 2);
 	
-	entityVector->push_back(pickup);
+	entityManager->addEntity(pickup);
 	return pickup;
 }
 

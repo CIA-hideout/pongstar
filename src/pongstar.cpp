@@ -1,13 +1,13 @@
 #include "pongstar.h"
 
-const char* textureToString(pongstarNS::TEXTURE t) {
+const char* textureToString(textureNS::TEXTURE t) {
 	switch (t) {
-	case pongstarNS::BALL:			return "Ball";
-	case pongstarNS::PADDLE:		return "Paddle";
-	case pongstarNS::DIVIDER:		return "Divider";
-	case pongstarNS::BUMPER:		return "Bumper";
-	case pongstarNS::BORDER:		return "Border";
-	case pongstarNS::PICKUPS:		return "Pickups";
+	case textureNS::BALL:			return "Ball";
+	case textureNS::PADDLE:			return "Paddle";
+	case textureNS::DIVIDER:		return "Divider";
+	case textureNS::BUMPER:			return "Bumper";
+	case textureNS::BORDER:			return "Border";
+	case textureNS::PICKUPS:		return "Pickups";
 	default:						return "Unable to find string conversion for texture";
 	}
 }
@@ -41,20 +41,20 @@ void Pongstar::initialize(HWND hwnd) {
 	fontManager->initialize();
 
 	TextureManager* tm;
-	pongstarNS::TEXTURE texture;
+	textureNS::TEXTURE texture;
 
-	for (size_t i = 0; i < pongstarNS::initTextureVec.size(); i++) {
+	for (size_t i = 0; i < textureNS::initTextureVec.size(); i++) {
 		char textureLocation[1024], errorMsg[1024];
 		tm = new TextureManager();
-		texture = pongstarNS::initTextureVec[i];
+		texture = textureNS::initTextureVec[i];
 
-		sprintf(textureLocation, "%s%s.png", pongstarNS::TEXTURE_DIRECTORY, textureToString(texture));
+		sprintf(textureLocation, "%s%s.png", textureNS::TEXTURE_DIRECTORY, textureToString(texture));
 		sprintf(errorMsg, "Error initializing %s texture", textureToString(texture));
 
 		if (!tm->initialize(graphics, textureLocation))
 			throw(GameError(gameErrorNS::FATAL_ERROR, errorMsg));
 
-		tmMap.insert(std::pair<pongstarNS::TEXTURE, TextureManager*>(texture, tm));
+		tmMap.insert(std::pair<textureNS::TEXTURE, TextureManager*>(texture, tm));
 	}
 
 	sceneNS::SceneData sd = sceneNS::SceneData();

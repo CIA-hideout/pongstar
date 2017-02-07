@@ -10,8 +10,8 @@ TimeAttack::~TimeAttack() {}
 void TimeAttack::update(float frameTime) {
 	PongstarBase::update(frameTime);
 
-	int leftPaddleScore = messageManager->getPaddle(paddleNS::LEFT)->getScore();
-	int rightPaddleScore = messageManager->getPaddle(paddleNS::RIGHT)->getScore();
+	int leftPaddleScore = entityManager->getPaddle(paddleNS::LEFT)->getScore();
+	int rightPaddleScore =entityManager->getPaddle(paddleNS::RIGHT)->getScore();
 
 	if (elapsedTime >= pongstarNS::TIME_PER_GAME) {
 		nextSceneType = sceneNS::VICTORY;

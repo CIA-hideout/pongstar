@@ -8,6 +8,7 @@
 #include "game.h"
 #include "gameError.h"
 #include "textureManager.h"
+#include "entityManager.h"
 #include "entity.h"
 #include "pickup.h"
 
@@ -31,11 +32,11 @@ class PickupManager {
 private:
 	Game* game;
 	TextureManager* pickupTexture;
-	std::vector<Entity*>* entityVector;
+	EntityManager* entityManager;
 
 public:
 	PickupManager();
-	PickupManager(Game* g, TextureManager* pt, std::vector<Entity*>* ev);
+	PickupManager(Game* g, TextureManager* pt, EntityManager* em);
 
 	~PickupManager();
 	

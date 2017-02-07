@@ -2,37 +2,12 @@
 
 MessageManager::MessageManager() {}
 
-MessageManager::MessageManager(PickupManager* pm, BallManager* bm, std::vector<Entity*>* ev) {
-	entityVector = ev;
+MessageManager::MessageManager(PickupManager* pm, EntityManager* em) {
 	pickupManager = pm;
-	ballManager = bm;
+	entityManager = em;
 }
 
 MessageManager::~MessageManager() {}
-
-Paddle* MessageManager::getPaddle(paddleNS::SIDE side) {
-	Paddle* paddlePtr = nullptr;
-
-	for (size_t i = 0; i < entityVector->size(); i++) {
-		if ((*entityVector)[i]->getEntityType() == entityNS::PADDLE) {
-			paddlePtr = (Paddle*)(*entityVector)[i];
-			
-			if (paddlePtr->getSide() == side)
-				return paddlePtr;
-		}
-	}
-
-	return new Paddle();
-}
-
-Entity* MessageManager::getEntity(int id) {
-	for (size_t i = 0; i < entityVector->size(); i++) {
-		if ((*entityVector)[i]->getId() == id)
-			return (*entityVector)[i];
-	}
-
-	return new Entity();
-}
 
 void MessageManager::push(Message* msg) {
 	messageQueue.push(msg);
@@ -69,16 +44,11 @@ void MessageManager::dispatchScore(Message* msg) {
 	printf("score msg %d\n", msg->getEntityId());
 	switch (msg->getScoreCmd()) {
 		case messageNS::INCREMENT: {
-			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ? getPaddle(paddleNS::LEFT) : getPaddle(paddleNS::RIGHT);
+			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ? 
+				entityManager->getPaddle(paddleNS::LEFT) : entityManager->getPaddle(paddleNS::RIGHT);
 			paddlePtr->setScore(paddlePtr->getScore() + 1);
 
-			if (ballManager->getBallCount() > 1) {
-				getEntity(msg->getEntityId())->setActive(false);
-				ballManager->setBallCount(ballManager->getBallCount() - 1);
-			}
-			else if (ballManager->getBallCount() == 1) {
-				getEntity(msg->getEntityId())->setVisible(true);
-			}
+			entityManager->deleteBall(msg->getEntityId());
 		} break;
 	}
 }
@@ -95,7 +65,7 @@ void MessageManager::dispatchPickup(Message* msg) {
 void MessageManager::dispatchAddEffect(Message* msg) {
 	switch (msg->getTargetType()) {
 		case messageNS::BALL: {
-			getEntity(msg->getEntityId())->addEffect(msg->getEffectType(), msg->getDuration());
+			entityManager->getEntity(msg->getEntityId())->addEffect(msg->getEffectType(), msg->getDuration());
 		} break;
 	}
 }
@@ -103,20 +73,20 @@ void MessageManager::dispatchAddEffect(Message* msg) {
 void MessageManager::dispatchRunEffect(Message* msg) {
 	switch (msg->getEffectType()) {
 		case effectNS::MULTIPLY: {
-			Ball* currentBall = (Ball*)getEntity(msg->getEntityId());
+			Ball* currentBall = (Ball*)entityManager->getEntity(msg->getEntityId());
 			float ballAngle = currentBall->getBallAngle();
 			VECTOR2 newVelocity;
 
-			Ball* newBall1 = ballManager->createBall();
+			Ball* newBall1 = entityManager->createBall();
 			newBall1->setX(currentBall->getX());
 			newBall1->setY(currentBall->getY());
-			newVelocity = ballManager->getVelocityFromAngle(ballAngle + 30);
+			newVelocity = entityManager->getVelocityFromAngle(ballAngle + 30);
 			newBall1->setVelocity(newVelocity);
 
-			Ball* newBall2 = ballManager->createBall();
+			Ball* newBall2 = entityManager->createBall();
 			newBall2->setX(currentBall->getX());
 			newBall2->setY(currentBall->getY());
-			newVelocity = ballManager->getVelocityFromAngle(ballAngle - 31);
+			newVelocity = entityManager->getVelocityFromAngle(ballAngle - 30);
 			newBall2->setVelocity(newVelocity);
 		} break;
 

@@ -76,12 +76,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="src\ball.h" />
-    <ClInclude Include="src\ballManager.h" />
     <ClInclude Include="src\bumper.h" />
     <ClInclude Include="src\classic.h" />
     <ClInclude Include="src\constants.h" />
     <ClInclude Include="src\dataManager.h" />
     <ClInclude Include="src\effects.h" />
+    <ClInclude Include="src\entityManager.h" />
     <ClInclude Include="src\highscore.h" />
     <ClInclude Include="src\menu.h" />
     <ClInclude Include="src\message.h" />
@@ -108,11 +108,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\ball.cpp" />
-    <ClCompile Include="src\ballManager.cpp" />
     <ClCompile Include="src\bumper.cpp" />
     <ClCompile Include="src\classic.cpp" />
     <ClCompile Include="src\dataManager.cpp" />
     <ClCompile Include="src\effects.cpp" />
+    <ClCompile Include="src\entityManager.cpp" />
     <ClCompile Include="src\highscore.cpp" />
     <ClCompile Include="src\menu.cpp" />
     <ClCompile Include="src\message.cpp" />
