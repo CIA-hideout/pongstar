@@ -61,6 +61,9 @@ const char BUMPER_IMAGE[] = "sprites\\Bumper.png";
 const char PICKUP_IMAGE[] = "sprites\\Pickups.png";
 const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
 
+// Screens
+const char INSTRUCTIONS[] = "resources\\screens\\Instructions.png";
+
 const int HUD_Y_POS = 12;
 
 #endif

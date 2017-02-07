@@ -10,6 +10,7 @@
 #include "textureManager.h"
 
 namespace fontNS {
+	const float DEFAULT_FONT_SIZE = 128.0;
 	const int CHAR_WIDTH = 128;
 	const int CHAR_HEIGHT = 128;
 	const int NCOLS = 16;

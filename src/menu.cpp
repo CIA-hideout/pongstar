@@ -47,33 +47,42 @@ void Menu::update(float frameTime) {
 	}
 
 	if (input->wasKeyPressed(ENTER_KEY)) {
-		nextSceneType = items[selectedItemIndex];
+		if (items[selectedItemIndex] == sceneNS::CLASSIC) {
+			sceneData.gameMode = sceneNS::GM_CLASSIC;
+			nextSceneType = sceneNS::INSTRUCTIONS;
+		}
+		else if (items[selectedItemIndex] == sceneNS::TIME_ATK) {
+			sceneData.gameMode = sceneNS::GM_TIME_ATK;
+			nextSceneType = sceneNS::INSTRUCTIONS;
+		}
+		else {
+			nextSceneType = items[selectedItemIndex];
+		}
 	}
 
 	if (blinkTimer < menuNS::BLINK_INTERVAL) {
 		blinkTimer += frameTime;
 	}
-
-	if (blinkTimer >= menuNS::BLINK_INTERVAL) {
+	else {
 		blink = !blink;
 		blinkTimer = 0.0;
 	}
 }
 
 void Menu::render() {
-	titleFm->setScale(fontNS::SABO_FILLED, 0.625);
-	titleFm->setScale(fontNS::SABO, 0.625);
-
+	float scale = menuNS::TITLE_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	titleFm->setScale(fontNS::SABO_FILLED, scale);
+	titleFm->setScale(fontNS::SABO, scale);
 	titleFm->setKerning(fontNS::SABO_FILLED, 50);
 	titleFm->setKerning(fontNS::SABO, 50);
 
-	int pongstarWidth = titleFm->getTotalWidth(fontNS::SABO_FILLED, "pong") + titleFm->getTotalWidth(fontNS::SABO, "star");
-	int pongX = GAME_WIDTH / 2 - pongstarWidth / 2 - fontNS::CENTER_OFFSET;
+	int titleWidth = titleFm->getTotalWidth(fontNS::SABO_FILLED, "pong") + titleFm->getTotalWidth(fontNS::SABO, "star");
+	int titleXpos = GAME_WIDTH / 2 - titleWidth / 2 - fontNS::CENTER_OFFSET;
 
 	titleFm->print(
 		fontNS::SABO_FILLED,
 		fontNS::WHITE,
-		pongX,
+		titleXpos,
 		menuNS::TITLE_Y_POS,
 		"pong"
 	);
@@ -81,34 +90,35 @@ void Menu::render() {
 	titleFm->print(
 		fontNS::SABO,
 		fontNS::WHITE,
-		pongX + titleFm->getTotalWidth(fontNS::SABO_FILLED, "pong"),
+		titleXpos + titleFm->getTotalWidth(fontNS::SABO_FILLED, "pong"),
 		menuNS::TITLE_Y_POS,
 		"star"
 	);
 
-	menuFm->setScale(fontNS::SABO_FILLED, 0.3125);
-	menuFm->setScale(fontNS::SABO, 0.3125);
+	scale = menuNS::MENU_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	menuFm->setScale(fontNS::SABO_FILLED, scale);
+	menuFm->setScale(fontNS::SABO, scale);
 	menuFm->setKerning(fontNS::SABO_FILLED, 3);
 
 	for (size_t i = 0; i < items.size(); i++) {
 		int itemWidth = menuFm->getTotalWidth(fontNS::SABO_FILLED, sceneToString(items[i]));
-		int itemStartXPos = GAME_WIDTH / 2 - itemWidth / 2;
-		int itemStartYPos = menuNS::MENU_Y_POS + (menuFm->getHeight(fontNS::SABO_FILLED) + menuNS::HEIGHT_BETWEEN_ITEM) * i;
+		int itemXpos = GAME_WIDTH / 2 - itemWidth / 2;
+		int itemYpos = menuNS::MENU_Y_POS + (menuFm->getHeight(fontNS::SABO_FILLED) + menuNS::MENU_VERT_GAP) * i;
 
 		if (selectedItemIndex == i && blink) {
 			menuFm->print(
 				fontNS::SABO,
 				fontNS::ORANGE,
-				itemStartXPos - menuFm->getTotalWidth(fontNS::SABO, "-") - menuNS::DIST_BTWN_MINUS_AND_ITEM,
-				itemStartYPos,
+				itemXpos - menuFm->getTotalWidth(fontNS::SABO, "-") - menuNS::BLINKER_GAP,
+				itemYpos,
 				"-"
 			);
 
 			menuFm->print(
 				fontNS::SABO,
 				fontNS::BLUE,
-				itemStartXPos + itemWidth + menuNS::DIST_BTWN_MINUS_AND_ITEM,
-				itemStartYPos,
+				itemXpos + itemWidth + menuNS::BLINKER_GAP,
+				itemYpos,
 				"-"
 			);
 		}
@@ -116,8 +126,8 @@ void Menu::render() {
 		menuFm->print(
 			fontNS::SABO_FILLED,
 			fontNS::WHITE,
-			itemStartXPos,
-			itemStartYPos,
+			itemXpos,
+			itemYpos,
 			sceneToString(items[i])
 		);
 	}

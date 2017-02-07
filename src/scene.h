@@ -3,9 +3,11 @@
 #ifndef _SCENE_H
 #define _SCENE_H
 
+#include <string>
+
 namespace sceneNS {
 	enum TYPE {
-		MENU, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
+		MENU, INSTRUCTIONS, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
 	};
 
 	enum HS_DISPLAY_MODE {
@@ -27,8 +29,7 @@ namespace sceneNS {
 
 	struct SceneData {	// data to be passed down scene to scene
 		WINNER winner;
-		GAME_MODE modePlayed;
-		
+		GAME_MODE gameMode;
 		NewHighScore newHighScore;
 		HS_DISPLAY_MODE hsDisplayMode;
 	};

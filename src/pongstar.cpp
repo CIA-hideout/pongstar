@@ -72,6 +72,7 @@ void Pongstar::update() {
 	sceneNS::TYPE currSceneType = gameStack->top()->getSceneType();
 
 	bool allowEsc =
+		currSceneType == sceneNS::INSTRUCTIONS ||
 		currSceneType == sceneNS::CLASSIC ||
 		currSceneType == sceneNS::TIME_ATK ||
 		currSceneType == sceneNS::CREDITS ||		
@@ -87,6 +88,9 @@ void Pongstar::update() {
 		Scene* nextScene = nullptr;
 
 		switch (nextSceneType) {
+			case sceneNS::INSTRUCTIONS: {
+				nextScene = new Instructions(this, fontManager);
+			} break;
 			case sceneNS::CLASSIC: {
 				nextScene = new Classic(this, dataManager, fontManager, tmMap);
 			} break;
@@ -104,7 +108,7 @@ void Pongstar::update() {
 
 			case sceneNS::MENU:
 			default: 
-			break;
+				break;
 		}
 
 		if (nextSceneType == sceneNS::MENU) {

@@ -17,10 +17,10 @@ void HighScore::addHighScore() {
 	HighScoreMap hsm;
 
 	hsj = dataManager->getHighScoreJson();
-	hsm = sceneData.modePlayed == sceneNS::GM_CLASSIC ? hsj.classic : hsj.timeAttack;
+	hsm = sceneData.gameMode == sceneNS::GM_CLASSIC ? hsj.classic : hsj.timeAttack;
 	hsm[sceneData.newHighScore.score] = sceneData.newHighScore.name;
 
-	if (sceneData.modePlayed == sceneNS::GM_CLASSIC)
+	if (sceneData.gameMode == sceneNS::GM_CLASSIC)
 		hsj.classic = hsm;
 	else
 		hsj.timeAttack = hsm;

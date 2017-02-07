@@ -15,7 +15,7 @@ void Classic::update(float frameTime) {
 	
 	if (leftPaddleScore == pongstarNS::POINTS_TO_WIN || rightPaddleScore == pongstarNS::POINTS_TO_WIN) {
 		nextSceneType = sceneNS::VICTORY;
-		sceneData.modePlayed = sceneNS::GM_CLASSIC;
+		sceneData.gameMode = sceneNS::GM_CLASSIC;
 		sceneData.winner = leftPaddleScore == pongstarNS::POINTS_TO_WIN ? sceneNS::W_LEFT : sceneNS::W_RIGHT;
 		sceneData.newHighScore.score = elapsedTime;
 	}

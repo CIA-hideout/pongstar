@@ -15,6 +15,7 @@
 #include "timeAttack.h"
 #include "victory.h"
 #include "highscore.h"
+#include "instructions.h"
 
 class Pongstar : public Game {
 private:
