@@ -71,16 +71,18 @@ void Ball::wallCollision() {
 		setVisible(false);
 		resetBall();
 	}
-
+		
 	// Collision with bottom wall
 	if (spriteData.y > BOTTOM_WALL - ballNS::HEIGHT * spriteData.scale) {
 		spriteData.y = BOTTOM_WALL - ballNS::HEIGHT * spriteData.scale;
 		velocity.y = -velocity.y;
+		audio->playCue(HIT_WALL_CUE);
 	}
 	// Collision with top wall
 	else if (spriteData.y < TOP_WALL) {
 		spriteData.y = TOP_WALL;
 		velocity.y = -velocity.y;
+		audio->playCue(HIT_WALL_CUE);
 	}
 }
 
@@ -167,12 +169,14 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		switch (ent.getEntityType()) {
 			case entityNS::PADDLE: {
 				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+				audio->playCue(HIT_PADDLE_CUE);
 			} break;
 
 			case entityNS::BUMPER: {
 				bumperCollision(ent, collisionVector);
 				Bumper* bumper = (Bumper*)&ent;
 				bumper->randomLocationBumper();
+				audio->playCue(HIT_BUMPER_CUE);
 			} break;
 
 			default: break;

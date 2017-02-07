@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "scene.h"
+#include "audio.h"
 #include "input.h"
 #include "fontManager.h"
 
@@ -20,6 +21,7 @@ namespace menuNS {
 class Menu : public Scene {
 private:
 	// Game items
+	Audio* audio;
 	Input* input;
 	FontManager* baseFm;
 
@@ -34,9 +36,9 @@ private:
 
 public:
 	Menu();
-	Menu(Input* i, FontManager* fm);
+	Menu::Menu(Audio* a, Input* i, FontManager* fm);
 	~Menu();
-	
+
 	// Interface
 	void initialize(sceneNS::SceneData sd);
 	void update(float frameTime);
