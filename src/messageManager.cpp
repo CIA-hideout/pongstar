@@ -123,6 +123,10 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 			}
 
 		} break;
+		
+		case effectNS::MAGNET: {
+
+		}
 
 		default: break;
 	}

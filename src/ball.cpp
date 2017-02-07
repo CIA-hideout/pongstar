@@ -33,14 +33,15 @@ void Ball::resetBall() {
 	effects = new Effects();
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
+	spriteData.scale = 1.0f;
 }
 
 void Ball::wallCollision() {
 	Message* msgPtr = nullptr;
 
 	// Collide with right wall and shield is on
-	if (spriteData.x > RIGHT_WALL - ballNS::WIDTH * spriteData.scale && rightShield) {
-		spriteData.x = RIGHT_WALL - ballNS::WIDTH * spriteData.scale;
+	if (spriteData.x > RIGHT_SHIELD - ballNS::WIDTH * spriteData.scale && rightShield) {
+		spriteData.x = RIGHT_SHIELD - ballNS::WIDTH * spriteData.scale;
 		velocity.x = -velocity.x;
 
 		// dispatch ms to turn off right shield for paddle and other balls
@@ -56,8 +57,8 @@ void Ball::wallCollision() {
 	}
 
 	// Collision with left wall and shield is on
-	if (spriteData.x < LEFT_WALL && leftShield) {
-		spriteData.x = LEFT_WALL;
+	if (spriteData.x < LEFT_SHIELD && leftShield) {
+		spriteData.x = LEFT_SHIELD;
 		velocity.x = -velocity.x;
 		
 		// dispatch msg to turn off left shield for paddle and other balls
@@ -150,6 +151,7 @@ void Ball::runEffects() {
 
 				case effectNS::INVERT: {
 					velocity = VECTOR2 (-velocity.x, -velocity.y);	
+					currentEffect.second = 0.0;
 				} break;
 
 				case effectNS::MULTIPLY: {

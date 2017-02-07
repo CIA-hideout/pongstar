@@ -39,6 +39,7 @@ namespace graphicsNS {
 	const COLOR_ARGB BLUE = D3DCOLOR_ARGB(255, 84, 195, 255);
 	const COLOR_ARGB ORANGE = D3DCOLOR_ARGB(255, 249, 162, 50);
 	const COLOR_ARGB RED = D3DCOLOR_ARGB(255, 255, 105, 97);
+	const COLOR_ARGB YELLOW = D3DCOLOR_ARGB(255, 255, 255, 100);
 	const COLOR_ARGB FILTER = D3DCOLOR_ARGB(0, 0, 0, 0);			// use to specify drawing with colorFilter
 	const COLOR_ARGB ALPHA25 = D3DCOLOR_ARGB(64, 255, 255, 255);	// AND with color to get 25% alpha
 	const COLOR_ARGB ALPHA50 = D3DCOLOR_ARGB(128, 255, 255, 255);	// AND with color to get 50% alpha
