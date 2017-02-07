@@ -40,6 +40,10 @@ void MessageManager::dispatch(Message* msg) {
 		case messageNS::END_EFFECT: {
 			dispatchEndEffect(msg);
 		} break;
+		case messageNS::MAGNET_EFFECT: {
+			dispatchMagnetEffect(msg);
+		} break;
+		default: break;
 	}
 }
 
@@ -66,7 +70,6 @@ void MessageManager::dispatchPickup(Message* msg) {
 
 void MessageManager::dispatchAddEffect(Message* msg) {
 	// id here is the collided entity id, !pickupId
-
 	switch (msg->getTargetType()) {
 		case messageNS::BALL: {
 			entityManager->getEntity(msg->getEntityId())->addEffect(msg->getEffectType(), msg->getDuration());
@@ -121,7 +124,19 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 				else
 					bv[i]->setRightShield(true);
 			}
+		} break;
 
+		case effectNS::MAGNET: {
+			// Identify sending msg id, left or right paddle
+			Paddle* p = (Paddle*)entityManager->getEntity(msg->getEntityId());
+			//paddleNS::SIDE side = p->getSide();
+
+			// get all balls
+			std::vector<Ball*> bv = entityManager->getBalls();
+
+			for (size_t i = 0; i < bv.size(); i++) {
+				bv[i]->setMagnetised(true);
+			}
 		} break;
 		
 		case effectNS::MAGNET: {
@@ -157,5 +172,29 @@ void MessageManager::dispatchEndEffect(Message* msg) {
 		} break;
 
 		default: break;
+	}
+}
+
+// Modifies entities directly
+void MessageManager::dispatchMagnetEffect(Message* msg) {
+	int paddleId = msg->getPaddleId();
+	int ballId = msg->getBallId();
+
+	Paddle* p = (Paddle*)entityManager->getEntity(paddleId);
+	Ball* b = (Ball*)entityManager->getEntity(ballId);
+
+	switch (msg->getMagnetCmd()) {
+	case messageNS::BIND: {
+		p->setMagnetBall(b);
+
+		// notifies other balls to stop listening
+
+	} break;
+	case messageNS::UNBIND: {
+		p->setMagnetised(false);
+		p->setMagnetBall(nullptr);
+		b->setMagnetised(false);
+	} break;
+	default: break;
 	}
 }

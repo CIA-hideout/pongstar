@@ -35,6 +35,7 @@ public:
 	void dispatchAddEffect(Message* msg);
 	void dispatchRunEffect(Message* msg);
 	void dispatchEndEffect(Message* msg);
+	void dispatchMagnetEffect(Message* msg);
 
 	void resolve();
 };

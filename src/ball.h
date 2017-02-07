@@ -19,15 +19,19 @@ private:
 	bool leftShield;
 	bool rightShield;
 
+	bool magnetised;
+	bool initializedMagnetEffect;
 public:
 	Ball();
 	~Ball();
 
 	void setLeftShield(bool s) { leftShield = s; };
 	void setRightShield(bool s) { rightShield = s; }
+	void setMagnetised(bool m) { magnetised = m; }
 
 	bool getLeftShield() { return leftShield; }
 	bool getRightShield() { return rightShield; }
+	bool getMagnetised() { return magnetised; }
 
 	void update(float frameTime);
 	void resetBall();
@@ -35,6 +39,7 @@ public:
 	void bumperCollision(Entity &bumper, VECTOR2 &collisionVector);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 	
+	void initMagnetEffect(int targetPaddleId);
 	void runEffects();
 
 	float getBallAngle();

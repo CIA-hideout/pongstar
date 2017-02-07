@@ -27,24 +27,31 @@ private:
 	bool magnetised;
 
 	LP_LINE shieldLine;
+	LP_LINE magnetLine;
 
-public:	
+	Entity* magnetBall;
+
+public:
 	Paddle();
 	Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s);
 
 	~Paddle();
 
 	void draw(COLOR_ARGB color);
-	
+
 	// getters
 	int getScore() { return score; }
 	paddleNS::SIDE getSide() { return side; }
-	bool getShieldOn() { return shield; }
+	bool getShield() { return shield; }
+	bool getMagnetised() { return magnetised; }
+	Entity* getMagnetBall() { return magnetBall; }
 
 	// setters
 	void setScore(int s) { score = s; }
 	void setSide(paddleNS::SIDE s) { side = s; }
 	void setShield(bool s) { shield = s; }
+	void setMagnetised(bool m) { magnetised = m; }
+	void setMagnetBall(Entity* mb) { magnetBall = mb; }
 
 	void update(float frameTime);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);

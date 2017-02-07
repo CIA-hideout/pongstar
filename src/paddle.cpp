@@ -11,14 +11,21 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s) : Entity() {
 	edge.left = -(long)(paddleNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(paddleNS::WIDTH * spriteData.scale / 2);
 
+	currentFrame = (s == paddleNS::LEFT) ? 0 : 1;
+	loop = false;
+
 	controls = pc;
 	side = s;
-
-	currentFrame = (side == paddleNS::LEFT) ? 0 : 1;
-	loop = false;
+	shield = false;
+	magnetised = false;
+	magnetBall = nullptr;
 
 	D3DXCreateLine(g->get3Ddevice(), &shieldLine);
 	shieldLine->SetWidth(20);
+	
+	// Only work on bg, use image
+	D3DXCreateLine(g->get3Ddevice(), &magnetLine);
+	magnetLine->SetWidth(5);
 }
 
 Paddle::~Paddle() {}
@@ -114,6 +121,10 @@ void Paddle::update(float frameTime) {
 
 	setVelocity(VECTOR2(0, yVelocity));
 
+	if (magnetised && magnetBall != nullptr) {
+		magnetBall->setVelocity(VECTOR2(0, yVelocity));
+	}
+
 	spriteData.x += frameTime * velocity.x;
 	spriteData.y += frameTime * velocity.y;
 }
@@ -159,16 +170,34 @@ void Paddle::runEffects() {
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
 					setMessage(msgPtr);
 				} break;
+				case effectNS::MAGNET: {
+					if (!magnetised) {
+						magnetised = true;
+						msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
+						setMessage(msgPtr);
+					}
+				} break;
 			}
 
-			if (currentEffect.second == 0)
+			if (currentEffect.second == 0) {
+				if (currentEffect.first == effectNS::MAGNET && magnetised) {	// this thing runs twice			
+					magnetised = false; 
+
+					// disengage ball
+					msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBall->getId());
+					setMessage(msgPtr);
+				}
+
 				effects->removeEffect(currentEffect.first);
+			}
 		}
 	}
 	
 }
 
 void Paddle::draw(COLOR_ARGB color) {
+	Entity::draw(color);
+
 	if (shield) {
 		VECTOR2 shieldPoints[2];
 		if (side == paddleNS::LEFT) {
@@ -187,5 +216,20 @@ void Paddle::draw(COLOR_ARGB color) {
 		shieldLine->End();
 	}
 
-	Entity::draw(color);
+	if (magnetised) {
+		VECTOR2 magnetPoints[2];
+
+		if (side == paddleNS::LEFT) {
+			magnetPoints[0] = VECTOR2(spriteData.x - 10, spriteData.y);
+			magnetPoints[1] = VECTOR2(spriteData.x - 10, spriteData.y + spriteData.height);
+		}
+		else {
+			magnetPoints[0] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y);
+			magnetPoints[1] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y + spriteData.height);
+		}
+
+		magnetLine->Begin();
+		magnetLine->Draw(magnetPoints, 2, graphicsNS::WHITE);
+		magnetLine->End();
+	}
 }

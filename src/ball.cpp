@@ -9,6 +9,11 @@ Ball::Ball() : Entity() {
 	edge.bottom = (long)(ballNS::HEIGHT * spriteData.scale / 2);
 	edge.left = -(long)(ballNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(ballNS::WIDTH * spriteData.scale / 2);
+
+	leftShield = false;
+	rightShield = false;
+	magnetised = false; 
+	initializedMagnetEffect = false;
 }
 
 Ball::~Ball() {}
@@ -170,8 +175,14 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 			case entityNS::PADDLE: {
-				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-				audio->playCue(HIT_PADDLE_CUE);
+				if (!magnetised) {
+					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+					audio->playCue(HIT_PADDLE_CUE);
+				}
+
+				if (magnetised && !initializedMagnetEffect) {
+					initMagnetEffect(ent.getId());
+				}
 			} break;
 
 			case entityNS::BUMPER: {
@@ -186,6 +197,14 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	}
 
 	return true;
+}
+
+void Ball::initMagnetEffect(int targetPaddleId) {
+	// send instance to paddle to ask for binding
+	Message* msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::BIND, targetPaddleId, id);
+	setMessage(msgPtr);
+	setVelocity(VECTOR2(0, 0));
+	initializedMagnetEffect = true;
 }
 
 float Ball::getBallAngle() {

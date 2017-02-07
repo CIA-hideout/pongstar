@@ -33,4 +33,11 @@ Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::TARGET_TYPE tt, effectNS
 	entityId = id;
 }
 
+Message::Message(messageNS::MESSAGE_TYPE mt, messageNS::MAGNET_CMD mc, int pi, int bi) {
+	messageType = mt;
+	magnetCmd = mc;
+	paddleId = pi;
+	ballId = bi;
+}
+
 Message::~Message() {}
