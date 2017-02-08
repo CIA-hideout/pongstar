@@ -1,5 +1,4 @@
 // Interface class for implementing scenes
-
 #ifndef _SCENE_H
 #define _SCENE_H
 
@@ -24,6 +23,8 @@ namespace sceneNS {
 	struct SceneData {	// data to be passed down scene to scene
 		GAME_MODE gameMode;
 		Scores scores;
+		bool playMenuCue;
+		bool playGameCue;
 		bool escToMenu = false;
 	};
 }

@@ -1,7 +1,8 @@
 #include "pongstarBase.h"
 
-PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t) {
+PongstarBase::PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t) {
 	game = g;
+	audio = a;
 	dataManager = dm;
 	fontManager = fm;
 	tmMap = t;
@@ -10,6 +11,16 @@ PongstarBase::PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureMan
 PongstarBase::~PongstarBase() {}
 
 void PongstarBase::initialize(sceneNS::SceneData sd) {
+	sceneData = sd;
+
+	if (sceneData.playGameCue) {
+		audio->stopCue(MENU_CUE);
+		audio->playCue(GAME_CUE);
+	}
+
+	sceneData.playMenuCue = true;
+	sceneData.playGameCue = false;
+
 	entityManager = new EntityManager(game, &tmMap);
 	pickupManager = new PickupManager(game, tmMap[textureNS::PICKUPS], entityManager);
 	messageManager = new MessageManager(pickupManager, entityManager);

@@ -59,6 +59,9 @@ void Pongstar::initialize(HWND hwnd) {
 	}
 
 	sceneNS::SceneData sd = sceneNS::SceneData();
+	sd.playMenuCue = true;
+	sd.playGameCue = false;
+
 	Menu* menu = new Menu(audio ,input, fontManager);
 	menu->initialize(sd);
 	gameStack->push(menu);
@@ -76,6 +79,8 @@ void Pongstar::update() {
 	gameStack->top()->update(frameTime);
 
 	sceneNS::TYPE currSceneType = gameStack->top()->getSceneType();
+	sceneNS::SceneData currSceneData = gameStack->top()->getSceneData();
+
 	bool escToMenu = gameStack->top()->getSceneData().escToMenu;
 
 	bool allowEsc =
@@ -88,6 +93,7 @@ void Pongstar::update() {
 	if (input->wasKeyPressed(ESC_KEY) && allowEsc && gameStack->size() > 1 && !escToMenu) {
 		gameStack->pop();
 		audio->playCue(ESC_CUE);
+		gameStack->top()->initialize(currSceneData);
 	}
 
 	if (input->wasKeyPressed(ESC_KEY) && allowEsc && escToMenu) {
@@ -102,13 +108,13 @@ void Pongstar::update() {
 
 		switch (nextSceneType) {
 			case sceneNS::INSTRUCTIONS: {
-				nextScene = new Instructions(audio, this, fontManager);
+				nextScene = new Instructions(this, audio, fontManager);
 			} break;
 			case sceneNS::CLASSIC: {
-				nextScene = new Classic(this, dataManager, fontManager, tmMap);
+				nextScene = new Classic(this, audio, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::TIME_ATK: {
-				nextScene = new TimeAttack(this, dataManager, fontManager, tmMap);
+				nextScene = new TimeAttack(this, audio, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::HIGH_SCORES: {
 				nextScene = new HighScore(audio, input, dataManager, fontManager);
@@ -117,7 +123,7 @@ void Pongstar::update() {
 				nextScene = new Credits(input, fontManager);
 			} break;
 			case sceneNS::GAMEOVER: {
-				nextScene = new Gameover(this, fontManager);
+				nextScene = new Gameover(this, audio, fontManager);
 			} break;
 
 			case sceneNS::MENU:

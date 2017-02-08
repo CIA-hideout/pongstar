@@ -2,9 +2,10 @@
 
 Gameover::Gameover() {}
 
-Gameover::Gameover(Game* g, FontManager* fm) {
+Gameover::Gameover(Game* g, Audio* a, FontManager* fm) {
 	sceneType = sceneNS::GAMEOVER;
 	game = g;
+	audio = a;
 	baseFm = fm;
 	input = game->getInput();
 }
@@ -12,8 +13,17 @@ Gameover::Gameover(Game* g, FontManager* fm) {
 Gameover::~Gameover() {}
 
 void Gameover::initialize(sceneNS::SceneData sd) {
-	blink = true;
 	sceneData = sd;
+
+	if (sceneData.playMenuCue) {
+		audio->stopCue(GAME_CUE);
+		audio->playCue(MENU_CUE);
+	}
+
+	sceneData.playMenuCue = false;
+	sceneData.playGameCue = false;
+
+	blink = true;
 	input->clearTextIn();
 
 	largeFm = new FontManager(*baseFm);

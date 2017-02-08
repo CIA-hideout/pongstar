@@ -3,8 +3,8 @@
 HighScore::HighScore() {}
 
 HighScore::HighScore(Audio* a, Input* i, DataManager* dm, FontManager* fm) {
-	audio = a;
 	sceneType = sceneNS::HIGH_SCORES;
+	audio = a;
 	input = i;
 	baseFm = fm;
 	dataManager = dm;
@@ -34,12 +34,21 @@ void HighScore::addHighScore() {
 	else
 		hsJson.timeAttack = hsMap;
 
-	sceneData.escToMenu = true;
 	dataManager->setHighScoreJson(hsJson);
 }
 
 void HighScore::initialize(sceneNS::SceneData sd) {
 	sceneData = sd;
+
+	if (sceneData.playMenuCue) {
+		audio->stopCue(GAME_CUE);
+		audio->playCue(MENU_CUE);
+	}
+
+	sceneData.playMenuCue = false;
+	sceneData.playGameCue = false;
+	sceneData.escToMenu = true;
+
 	blink = true;
 
 	largeFm = new FontManager(*baseFm);

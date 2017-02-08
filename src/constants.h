@@ -82,6 +82,8 @@ const char NAVIGATION_CUE[] = "navigation";
 const char ENTER_CUE[] = "enter";
 const char ESC_CUE[] = "esc";
 const char HIT_CUE[] = "hit";
+const char GAME_CUE[] = "game";
+const char MENU_CUE[] = "menu";
 
 const char ENLARGE_CUE[] = "enlarge";
 const char SHRINK_CUE[] = "shrink";

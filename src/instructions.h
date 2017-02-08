@@ -33,7 +33,7 @@ private:
 
 public:
 	Instructions();
-	Instructions(Audio* a, Game* g, FontManager* fm);
+	Instructions(Game* g, Audio* a, FontManager* fm);
 	~Instructions();
 
 	void initialize(sceneNS::SceneData sd);

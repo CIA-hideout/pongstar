@@ -1,7 +1,7 @@
 #include "timeAttack.h"
 
-TimeAttack::TimeAttack(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t) : 
-PongstarBase(g, dm, fm, t) {
+TimeAttack::TimeAttack(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t) : 
+PongstarBase(g, a, dm, fm, t) {
 	sceneType = sceneNS::TIME_ATK;
 	sceneData.gameMode = sceneNS::GM_TIME_ATK;
 }

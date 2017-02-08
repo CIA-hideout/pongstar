@@ -10,8 +10,7 @@ class Audio;
 
 #define XACT_CUE IXACT3Cue
 
-class Audio
-{
+class Audio {
 	// properties
 private:
 	IXACT3Engine *xactEngine;   // pointer to XACT sound engine

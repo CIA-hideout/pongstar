@@ -26,6 +26,7 @@ class PongstarBase : public Scene {
 protected:
 	// Game items
 	Game* game;
+	Audio* audio;
 	FontManager* fontManager;
 	DataManager* dataManager;
 	TextureManagerMap tmMap;
@@ -45,7 +46,7 @@ protected:
 	bool gameStarted;
 
 public:
-	PongstarBase(Game* g, DataManager* dm, FontManager* fm, TextureManagerMap t);
+	PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t);
 	~PongstarBase();
 
 	void initializeEntities();
