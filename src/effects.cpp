@@ -35,7 +35,6 @@ void Effects::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 	if (effectExists)
 		currentEffects[effectType] += duration;
 	else {
-		printf("Effect is triggered");
 		startEffectQueue.push(EffectDuration(effectType, duration));
 	}
 }

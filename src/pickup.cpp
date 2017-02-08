@@ -60,7 +60,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		}
 
 		if (ent.getEntityType() == entityNS::BALL) {
-			/*switch (getEffectType()) {
+			switch (getEffectType()) {
 				case effectNS::MULTIPLY:
 				case effectNS::BOOST:
 				case effectNS::SLOW:
@@ -73,7 +73,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				case effectNS::SHIELD:
 					targetType = messageNS::BOTH_P;
 					break;
-			}*/
+				default:
+					break;
+			}
 		}
 		else if (ent.getEntityType() == entityNS::PADDLE) {
 			switch (getEffectType()) {

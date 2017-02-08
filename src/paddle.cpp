@@ -94,7 +94,7 @@ void Paddle::runEffects() {
 				yVelocityMultipler = 2.0f;
 			} break;
 			case effectNS::SLOW: {
-				yVelocityMultipler = 0.05f;
+				yVelocityMultipler = 0.5f;
 			} break;
 
 			case effectNS::MULTIPLY: {
