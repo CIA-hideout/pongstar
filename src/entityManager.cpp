@@ -1,27 +1,22 @@
 #include "entityManager.h"
 
-EntityManager::EntityManager() {
-	
-}
+EntityManager::EntityManager() {}
 
 EntityManager::EntityManager(Game* g, TextureManagerMap* t) {
 	game = g;
 	tmMap = t;
 }
 
-EntityManager::~EntityManager() {
-	
-}
+EntityManager::~EntityManager() {}
 
-void EntityManager::initialize() {
-}
+void EntityManager::initialize() {}
 
 TextureManager* EntityManager::getEntityTexture(entityNS::ENTITY_TYPE et) {
 	switch (et) {
-	case entityNS::BALL: return (*tmMap)[textureNS::BALL];
-	case entityNS::BUMPER: return (*tmMap)[textureNS::BUMPER];
-	case entityNS::PICKUP: return (*tmMap)[textureNS::PICKUPS];
-	default: return new TextureManager();
+		case entityNS::BALL: return (*tmMap)[textureNS::BALL];
+		case entityNS::BUMPER: return (*tmMap)[textureNS::BUMPER];
+		case entityNS::PICKUP: return (*tmMap)[textureNS::PICKUPS];
+		default: return new TextureManager();
 	}
 }
 
@@ -90,8 +85,9 @@ void EntityManager::deleteBall(int id) {
 	if (ballIds.size() > 1) {
 		entityMap[id]->setActive(false);
 		ballIds.erase(std::remove(ballIds.begin(), ballIds.end(), id), ballIds.end());
-	} else
+	} else {
 		getEntity(id)->setVisible(true);
+	}
 }
 
 VECTOR2 EntityManager::getVelocityFromAngle(float angle) {

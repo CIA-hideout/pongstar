@@ -97,6 +97,7 @@ void PongstarBase::update(float frameTime) {
 	if (input->wasKeyPressed(SPACE_KEY) && !gameStarted) {
 		startTime = steady_clock::now();
 		gameStarted = true;
+		entityManager->getBalls()[0]->randomStartBall();
 	}
 
 	if (gameStarted) {
@@ -136,7 +137,7 @@ void PongstarBase::render() {
 		GAME_WIDTH / 4 - fontManager->getTotalWidth(fontNS::SABO_FILLED, leftPaddleScore) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
 		leftPaddleScore
-		);
+	);
 
 	fontManager->print(
 		fontNS::SABO_FILLED,
@@ -144,7 +145,7 @@ void PongstarBase::render() {
 		GAME_WIDTH / 4 * 3 - fontManager->getTotalWidth(fontNS::SABO_FILLED, rightPaddleScore) / 2 - fontNS::CENTER_OFFSET,
 		HUD_Y_POS,
 		rightPaddleScore
-		);
+	);
 }
 
 void PongstarBase::releaseAll() {}

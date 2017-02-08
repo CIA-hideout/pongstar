@@ -1,7 +1,6 @@
 #ifndef _BALL_H
 #define _BALL_H
 
-#include "util/random.h"
 #include "entity.h"
 #include "message.h"
 #include "pickup.h"
@@ -12,10 +11,15 @@ namespace ballNS {
 	const int WIDTH = 20;
 	const int NCOLS = 1;
 	const float VELOCITY = 800.0f;
+	const float AUTO_START_DELAY = 0.5f;
 }
 
 class Ball : public Entity {
 private:
+	bool autoStart;
+	float autoStartTimer;
+	VECTOR2 autoStartVelocity;
+
 	bool leftShield;
 	bool rightShield;
 
@@ -37,6 +41,8 @@ public:
 
 	void update(float frameTime);
 	void resetBall();
+	void autoStartBall(VECTOR2 velocity);
+	void randomStartBall();
 	void wallCollision();
 	void bumperCollision(Entity &bumper, VECTOR2 &collisionVector);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);

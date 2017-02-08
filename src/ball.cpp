@@ -1,5 +1,4 @@
 #include "ball.h"
-#include "bumper.h"
 
 Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
@@ -10,6 +9,8 @@ Ball::Ball() : Entity() {
 	edge.left = -(long)(ballNS::WIDTH * spriteData.scale / 2);
 	edge.right = (long)(ballNS::WIDTH * spriteData.scale / 2);
 
+	autoStart = false;
+	autoStartTimer = 0.0;
 	leftShield = false;
 	rightShield = false;
 	magnetised = false;
@@ -24,10 +25,13 @@ void Ball::update(float frameTime) {
 	spriteData.x += frameTime * velocity.x;
 	spriteData.y += frameTime * velocity.y;
 
-	if (velocity.x == 0 && velocity.y == 0) {
-		if (input->wasKeyPressed(SPACE_KEY)) {
-			velocity.x = randBool() ? ballNS::VELOCITY : -ballNS::VELOCITY;
-			audio->playCue(HIT_CUE);
+	if (autoStart) {
+		if (autoStartTimer < ballNS::AUTO_START_DELAY) {
+			autoStartTimer += frameTime;
+		} else {
+			autoStart = false;
+			autoStartTimer = 0.0;
+			velocity = autoStartVelocity;
 		}
 	}
 
@@ -44,6 +48,16 @@ void Ball::resetBall() {
 	// reset paddle effects
 	Message *msgPtr = new Message(messageNS::OTHERS, messageNS::CLEAN_UP);
 	pushMsg(msgPtr);
+}
+
+void Ball::autoStartBall(VECTOR2 v) {
+	autoStart = true;
+	autoStartVelocity = v;
+}
+
+void Ball::randomStartBall() {
+	velocity.x = randBool() ? ballNS::VELOCITY : -ballNS::VELOCITY;
+	audio->playCue(HIT_CUE);
 }
 
 void Ball::wallCollision() {
@@ -63,6 +77,8 @@ void Ball::wallCollision() {
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);
+
+		// Right paddle scored, ball goes to right
 		resetBall();
 	}
 
@@ -80,6 +96,8 @@ void Ball::wallCollision() {
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);
+	
+		// Left paddle scored, ball goes to left
 		resetBall();
 	}
 
