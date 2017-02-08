@@ -23,6 +23,16 @@ Menu::Menu(Audio* a, Input* i, FontManager* fm) {
 Menu::~Menu() {}
 
 void Menu::initialize(sceneNS::SceneData sd) {
+	sceneData = sd;
+
+	if (sceneData.playMenuCue) {
+		audio->stopCue(GAME_CUE);
+		audio->playCue(MENU_CUE);
+	}
+
+	sceneData.playMenuCue = false;
+	sceneData.playGameCue = false;
+
 	selectedItemIndex = 0;
 	blink = true;
 
@@ -30,10 +40,12 @@ void Menu::initialize(sceneNS::SceneData sd) {
 	titleFm = new FontManager(*baseFm);
 	menuFm = new FontManager(*baseFm);
 
-	items.push_back(sceneNS::CLASSIC);
-	items.push_back(sceneNS::TIME_ATK);
-	items.push_back(sceneNS::HIGH_SCORES);
-	items.push_back(sceneNS::CREDITS);
+	if (items.size() == 0) {
+		items.push_back(sceneNS::CLASSIC);
+		items.push_back(sceneNS::TIME_ATK);
+		items.push_back(sceneNS::HIGH_SCORES);
+		items.push_back(sceneNS::CREDITS);
+	}
 }
 
 void Menu::update(float frameTime) {

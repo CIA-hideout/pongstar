@@ -2,16 +2,26 @@
 
 Instructions::Instructions() {}
 
-Instructions::Instructions(Audio* a, Game* g, FontManager* fm) {
-	audio = a;
+Instructions::Instructions(Game* g, Audio* a, FontManager* fm) {
 	sceneType = sceneNS::INSTRUCTIONS;
 	game = g;
+	audio = a;
 	baseFm = fm;
 }
 
 Instructions::~Instructions() {}
 
 void Instructions::initialize(sceneNS::SceneData sd) {
+	sceneData = sd;
+
+	if (sceneData.playMenuCue) {
+		audio->stopCue(GAME_CUE);
+		audio->playCue(MENU_CUE);
+	}
+
+	sceneData.playMenuCue = false;
+	sceneData.playGameCue = true;
+
 	blink = true;
 	gameMode = sd.gameMode;
 

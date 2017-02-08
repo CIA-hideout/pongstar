@@ -45,6 +45,7 @@ namespace gameoverNS {
 class Gameover : public Scene {
 private:
 	Game* game;
+	Audio* audio;
 	Input* input;
 	FontManager* baseFm;
 
@@ -67,7 +68,7 @@ private:
 
 public:
 	Gameover();
-	Gameover(Game* g, FontManager* fm);
+	Gameover(Game* g, Audio* a, FontManager* fm);
 	~Gameover();
 
 	// Interface
