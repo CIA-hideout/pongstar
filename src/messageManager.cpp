@@ -57,11 +57,26 @@ void MessageManager::dispatch(Message* msg) {
 void MessageManager::dispatchScore(Message* msg) {
 	switch (msg->getScoreCmd()) {
 		case messageNS::INCREMENT: {
-			Paddle* paddlePtr = msg->getTargetType() == messageNS::LEFT_P ?
-				entityManager->getPaddle(paddleNS::LEFT) : entityManager->getPaddle(paddleNS::RIGHT);
+			paddleNS::SIDE side = (msg->getTargetType() == messageNS::LEFT_P) ? paddleNS::LEFT : paddleNS::RIGHT;
+			Paddle* paddlePtr = entityManager->getPaddle(side);
 			paddlePtr->setScore(paddlePtr->getScore() + 1);
 
 			entityManager->deleteBall(msg->getEntityId());
+
+			// If only 1 ball in play and ball is reset to center
+			if (entityManager->getBallCount() == 1) {
+				if (entityManager->getBalls()[0]->getVelocity() == VECTOR2(0, 0)) {
+					// Launch ball towards winner at random angle
+					int angle = randInt(45, 135);
+					VECTOR2 velocity = entityManager->getVelocityFromAngle(angle);
+
+					if (side == paddleNS::LEFT) {
+						velocity.x *= -1;
+					}
+
+					entityManager->getBalls()[0]->autoStartBall(velocity);
+				}
+			}
 		} break;
 	}
 }
@@ -226,18 +241,17 @@ void MessageManager::dispatchMagnetEffect(Message* msg) {
 
 void MessageManager::dispatchOthers(Message* msg) {
 	switch (msg->getOthersCmd()) {
-	case messageNS::CLEAN_UP: {
-		std::vector<Ball*> balls = entityManager->getBalls();
+		case messageNS::CLEAN_UP: {
+			std::vector<Ball*> balls = entityManager->getBalls();
 
-		if (balls.size() == 1) {
-			Effects* effects = new Effects();
-			std::vector<Paddle*> paddles = entityManager->getPaddles();
-			for (size_t i = 0; i < paddles.size(); i++) {
-				paddles[i]->resetEffects();				
+			if (balls.size() == 1) {
+				std::vector<Paddle*> paddles = entityManager->getPaddles();
+				for (size_t i = 0; i < paddles.size(); i++) {
+					paddles[i]->resetEffects();				
+				}
 			}
-		}
-	} break;
-	default: break;
+		} break;
+		default: break;
 	}
 }
 

@@ -118,7 +118,7 @@ void Credits::render() {
 			escXpos - smallFm->getTotalWidth(fontNS::SABO, "-") - creditsNS::BLINKER_GAP,
 			creditsNS::ESC_Y_POS,
 			"-"
-			);
+		);
 
 		smallFm->print(
 			fontNS::SABO,
@@ -126,7 +126,7 @@ void Credits::render() {
 			escXpos + escWidth + creditsNS::BLINKER_GAP,
 			creditsNS::ESC_Y_POS,
 			"-"
-			);
+		);
 	}
 
 	smallFm->print(
@@ -135,6 +135,6 @@ void Credits::render() {
 		escXpos,
 		creditsNS::ESC_Y_POS,
 		"PRESS ESC"
-		);
+	);
 }
 

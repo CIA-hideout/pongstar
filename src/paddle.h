@@ -10,7 +10,7 @@ namespace paddleNS {
 	const int WIDTH = 20;
 	const int NCOLS = 2;
 	const int SIDE_SPACE = 60;
-	const float VELOCITY = 400.0f;
+	const float VELOCITY = 1000.0f;
 
 	enum SIDE { LEFT, RIGHT };
 }

@@ -7,6 +7,7 @@
 
 #include <queue>
 
+#include "util/random.h"
 #include "message.h"
 #include "entity.h"
 #include "paddle.h"

@@ -6,13 +6,13 @@
 #include <chrono>
 
 #include "game.h"
-#include "dataManager.h"
-#include "fontManager.h"
-#include "messageManager.h"
-#include "pickupManager.h"
-#include "entityManager.h"
 #include "image.h"
 #include "scene.h"
+#include "dataManager.h"
+#include "fontManager.h"
+#include "pickupManager.h"
+#include "entityManager.h"
+#include "messageManager.h"
 
 using namespace std::chrono;
 
