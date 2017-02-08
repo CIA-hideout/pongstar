@@ -23,8 +23,9 @@ private:
 	bool shield;
 	bool boosted;
 	bool slowed;
-	bool inverted;
 	bool magnetised;
+	
+	float yVelocityMultipler;
 
 	LP_LINE shieldLine;
 	LP_LINE magnetLine;
@@ -44,6 +45,7 @@ public:
 	void draw(COLOR_ARGB color);
 
 	// getters
+	PaddleControls getControls() { return controls; }
 	int getScore() { return score; }
 	paddleNS::SIDE getSide() { return side; }
 	bool getShield() { return shield; }
@@ -52,6 +54,7 @@ public:
 	float getMagnetTimer() { return magnetTimer; }
 
 	// setters
+	void setPaddleControls(PaddleControls pc) { controls = pc; }
 	void setScore(int s) { score = s; }
 	void setSide(paddleNS::SIDE s) { side = s; }
 	void setShield(bool s) { shield = s; }

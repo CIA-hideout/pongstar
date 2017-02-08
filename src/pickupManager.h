@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 #include "util/random.h"
 #include "game.h"
@@ -34,7 +35,7 @@ namespace effectDataNS {
 		effectNS::EffectData(effectNS::BOOST, 4, 3.0f),
 		effectNS::EffectData(effectNS::SLOW, 5, 3.0f),
 		effectNS::EffectData(effectNS::SHRINK, 6, 3.0f),
-		effectNS::EffectData(effectNS::ENLARGE, 7, 0.5f),
+		effectNS::EffectData(effectNS::ENLARGE, 7, 3.0f),
 		effectNS::EffectData(effectNS::MYSTERY, 8, 0.0f)
 	};
 
@@ -47,13 +48,14 @@ private:
 	Game* game;
 	TextureManager* pickupTexture;
 	EntityManager* entityManager;
+	IntFloatMap* pickupDelayTimers;
 
 	bool effectTesting;
 	effectNS::EFFECT_TYPE effectToTest;
 
 public:
 	PickupManager();
-	PickupManager(Game* g, TextureManager* pt, EntityManager* em);
+	PickupManager(Game* g, TextureManager* pt, EntityManager* em, IntFloatMap* pdt);
 
 	~PickupManager();
 
@@ -67,6 +69,7 @@ public:
 
 	void testPickup(effectNS::EFFECT_TYPE et);
 	void massSpawnPickups();
+	void massSpawnPickups(int side);
 };
 
 #endif

@@ -63,7 +63,11 @@ public:
 	virtual float getY() { return spriteData.y; }
 
 	// Return scale factor.
-	virtual float getScale() { return spriteData.scale; }
+	// Return spriteData.x for convenience, because a lot of prev methods 
+	// has the same x, y scale and are already taking float as input
+	virtual float getScale() { return spriteData.scale.x; }
+	virtual float getScaleX() { return spriteData.scale.x; }
+	virtual float getScaleY() { return spriteData.scale.y; }
 
 	// Return width.
 	virtual int getWidth() { return spriteData.width; }
@@ -72,10 +76,10 @@ public:
 	virtual int getHeight() { return spriteData.height; }
 
 	// Return center X.
-	virtual float getCenterX() { return spriteData.x + spriteData.width / 2 * getScale(); }
+	virtual float getCenterX() { return spriteData.x + spriteData.width / 2 * getScaleX(); }
 
 	// Return center Y.
-	virtual float getCenterY() { return spriteData.y + spriteData.height / 2 * getScale(); }
+	virtual float getCenterY() { return spriteData.y + spriteData.height / 2 * getScaleY(); }
 
 	// Return rotation angle in degrees.
 	virtual float getDegrees() { return spriteData.angle * (180.0f / (float)PI); }
@@ -111,7 +115,9 @@ public:
 	virtual void setY(float newY) { spriteData.y = newY; }
 
 	// Set scale.
-	virtual void setScale(float s) { spriteData.scale = s; }
+	virtual void setScale(float s) { spriteData.scale = VECTOR2(s, s); }
+	virtual void setScaleX(float sx) { spriteData.scale.x = sx; }
+	virtual void setScaleY(float sy) { spriteData.scale.y = sy; }
 
 	// Set rotation angle in degrees.
 	// 0 degrees is up. Angles progress clockwise.
@@ -133,7 +139,7 @@ public:
 	// Set current frame of animation.
 	virtual void setCurrentFrame(int c);
 
-	// Set spriteData.rect to draw currentFrame
+	// Set spriteData.rect to draw currentFrascme
 	virtual void setRect();
 
 	// Set spriteData.rect to r.

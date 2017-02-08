@@ -2,9 +2,10 @@
 
 EntityManager::EntityManager() {}
 
-EntityManager::EntityManager(Game* g, TextureManagerMap* t) {
+EntityManager::EntityManager(Game* g, TextureManagerMap* t, IntFloatMap* pdt) {
 	game = g;
 	tmMap = t;
+	pickupDelayTimer = pdt;
 }
 
 EntityManager::~EntityManager() {}
@@ -21,6 +22,7 @@ TextureManager* EntityManager::getEntityTexture(entityNS::ENTITY_TYPE et) {
 }
 
 void EntityManager::addEntity(Entity* entity) {
+	pickupDelayTimer->insert(IntFloatPair(entity->getId(), 0.0f));
 	entityMap.insert(IdEntityPair(entity->getId(), entity));
 }
 

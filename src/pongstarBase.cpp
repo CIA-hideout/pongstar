@@ -21,8 +21,9 @@ void PongstarBase::initialize(sceneNS::SceneData sd) {
 	sceneData.playMenuCue = true;
 	sceneData.playGameCue = false;
 
-	entityManager = new EntityManager(game, &tmMap);
-	pickupManager = new PickupManager(game, tmMap[textureNS::PICKUPS], entityManager);
+	pickupDelayTimers = new IntFloatMap();
+	entityManager = new EntityManager(game, &tmMap, pickupDelayTimers);
+	pickupManager = new PickupManager(game, tmMap[textureNS::PICKUPS], entityManager, pickupDelayTimers);
 	messageManager = new MessageManager(pickupManager, entityManager);
 
 	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[textureNS::DIVIDER]))
@@ -47,8 +48,8 @@ void PongstarBase::initializeEntities() {
 	if (!paddle2->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[textureNS::PADDLE]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing paddle2"));
 
-	if (!bumper->initialize(game, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[textureNS::BUMPER]))
-		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));
+	/*if (!bumper->initialize(game, bumperNS::WIDTH, bumperNS::HEIGHT, bumperNS::NCOLS, tmMap[textureNS::BUMPER]))
+		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing bumper"));*/
 
 	paddle1->setX((float)paddleNS::SIDE_SPACE);
 	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
@@ -57,15 +58,15 @@ void PongstarBase::initializeEntities() {
 
 	entityManager->addEntity(paddle1);
 	entityManager->addEntity(paddle2);
-	entityManager->addEntity(bumper);
+	//entityManager->addEntity(bumper);
 
 	Ball* ball = entityManager->createBall();
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	pickupManager->testPickup(effectNS::SHRINK);
-	pickupManager->massSpawnPickups();
+	pickupManager->testPickup(effectNS::INVERT);
+	pickupManager->massSpawnPickups(1);
 }
 
 void PongstarBase::update(float frameTime) {
@@ -104,6 +105,11 @@ void PongstarBase::update(float frameTime) {
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
 		elapsedTime = duration_cast<milliseconds>(presentTime - startTime).count();
+	}
+
+	for (auto& x : *pickupDelayTimers) {
+		if (x.second > 0)
+			x.second -= frameTime;
 	}
 }
 

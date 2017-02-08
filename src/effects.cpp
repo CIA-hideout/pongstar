@@ -23,7 +23,21 @@ void Effects::update(float frameTime) {
 
 // Add new effect
 void Effects::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
-	startEffectQueue.push(EffectDuration(effectType, duration));
+	// If effect is already running, do not re-initialize effects
+	// For accurate timings, initialize effect, then start timers
+	bool effectExists = false;
+
+	for (effectDurationPair curr : currentEffects) {
+		if (curr.first == effectType)
+			effectExists = true;
+	}
+
+	if (effectExists)
+		currentEffects[effectType] += duration;
+	else {
+		printf("Effect is triggered");
+		startEffectQueue.push(EffectDuration(effectType, duration));
+	}
 }
 
 // Remove an effect
@@ -32,20 +46,10 @@ void Effects::removeEffect(effectNS::EFFECT_TYPE effectType) {
 }
 
 // Start timer after effect has been initialized
+// No need check for repeated effect as it has been done in addEffect()
 void Effects::popStartEffectQueue() {
 	EffectDuration ed = startEffectQueue.front();
-	bool effectExists = false;
-
-	for (effectDurationPair curr : currentEffects) {
-		if (curr.first == ed.effectType)
-			effectExists = true;
-	}
-
-	if (effectExists)
-		currentEffects[ed.effectType] += ed.duration;
-	else
-		currentEffects[ed.effectType] = ed.duration;
-
+	currentEffects[ed.effectType] = ed.duration;
 	startEffectQueue.pop();
 }
 

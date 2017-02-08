@@ -32,6 +32,7 @@ protected:
 	TextureManagerMap tmMap;
 
 	// Scene items
+	IntFloatMap* pickupDelayTimers;
 	MessageManager* messageManager;
 	PickupManager* pickupManager;
 	std::queue<int> deleteEntityQueue;

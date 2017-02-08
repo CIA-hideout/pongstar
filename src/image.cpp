@@ -9,7 +9,7 @@ Image::Image() {
 	spriteData.height = 2;
 	spriteData.x = 0.0;
 	spriteData.y = 0.0;
-	spriteData.scale = 1.0;
+	spriteData.scale = VECTOR2(1.0f, 1.0f);
 	spriteData.angle = 0.0;
 	spriteData.rect.left = 0;			// used to select one frame from multi-frame image
 	spriteData.rect.top = 0;

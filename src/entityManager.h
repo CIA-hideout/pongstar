@@ -29,12 +29,16 @@ namespace textureNS {
 typedef std::pair<int, Entity*> IdEntityPair;
 typedef std::unordered_map<textureNS::TEXTURE, TextureManager*> TextureManagerMap;
 
+typedef std::pair<int, float> IntFloatPair;
+typedef std::unordered_map<int, float> IntFloatMap;
+
 class EntityManager {
 private:
 	// Game items
 	Game* game;
 	TextureManagerMap* tmMap;
 	std::map<int, Entity*> entityMap;
+	IntFloatMap* pickupDelayTimer;
 
 	int leftPaddleId;
 	int rightPaddleId;
@@ -44,7 +48,7 @@ private:
 	
 public:
 	EntityManager();
-	EntityManager(Game* g, TextureManagerMap* t);
+	EntityManager(Game* g, TextureManagerMap* tm, IntFloatMap* pdt);
 	~EntityManager();
 
 	void initialize();

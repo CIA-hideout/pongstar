@@ -10,7 +10,7 @@ Font::Font() {
 	spriteData.y = 0;
 	spriteData.rect.right = spriteData.width;
 	spriteData.rect.bottom = spriteData.height;
-	spriteData.scale = 0.5;
+	spriteData.scale = VECTOR2(0.5f, 0.5f);
 	startFrame = 0;
 	endFrame = 127;
 	currentFrame = 0;
@@ -104,7 +104,7 @@ int Font::getTotalWidth(std::string text) {
 }
 
 int Font::getHeight() {
-	return (int)(textureManager->getHeight() / cols * spriteData.scale);
+	return (int)(textureManager->getHeight() / cols * getScale());
 }
 
 void Font::draw() {

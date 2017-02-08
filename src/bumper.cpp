@@ -4,10 +4,10 @@ Bumper::Bumper() : Entity() {
 	entityType = entityNS::BUMPER;
 	spriteData.width = bumperNS::WIDTH;
 	spriteData.height = bumperNS::HEIGHT;
-	edge.top = -(long)(bumperNS::HEIGHT  * spriteData.scale / 2);
-	edge.bottom = (long)(bumperNS::HEIGHT  * spriteData.scale / 2);
-	edge.left = -(long)(bumperNS::WIDTH  * spriteData.scale / 2);
-	edge.right = (long)(bumperNS::WIDTH  * spriteData.scale / 2);
+	edge.top = -(long)(bumperNS::HEIGHT  * spriteData.scale.y / 2);
+	edge.bottom = (long)(bumperNS::HEIGHT  * spriteData.scale.y / 2);
+	edge.left = -(long)(bumperNS::WIDTH  * spriteData.scale.x / 2);
+	edge.right = (long)(bumperNS::WIDTH  * spriteData.scale.x / 2);
 	
 	side = randBool() ? bumperNS::LEFT : bumperNS::RIGHT;
 	randomLocationBumper();
@@ -16,11 +16,11 @@ Bumper::Bumper() : Entity() {
 Bumper::~Bumper() {}
 
 int Bumper::getRandXSpawn() {
-	return randInt(0, GAME_WIDTH / 4 - (int)(spriteData.width * spriteData.scale));
+	return randInt(0, GAME_WIDTH / 4 - (int)(spriteData.width * spriteData.scale.x));
 }
 
 int Bumper::getRandYSpawn() {
-	return randInt(TOP_WALL, BOTTOM_WALL - (int)(spriteData.height * spriteData.scale));
+	return randInt(TOP_WALL, BOTTOM_WALL - (int)(spriteData.height * spriteData.scale.y));
 }
 
 bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector) {

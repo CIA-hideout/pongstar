@@ -1,6 +1,7 @@
 #ifndef _PICKUP_H
 #define _PICKUP_H
 
+#include <unordered_map>
 #include "entity.h"
 
 namespace pickupNS {
@@ -8,17 +9,19 @@ namespace pickupNS {
 	const int WIDTH = 100;
 	const int NCOLS = 9;
 	const float VELOCITY = 100.0f;
-	const float SCALE = 0.5f;
+	const VECTOR2 SCALE = { 0.5f, 0.5f };
+	const float PICKUP_DELAY = 0.1f;
 }
 
 class Pickup : public Entity {
 private:
 	effectNS::EFFECT_TYPE effectType;
 	float duration;
+	std::unordered_map<int, float>* pickupDelayTimers;
 
 public:
 	Pickup();
-	Pickup(effectNS::EFFECT_TYPE et, int f, float d);
+	Pickup(effectNS::EFFECT_TYPE et, int f, float d, std::unordered_map<int, float>* pdt);
 
 	~Pickup();
 
