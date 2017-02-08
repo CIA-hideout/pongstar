@@ -186,6 +186,13 @@ void Ball::runEffects() {
 					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
 					pushMsg(msgPtr);
 				} break;
+
+				//case effectNS::MAGNET: {
+				//	msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
+				//	pushMsg(msgPtr);
+				//} break;
+				
+				default: break;
 			}
 
 			if (currentEffect.second == 0)

@@ -214,29 +214,28 @@ void MessageManager::dispatchMagnetEffect(Message* msg) {
 	Ball* b = (Ball*)entityManager->getEntity(ballId);
 
 	switch (msg->getMagnetCmd()) {
-	case messageNS::BIND: {
-		// Ideally should stop other balls being magnetized here 
-		// but we clear all balls magnetism at the end of effect
-		if (p->getMagnetBall() == nullptr) {
-			p->setMagnetBall(b);
-			p->startMagnetTimer();	// Run another timer to keep track of ball on paddle
-		}
+		case messageNS::BIND: {
+			// Ideally should stop other balls being magnetized here 
+			// but we clear all balls magnetism at the end of effect
+			if (p->getMagnetBall() == nullptr) {
+				p->setMagnetBall(b);
+				p->startMagnetTimer();	// Run another timer to keep track of ball on paddle
+			}
 
-	} break;
-	case messageNS::UNBIND: {
-		b->resetMagnetBinding();
-		printf("unbind\n");
-		p->setMagnetised(false);
-		p->setMagnetBall(nullptr);
+		} break;
+		case messageNS::UNBIND: {
+			b->resetMagnetBinding();
+			p->setMagnetised(false);
+			p->setMagnetBall(nullptr);
 
-		if (otherP->getMagnetised()) {
-			startedTimer = true;
-			magnetiseBallId = b->getId();
-		}
+			if (otherP->getMagnetised()) {
+				startedTimer = true;
+				magnetiseBallId = b->getId();
+			}
 		
-	} break;
-	default: break;
-	}
+		} break;
+		default: break;
+		}
 }
 
 void MessageManager::dispatchOthers(Message* msg) {

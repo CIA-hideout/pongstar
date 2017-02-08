@@ -444,6 +444,6 @@ void Entity::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 }
 
 void Entity::resetEffects() {
-	Effects* e = new Effects();
-	effects = e;
+	//Effects* e = new Effects();
+	//effects = e;
 }

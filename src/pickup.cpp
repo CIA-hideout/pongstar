@@ -57,7 +57,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		}
 
 		if (ent.getEntityType() == entityNS::BALL) {
-			switch (getEffectType()) {
+			/*switch (getEffectType()) {
 				case effectNS::MULTIPLY:
 				case effectNS::BOOST:
 				case effectNS::SLOW:
@@ -70,7 +70,7 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				case effectNS::SHIELD:
 					targetType = messageNS::BOTH_P;
 					break;
-			}
+			}*/
 		}
 		else if (ent.getEntityType() == entityNS::PADDLE) {
 			switch (getEffectType()) {
@@ -89,6 +89,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				case effectNS::SLOW:
 				case effectNS::INVERT:
 					targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::LEFT_P : messageNS::RIGHT_P;
+					break;
+
+				default:
 					break;
 			}
 		}

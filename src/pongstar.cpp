@@ -17,7 +17,7 @@ const char* textureToString(textureNS::TEXTURE t) {
 //=============================================================================
 Pongstar::Pongstar() {
 	gameStack = new std::stack<Scene*>;
-	muted = false;
+	muted = true;
 }
 
 //=============================================================================
@@ -62,9 +62,13 @@ void Pongstar::initialize(HWND hwnd) {
 	sd.playMenuCue = true;
 	sd.playGameCue = false;
 
-	Menu* menu = new Menu(audio ,input, fontManager);
+	/*Menu* menu = new Menu(audio ,input, fontManager);
 	menu->initialize(sd);
-	gameStack->push(menu);
+	gameStack->push(menu);*/
+
+	Classic* classic = new Classic(this, dataManager, fontManager, tmMap);
+	classic->initialize(sd);
+	gameStack->push(classic);
 }
 
 //=============================================================================
@@ -72,9 +76,9 @@ void Pongstar::initialize(HWND hwnd) {
 //=============================================================================
 void Pongstar::update() {
 	if (muted)
-		audio->muteCategory("default");
+		audio->muteCategory("Default");
 	else
-		audio->unmuteCategory("default");
+		audio->unmuteCategory("Default");
 
 	gameStack->top()->update(frameTime);
 

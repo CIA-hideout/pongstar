@@ -6,6 +6,8 @@ PickupManager::PickupManager(Game* g, TextureManager* pt, EntityManager* em) {
 	game = g;
 	pickupTexture = pt;
 	entityManager = em;
+
+	effectTesting = false;
 }
 
 PickupManager::~PickupManager() {}
@@ -19,9 +21,11 @@ int PickupManager::getRandEffectArrIndex() {
 }
 
 Pickup* PickupManager::randomPickup() {
-	effectNS::EffectData data = effectDataNS::effectArray[getRandEffectArrIndex()];
-	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration);
+	effectNS::EffectData data;
 
+	data = effectTesting ? getPickupData(effectToTest) : effectDataNS::effectArray[getRandEffectArrIndex()];
+	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration);
+	
 	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, pickupTexture))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing pickup"));
 
@@ -54,4 +58,21 @@ effectNS::EffectData PickupManager::getPickupData(effectNS::EFFECT_TYPE et) {
 	}
 
 	return effectNS::EffectData();
+}
+
+void PickupManager::testPickup(effectNS::EFFECT_TYPE et) {
+	// hit bumper
+	effectTesting = true;
+	effectToTest = et;
+}
+
+void PickupManager::massSpawnPickups() {
+	Pickup* pickup;
+
+	for (int i = 0; i <= 10; i++) {
+		pickup = randomPickup();
+		pickup->setVelocity(randBool() ?
+			VECTOR2(-pickupNS::VELOCITY, 0) :
+			VECTOR2(pickupNS::VELOCITY, 0));
+	}
 }

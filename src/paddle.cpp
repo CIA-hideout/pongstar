@@ -148,45 +148,84 @@ void Paddle::runEffects() {
 	Message* msgPtr;
 	Message* msgPtrTwo;
 
-	if (effects->getEffects().size() > 0) {
-		for (std::pair<effectNS::EFFECT_TYPE, float> currentEffect : effects->getEffects()) {
-			switch (currentEffect.first) {
-				case effectNS::ENLARGE: {
-					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 2.0f;
-				} break;
-				case effectNS::SHRINK: {
-					spriteData.scale = (currentEffect.second == 0) ? 1.0f : 0.5f;
-				} break;
-				case effectNS::INVERT: {	
-					inverted = currentEffect.second != 0;
-				} break;
-				case effectNS::SHIELD: {
-					// Notify balls
-					shield = true;
-					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
+	// trigger all effects once
+	while (effects->getStartEffectQueue().size() > 0) {
+		EffectDuration ed = effects->getStartEffectQueue().front();
+		switch (ed.effectType) {
+			case effectNS::ENLARGE: {
+				spriteData.scale = 2.0f;
+			} break;
+			case effectNS::SHRINK: {
+				spriteData.scale = 0.5f;
+			} break;
+			case effectNS::INVERT: {
+				inverted = true;
+			} break;
+			case effectNS::BOOST: {
+				boosted = true;
+			} break;
+			case effectNS::SLOW: {
+				slowed = true;
+			} break;
+
+			case effectNS::MULTIPLY: {
+				
+			} break;
+
+			case effectNS::MYSTERY: {
+				
+			} break;
+
+			case effectNS::SHIELD: {
+				// Notify balls
+				shield = true;
+				msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::SHIELD, id);
+				pushMsg(msgPtr);
+			} break;
+
+			case effectNS::MAGNET: {
+				// Initialize magnet effect
+				if (!magnetised) {
+					magnetTimer = ed.duration;
+					magnetised = true;
+					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
 					pushMsg(msgPtr);
-				} break;
-				case effectNS::BOOST: {
-					boosted = currentEffect.second != 0;
-				} break;
-				case effectNS::SLOW: {
-					slowed = currentEffect.second != 0;
-				} break;
-				case effectNS::MAGNET: {
-					// Initialize magnet effect
-					if (!magnetised) {
-						magnetTimer = currentEffect.second;
-						magnetised = true;
-						msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
-						pushMsg(msgPtr);
-					}
-				} break;
+				}
 			}
 
-			if (currentEffect.second == 0) {
-				effects->removeEffect(currentEffect.first);
-			}
+			default:
+				break;
 		}
+
+		effects->popStartEffectQueue();
+	}
+
+	while (effects->getEndEffectQueue().size() > 0) {
+		EffectDuration ed = effects->getEndEffectQueue().front();
+		switch (ed.effectType) {
+			case effectNS::ENLARGE:
+			case effectNS::SHRINK: {
+				spriteData.scale = 1.0f;
+			} break;
+			case effectNS::INVERT:{ 
+				inverted = false;
+			} break;
+			case effectNS::BOOST: {
+				boosted = false;
+			} break;
+			case effectNS::SLOW: {
+				slowed = false;
+			} break;
+
+			case effectNS::MULTIPLY:
+			case effectNS::MYSTERY:
+			case effectNS::SHIELD:
+			case effectNS::MAGNET:
+			default:
+				break;
+		}
+
+		effects->popEndEffectQueue();
 	}
 
 	if (magnetTimer <= 0) {
@@ -198,7 +237,7 @@ void Paddle::runEffects() {
 
 		pushMsg(msgPtr);
 		pushMsg(msgPtrTwo);
-	}	
+	}
 }
 
 void Paddle::draw(COLOR_ARGB color) {
