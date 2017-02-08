@@ -59,13 +59,9 @@ void Pongstar::initialize(HWND hwnd) {
 	}
 
 	sceneNS::SceneData sd = sceneNS::SceneData();
-	//Menu* menu = new Menu(audio ,input, fontManager);
-	//menu->initialize(sd);
-	//gameStack->push(menu);
-	
-	Classic* classic = new Classic(this, dataManager, fontManager, tmMap);
-	classic->initialize(sd);
-	gameStack->push(classic);
+	Menu* menu = new Menu(audio ,input, fontManager);
+	menu->initialize(sd);
+	gameStack->push(menu);
 }
 
 //=============================================================================
@@ -118,9 +114,10 @@ void Pongstar::update() {
 				nextScene = new HighScore(audio, input, dataManager, fontManager);
 			} break;
 			case sceneNS::CREDITS: {
+				nextScene = new Credits(input, fontManager);
 			} break;
-			case sceneNS::VICTORY: {
-				nextScene = new Victory(audio, graphics, input, fontManager);
+			case sceneNS::GAMEOVER: {
+				nextScene = new Gameover(this, fontManager);
 			} break;
 
 			case sceneNS::MENU:

@@ -7,26 +7,23 @@
 
 namespace sceneNS {
 	enum TYPE {
-		MENU, INSTRUCTIONS, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, VICTORY, NONE
+		MENU, INSTRUCTIONS, CLASSIC, TIME_ATK, HIGH_SCORES, CREDITS, GAMEOVER, NONE
 	};
 
 	enum GAME_MODE {
 		GM_CLASSIC, GM_TIME_ATK
 	};
 
-	enum WINNER {
-		W_LEFT, W_RIGHT, W_DRAW
-	};
-
-	struct NewHighScore {
-		int score;
+	struct Scores {
+		int p1Score;
+		int p2Score;
+		int time;
 		std::string name;
 	};
 
 	struct SceneData {	// data to be passed down scene to scene
-		WINNER winner;
 		GAME_MODE gameMode;
-		NewHighScore newHighScore;
+		Scores scores;
 		bool escToMenu = false;
 	};
 }

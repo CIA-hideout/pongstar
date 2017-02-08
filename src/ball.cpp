@@ -188,6 +188,7 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				if (magnetised && !initializedMagnetEffect) {
 					initMagnetEffect(ent.getId());
 				}
+			} break;
 
 			case entityNS::BUMPER: {
 				bumperCollision(ent, collisionVector);
@@ -198,9 +199,9 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 			default: break;
 		}
-	}
 
-	return true;
+		return true;
+	}
 }
 
 void Ball::initMagnetEffect(int targetPaddleId) {

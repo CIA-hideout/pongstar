@@ -106,7 +106,7 @@ void Menu::render() {
 
 	for (size_t i = 0; i < items.size(); i++) {
 		int itemWidth = menuFm->getTotalWidth(fontNS::SABO_FILLED, sceneToString(items[i]));
-		int itemXpos = GAME_WIDTH / 2 - itemWidth / 2;
+		int itemXpos = GAME_WIDTH / 2 - itemWidth / 2 - fontNS::CENTER_OFFSET;
 		int itemYpos = menuNS::MENU_Y_POS + (menuFm->getHeight(fontNS::SABO_FILLED) + menuNS::MENU_VERT_GAP) * i;
 
 		if (selectedItemIndex == i && blink) {

@@ -65,6 +65,7 @@ const char DIVIDER_IMAGE[] = "sprites\\Divider.png";
 
 // Screens
 const char INSTRUCTIONS[] = "resources\\screens\\Instructions.png";
+const char GAMEOVER[] = "resources\\screens\\Gameover.png";
 
 const int HUD_Y_POS = 12;
 

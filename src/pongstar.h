@@ -11,9 +11,10 @@
 
 #include "scene.h"
 #include "menu.h"
+#include "credits.h"
 #include "classic.h"
 #include "timeAttack.h"
-#include "victory.h"
+#include "gameover.h"
 #include "highscore.h"
 #include "instructions.h"
 

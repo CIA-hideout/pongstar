@@ -1,19 +1,15 @@
 {
     "classic": [
         {
-            "name": "ASD",
-            "score": 6281
+            "name": "BLAZE IT",
+            "score": 4205
         },
         {
-            "name": "ASD",
-            "score": 6305
-        },
-        {
-            "name": "KIK",
+            "name": "Mary",
             "score": 7312
         },
         {
-            "name": " ASD",
+            "name": "BOB",
             "score": 9268
         },
         {
@@ -27,10 +23,6 @@
         {
             "name": "ASD",
             "score": 13296
-        },
-        {
-            "name": "\u001B\u001B\u001B\u001B",
-            "score": 13549
         },
         {
             "name": "ROMEO",
@@ -47,6 +39,10 @@
         {
             "name": "BOBBY",
             "score": 20534
+        },
+        {
+            "name": "IVANA",
+            "score": 20822
         },
         {
             "name": "HARRY",
@@ -71,7 +67,7 @@
     ],
     "timeAttack": [
         {
-            "name": "BOBBY",
+            "name": "WONDERW",
             "score": 3
         },
         {

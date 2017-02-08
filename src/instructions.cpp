@@ -13,10 +13,18 @@ Instructions::~Instructions() {}
 
 void Instructions::initialize(sceneNS::SceneData sd) {
 	blink = true;
+	gameMode = sd.gameMode;
 
 	titleFm = new FontManager(*baseFm);
 	textFm = new FontManager(*baseFm);
-	gameMode = sd.gameMode;
+
+	float scale = instructionsNS::TITLE_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	titleFm->setScale(fontNS::SABO_FILLED, scale);
+	titleFm->setScale(fontNS::SABO, scale);
+
+	scale = instructionsNS::TEXT_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
+	textFm->setScale(fontNS::SABO_FILLED, scale);
+	textFm->setScale(fontNS::SABO, scale);
 
 	if (!instructionsTexture.initialize(game->getGraphics(), INSTRUCTIONS))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing instructions texture"));
@@ -57,10 +65,6 @@ void Instructions::render() {
 		renderTitle("SIXTY", "SECONDS");
 	}
 
-	float scale = instructionsNS::TEXT_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
-	textFm->setScale(fontNS::SABO_FILLED, scale);
-	textFm->setScale(fontNS::SABO, scale);
-
 	int textWidth = textFm->getTotalWidth(fontNS::SABO_FILLED, "PRESS SPACE");
 	int textXpos = GAME_WIDTH / 2 - textWidth / 2;
 
@@ -92,9 +96,6 @@ void Instructions::render() {
 }
 
 void Instructions::renderTitle(std::string firstWord, std::string secondWord) {
-	float scale = instructionsNS::TITLE_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
-	titleFm->setScale(fontNS::SABO_FILLED, scale);
-	titleFm->setScale(fontNS::SABO, scale);
 	titleFm->setKerning(fontNS::SABO_FILLED, 15);
 	titleFm->setKerning(fontNS::SABO, 15);
 
