@@ -8,7 +8,7 @@ namespace pickupNS {
 	const int WIDTH = 100;
 	const int NCOLS = 9;
 	const float VELOCITY = 100.0f;
-	const float SCALE = 0.4f;
+	const float SCALE = 0.5f;
 }
 
 class Pickup : public Entity {

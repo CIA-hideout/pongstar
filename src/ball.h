@@ -10,7 +10,7 @@ namespace ballNS {
 	const int HEIGHT = 20;
 	const int WIDTH = 20;
 	const int NCOLS = 1;
-	const float VELOCITY = 800.0f;
+	const float VELOCITY = 1200.0f;
 	const float AUTO_START_DELAY = 0.5f;
 }
 
