@@ -84,21 +84,26 @@ void Paddle::runEffects() {
 			case effectNS::ENLARGE: {
 				spriteData.scale.y = 2.0f;
 			} break;
+
 			case effectNS::SHRINK: {
 				spriteData.scale.y = 0.5f;
 			} break;
+
 			case effectNS::INVERT: {
 				controls = PaddleControls(controls.down, controls.up);
 			} break;
+
 			case effectNS::BOOST: {
 				yVelocityMultipler = 2.0f;
 			} break;
+
 			case effectNS::SLOW: {
 				yVelocityMultipler = 0.5f;
 			} break;
 
 			case effectNS::MULTIPLY: {
-				
+				msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, -1);
+				pushMsg(msgPtr);
 			} break;
 
 			case effectNS::MYSTERY: {

@@ -92,6 +92,24 @@ void EntityManager::deleteBall(int id) {
 	}
 }
 
+void EntityManager::multiplyBall(int id) {
+	Ball* currentBall = (Ball*)getEntity(id);
+	float ballAngle = currentBall->getBallAngle();
+	VECTOR2 newVelocity;
+
+	Ball* newBall1 = createBall();
+	newBall1->setX(currentBall->getX());
+	newBall1->setY(currentBall->getY());
+	newVelocity = getVelocityFromAngle(ballAngle + 30);
+	newBall1->setVelocity(newVelocity);
+
+	Ball* newBall2 = createBall();
+	newBall2->setX(currentBall->getX());
+	newBall2->setY(currentBall->getY());
+	newVelocity = getVelocityFromAngle(ballAngle - 30);
+	newBall2->setVelocity(newVelocity);
+}
+
 VECTOR2 EntityManager::getVelocityFromAngle(float angle) {
 	float theta = std::fmod(angle, 90);
 	float velocity1 = ((90 - theta) / 90) * ballNS::VELOCITY;

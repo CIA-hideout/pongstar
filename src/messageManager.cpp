@@ -115,21 +115,16 @@ void MessageManager::dispatchAddEffect(Message* msg) {
 void MessageManager::dispatchRunEffect(Message* msg) {
 	switch (msg->getEffectType()) {
 		case effectNS::MULTIPLY: {
-			Ball* currentBall = (Ball*)entityManager->getEntity(msg->getEntityId());
-			float ballAngle = currentBall->getBallAngle();
-			VECTOR2 newVelocity;
+			if (msg->getEntityId() == -1) {		// If message sent from paddle
+				std::vector<Ball*> balls = entityManager->getBalls();
 
-			Ball* newBall1 = entityManager->createBall();
-			newBall1->setX(currentBall->getX());
-			newBall1->setY(currentBall->getY());
-			newVelocity = entityManager->getVelocityFromAngle(ballAngle + 30);
-			newBall1->setVelocity(newVelocity);
-
-			Ball* newBall2 = entityManager->createBall();
-			newBall2->setX(currentBall->getX());
-			newBall2->setY(currentBall->getY());
-			newVelocity = entityManager->getVelocityFromAngle(ballAngle - 30);
-			newBall2->setVelocity(newVelocity);
+				for (size_t i = 0; i < balls.size(); ++i) {
+					entityManager->multiplyBall(balls[i]->getId());
+				}
+			} else {
+				entityManager->multiplyBall(msg->getEntityId());
+			}
+			
 		} break;
 
 		case effectNS::SHIELD: {

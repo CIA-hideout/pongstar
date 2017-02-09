@@ -56,17 +56,15 @@ void Gameover::initialize(sceneNS::SceneData sd) {
 void Gameover::update(float frameTime) {
 	if (input->wasKeyPressed(ENTER_KEY)) {
 		if (sceneData.scores.p1Score != sceneData.scores.p2Score) {
-			// Remove enter char
-			std::string name = input->getTextIn().substr(0, input->getTextIn().size() - 1);
-
-			if (name.length() > 0) {
+			if (input->getTextIn().length()) {
 				nextSceneType = sceneNS::HIGH_SCORES;
-				sceneData.scores.name = toUpperCase(name);
-				input->clearTextIn();
+				sceneData.scores.name = toUpperCase(input->getTextIn());
 			}
 		} else {
 			nextSceneType = sceneNS::MENU;
 		}
+
+		input->clearTextIn();
 	}
 
 	if (blinkTimer < gameoverNS::BLINK_INTERVAL) {
