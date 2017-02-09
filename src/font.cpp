@@ -10,7 +10,7 @@ Font::Font() {
 	spriteData.y = 0;
 	spriteData.rect.right = spriteData.width;
 	spriteData.rect.bottom = spriteData.height;
-	spriteData.scale = VECTOR2(0.5f, 0.5f);
+	spriteData.scale = VECTOR2(0.4f, 0.4f);
 	startFrame = 0;
 	endFrame = 127;
 	currentFrame = 0;
@@ -82,7 +82,7 @@ void Font::print(int x, int y, std::string text) {
 		if (widths[frame] == 0)
 			widths[frame] = getWidth();
 
-		fx += widths[frame] * getScale() + kerning;
+		fx += widths[frame] * getScaleX() + kerning;
 	}
 }
 
@@ -97,14 +97,14 @@ int Font::getTotalWidth(std::string text) {
 			fx -= 11;
 		}
 
-		fx += widths[frame] * getScale() + kerning;
+		fx += widths[frame] * getScaleX() + kerning;
 	}
 
 	return (int)fx;
 }
 
 int Font::getHeight() {
-	return (int)(textureManager->getHeight() / cols * getScale());
+	return (int)(textureManager->getHeight() / cols * getScaleY());
 }
 
 void Font::draw() {

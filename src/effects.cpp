@@ -24,19 +24,17 @@ void Effects::update(float frameTime) {
 // Add new effect
 void Effects::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 	// If effect is already running, do not re-initialize effects
-	// For accurate timings, initialize effect, then start timers
+	// For accurate timings, initialize effect first, then start timers
 	bool effectExists = false;
 
 	for (effectDurationPair curr : currentEffects) {
-		if (curr.first == effectType)
-			effectExists = true;
+		effectExists = (curr.first == effectType);
 	}
 
 	if (effectExists)
 		currentEffects[effectType] += duration;
-	else {
+	else
 		startEffectQueue.push(EffectDuration(effectType, duration));
-	}
 }
 
 // Remove an effect

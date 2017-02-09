@@ -93,7 +93,7 @@ void FontManager::initialize() {
 
 void FontManager::setScale(fontNS::FONT_NAME name, float scale) {
 	for (auto &colorFont : (*fonts[name])) {
-		colorFont.second->setScale(scale);
+		colorFont.second->setScale(VECTOR2(scale, scale));
 	}
 }
 

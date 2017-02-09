@@ -65,7 +65,7 @@ public:
 	// Return scale factor.
 	// Return spriteData.x for convenience, because a lot of prev methods 
 	// has the same x, y scale and are already taking float as input
-	virtual float getScale() { return spriteData.scale.x; }
+	virtual VECTOR2 getScale() { return spriteData.scale; }
 	virtual float getScaleX() { return spriteData.scale.x; }
 	virtual float getScaleY() { return spriteData.scale.y; }
 
@@ -115,7 +115,7 @@ public:
 	virtual void setY(float newY) { spriteData.y = newY; }
 
 	// Set scale.
-	virtual void setScale(float s) { spriteData.scale = VECTOR2(s, s); }
+	virtual void setScale(VECTOR2 s) { spriteData.scale = s; }
 	virtual void setScaleX(float sx) { spriteData.scale.x = sx; }
 	virtual void setScaleY(float sy) { spriteData.scale.y = sy; }
 
@@ -139,7 +139,7 @@ public:
 	// Set current frame of animation.
 	virtual void setCurrentFrame(int c);
 
-	// Set spriteData.rect to draw currentFrascme
+	// Set spriteData.rect to draw currentFrame
 	virtual void setRect();
 
 	// Set spriteData.rect to r.

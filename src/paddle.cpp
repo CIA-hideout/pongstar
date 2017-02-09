@@ -210,9 +210,7 @@ void Paddle::draw(COLOR_ARGB color) {
 
 void Paddle::resetEffects() {
 	Entity::resetEffects();
-	
+
 	shield = false;
-	boosted = false;
-	slowed = false;
-	magnetised = false;
+	magnetised = false;	
 }

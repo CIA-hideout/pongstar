@@ -21,8 +21,6 @@ private:
 	int score;
 	paddleNS::SIDE side;
 	bool shield;
-	bool boosted;
-	bool slowed;
 	bool magnetised;
 	
 	float yVelocityMultipler;

@@ -72,20 +72,18 @@ void PickupManager::massSpawnPickups() {
 	for (int i = 0; i <= 10; i++) {
 		pickup = randomPickup();
 		pickup->setVelocity(randBool() ?
-		/*	VECTOR2(-pickupNS::VELOCITY, 0) :
-			VECTOR2(pickupNS::VELOCITY, 0));*/
-			VECTOR2(-300, 0) :
-			VECTOR2(300, 0));
+			VECTOR2(-effectDataNS::TESTING_Y_VELOCITY, 0) :
+			VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
 	}
 }
 
 void PickupManager::massSpawnPickups(int side) {
 	Pickup* pickup;
 
-	for (int i = 0; i <= 3; i++) {
+	for (int i = 0; i <= 5; i++) {
 		pickup = randomPickup();
 		pickup->setVelocity(side == 0 ?
-			VECTOR2(-300, 0) :
-			VECTOR2(300, 0));
+			VECTOR2(-effectDataNS::TESTING_Y_VELOCITY, 0) :
+			VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
 	}
 }
