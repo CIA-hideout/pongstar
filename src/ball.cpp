@@ -26,6 +26,7 @@ void Ball::update(float frameTime) {
 	spriteData.y += frameTime * velocity.y;
 
 	if (autoStart) {
+		audio->playCue(HIT_CUE);
 		if (autoStartTimer < ballNS::AUTO_START_DELAY) {
 			autoStartTimer += frameTime;
 		} else {
