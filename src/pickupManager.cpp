@@ -87,3 +87,22 @@ void PickupManager::massSpawnPickups(int side) {
 			VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
 	}
 }
+
+void PickupManager::massSpawnContrastPickups() {
+	Pickup* enlarge;
+	Pickup* shrink;
+	
+	for (int i = 0; i <= 0; i++) {
+		enlarge = createPickup(effectNS::ENLARGE);
+		enlarge->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE.x) / 2);
+		enlarge->setY((float)getRandYSpawn());
+		enlarge->setVelocity(VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
+	}
+
+	for (int i = 0; i <= 0; i++) {
+		shrink = createPickup(effectNS::SHRINK);
+		shrink->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE.x) / 2);
+		shrink->setY((float)getRandYSpawn());
+		shrink->setVelocity(VECTOR2(-200, 0));
+	}
+}

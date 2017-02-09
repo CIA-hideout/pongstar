@@ -57,6 +57,7 @@ public:
 	void testPickup(effectNS::EFFECT_TYPE et);
 	void massSpawnPickups();
 	void massSpawnPickups(int side);
+	void massSpawnContrastPickups();
 };
 
 #endif

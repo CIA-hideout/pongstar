@@ -8,6 +8,39 @@ Effects::Effects() {}
 
 Effects::~Effects() {}
 
+bool Effects::effectExists(effectNS::EFFECT_TYPE effectType) {
+	for (effectDurationPair curr : currentEffects) {
+		if (curr.first == effectType)
+			return true;
+	}
+
+	return false;
+}
+
+ContrastEffect Effects::findContrastEffect(effectNS::EFFECT_TYPE newEffect) {
+	effectNS::EFFECT_TYPE contrastEffect = effectNS::EFFECT_TYPE();
+	bool exists = false;
+
+	if (newEffect == effectNS::ENLARGE) {
+		contrastEffect = effectNS::SHRINK;
+		exists = effectExists(effectNS::SHRINK);
+	}
+	else if (newEffect == effectNS::SHRINK) {
+		contrastEffect = effectNS::ENLARGE;
+		exists = effectExists(effectNS::ENLARGE);
+	}
+	else if (newEffect == effectNS::BOOST) {
+		contrastEffect = effectNS::SLOW;
+		exists = effectExists(effectNS::SLOW);
+	}
+	else if (newEffect == effectNS::SLOW) {
+		contrastEffect = effectNS::BOOST;
+		exists = effectExists(effectNS::BOOST);
+	}
+
+	return ContrastEffect(contrastEffect, exists);
+}
+
 // Decrement duration of all currect effects
 void Effects::update(float frameTime) {
 	for (effectDurationPair curr : currentEffects) {
@@ -22,16 +55,15 @@ void Effects::update(float frameTime) {
 }
 
 // Add new effect
+// If effect is already running, do not re-initialize effects
+// For accurate timings, initialize effect first, then start timers
 void Effects::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
-	// If effect is already running, do not re-initialize effects
-	// For accurate timings, initialize effect first, then start timers
-	bool effectExists = false;
+	ContrastEffect ce = findContrastEffect(effectType);
 
-	for (effectDurationPair curr : currentEffects) {
-		effectExists = (curr.first == effectType);
-	}
-
-	if (effectExists)
+	if (ce.exists)
+		removeEffect(ce.effect);
+	
+	if (effectExists(effectType))
 		currentEffects[effectType] += duration;
 	else
 		startEffectQueue.push(EffectDuration(effectType, duration));

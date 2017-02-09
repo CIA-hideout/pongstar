@@ -25,6 +25,14 @@ struct EffectDuration {
 	EffectDuration(effectNS::EFFECT_TYPE et, float d) : effectType(et), duration(d) {}
 };
 
+struct ContrastEffect {
+	effectNS::EFFECT_TYPE effect;
+	bool exists;
+
+	ContrastEffect() {}
+	ContrastEffect(effectNS::EFFECT_TYPE ef, bool e) : effect(ef), exists(e) {}
+};
+
 typedef std::pair<effectNS::EFFECT_TYPE, float> effectDurationPair;
 typedef std::unordered_map<effectNS::EFFECT_TYPE, float> effectDurations;
 
@@ -37,6 +45,9 @@ private:
 public:
 	Effects();
 	~Effects();
+
+	bool effectExists(effectNS::EFFECT_TYPE et);
+	ContrastEffect findContrastEffect(effectNS::EFFECT_TYPE et);
 
 	// getters
 	effectDurations getEffects() { return currentEffects; }

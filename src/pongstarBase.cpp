@@ -67,12 +67,13 @@ void PongstarBase::initializeEntities() {
 	// For pickups testing
 	//pickupManager->testPickup(effectNS::MULTIPLY);
 	//pickupManager->massSpawnPickups(1);
+	pickupManager->massSpawnContrastPickups();
 }
 
 void PongstarBase::update(float frameTime) {
 	Input* input = game->getInput();
 	std::map<int, Entity*>* eMap = entityManager->getEntityMap();
-	Entity* entity = new Entity();
+	Entity* entity;
 
 	for (auto& x : *eMap) {
 		entity = x.second;

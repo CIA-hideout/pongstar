@@ -62,9 +62,13 @@ void Pongstar::initialize(HWND hwnd) {
 	sd.playMenuCue = true;
 	sd.playGameCue = false;
 
-	Menu* menu = new Menu(audio ,input, fontManager);
-	menu->initialize(sd);
-	gameStack->push(menu);
+	//Menu* menu = new Menu(audio ,input, fontManager);
+	//menu->initialize(sd);
+	//gameStack->push(menu);
+
+	Classic* classic = new Classic(this, audio, dataManager, fontManager, tmMap);
+	classic->initialize(sd);
+	gameStack->push(classic);
 }
 
 //=============================================================================
