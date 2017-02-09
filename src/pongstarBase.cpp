@@ -21,8 +21,9 @@ void PongstarBase::initialize(sceneNS::SceneData sd) {
 	sceneData.playMenuCue = true;
 	sceneData.playGameCue = false;
 
-	entityManager = new EntityManager(game, &tmMap);
-	pickupManager = new PickupManager(game, tmMap[textureNS::PICKUPS], entityManager);
+	pickupDelayTimers = new IntFloatMap();
+	entityManager = new EntityManager(game, &tmMap, pickupDelayTimers);
+	pickupManager = new PickupManager(game, tmMap[textureNS::PICKUPS], entityManager, pickupDelayTimers);
 	messageManager = new MessageManager(pickupManager, entityManager);
 
 	if (!divider.initialize(game->getGraphics(), 0, 0, 0, tmMap[textureNS::DIVIDER]))
@@ -64,7 +65,8 @@ void PongstarBase::initializeEntities() {
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	//pickupManager->createPickup(effectNS::MULTIPLY);
+	//pickupManager->testPickup(effectNS::SLOW);
+	//pickupManager->massSpawnPickups(1);
 }
 
 void PongstarBase::update(float frameTime) {
@@ -103,6 +105,11 @@ void PongstarBase::update(float frameTime) {
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
 		elapsedTime = duration_cast<milliseconds>(presentTime - startTime).count();
+	}
+
+	for (auto& x : *pickupDelayTimers) {
+		if (x.second > 0)
+			x.second -= frameTime;
 	}
 }
 

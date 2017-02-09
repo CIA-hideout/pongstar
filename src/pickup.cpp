@@ -2,19 +2,20 @@
 
 Pickup::Pickup() : Entity() {}
 
-Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d) : Entity() {
+Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d, std::unordered_map<int, float>* pdt) : Entity() {
 	entityType = entityNS::PICKUP;
 	effectType = et;
 	duration = d;
+	pickupDelayTimers = pdt;
 
 	// entity
 	spriteData.scale = pickupNS::SCALE;
 	spriteData.width = pickupNS::WIDTH;
 	spriteData.height = pickupNS::HEIGHT;
-	edge.top = -(long)(pickupNS::HEIGHT * spriteData.scale / 2);
-	edge.bottom = (long)(pickupNS::HEIGHT * spriteData.scale / 2);
-	edge.left = -(long)(pickupNS::WIDTH * spriteData.scale / 2);
-	edge.right = (long)(pickupNS::WIDTH * spriteData.scale / 2);
+	edge.top = -(long)(pickupNS::HEIGHT * spriteData.scale.y / 2);
+	edge.bottom = (long)(pickupNS::HEIGHT * spriteData.scale.y / 2);
+	edge.left = -(long)(pickupNS::WIDTH * spriteData.scale.x / 2);
+	edge.right = (long)(pickupNS::WIDTH * spriteData.scale.x / 2);
 
 	currentFrame = f;
 	loop = false;
@@ -35,7 +36,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	Message* msgPtr = nullptr;
 	messageNS::TARGET_TYPE targetType = messageNS::NONE;
 
-	if (Entity::collidesWith(ent, collisionVector)) {
+	float pickupTimeout = (*pickupDelayTimers)[ent.getId()];
+
+	if (Entity::collidesWith(ent, collisionVector) && pickupTimeout <= 0) {
 		// sound
 		if (ent.getEntityType() == entityNS::BALL || ent.getEntityType() == entityNS::PADDLE) {
 			if (effectType == effectNS::ENLARGE)
@@ -70,6 +73,8 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				case effectNS::SHIELD:
 					targetType = messageNS::BOTH_P;
 					break;
+				default:
+					break;
 			}
 		}
 		else if (ent.getEntityType() == entityNS::PADDLE) {
@@ -90,6 +95,9 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 				case effectNS::INVERT:
 					targetType = (ent.getX() >= GAME_WIDTH / 2) ? messageNS::LEFT_P : messageNS::RIGHT_P;
 					break;
+
+				default:
+					break;
 			}
 		}
 		else {	// collide with other entities, ex. bumper
@@ -99,13 +107,16 @@ bool Pickup::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		setActive(false);
 		msgPtr = new Message(messageNS::ADD_EFFECT, targetType, effectType, ent.getId(), duration);
 		pushMsg(msgPtr);
+
+		if (ent.getEntityType() == entityNS::PADDLE || ent.getEntityType() == entityNS::BALL)
+			(*pickupDelayTimers)[ent.getId()] = pickupNS::PICKUP_DELAY;
 	}
 
 	return true;
 }
 
 void Pickup::checkWithinView() {
-	if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale) || spriteData.x > RIGHT_WALL) {
+	if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale.x) || spriteData.x > RIGHT_WALL) {
 		setActive(false);
 	}
 }

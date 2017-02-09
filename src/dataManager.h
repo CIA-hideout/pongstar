@@ -20,7 +20,7 @@
 
 using namespace rapidjson;
 
-typedef std::map<int, std::string> HighScoreMap;
+typedef std::multimap<int, std::string> HighScoreMap;
 typedef std::pair<int, std::string> HighScorePair;
 
 struct PaddleControls {

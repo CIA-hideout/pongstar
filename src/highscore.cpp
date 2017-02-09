@@ -27,8 +27,8 @@ void HighScore::addHighScore() {
 		score = (sceneData.scores.p1Score > sceneData.scores.p2Score) ? sceneData.scores.p1Score : sceneData.scores.p2Score;
 	}
 
-	hsMap[score] = sceneData.scores.name;
-
+	hsMap.insert(std::pair<int, std::string>(score, sceneData.scores.name)); 
+	
 	if (sceneData.gameMode == sceneNS::GM_CLASSIC)
 		hsJson.classic = hsMap;
 	else

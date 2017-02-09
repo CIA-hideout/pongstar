@@ -41,16 +41,16 @@
             "score": 19400
         },
         {
+            "name": "ASD",
+            "score": 19700
+        },
+        {
             "name": "JAKE",
             "score": 20512
         },
         {
             "name": "BOBBY",
             "score": 20534
-        },
-        {
-            "name": "IVANA",
-            "score": 20822
         },
         {
             "name": "HARRY",
@@ -63,6 +63,10 @@
         {
             "name": "TOM",
             "score": 30300
+        },
+        {
+            "name": "WAIT",
+            "score": 32333
         },
         {
             "name": "JULIET",
@@ -107,7 +111,11 @@
             "score": 1
         },
         {
-            "name": "\u001B",
+            "name": "HARRY",
+            "score": 2
+        },
+        {
+            "name": "HARRY",
             "score": 2
         },
         {

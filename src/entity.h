@@ -195,7 +195,7 @@ public:
 
 	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);
 	virtual void runEffects() {};
-	virtual void resetEffects();
+	virtual void resetEffects() {};
 
 	void pushMsg(Message* msg) { messageQueue.push(msg); }
 	void popMsg() { messageQueue.pop(); }

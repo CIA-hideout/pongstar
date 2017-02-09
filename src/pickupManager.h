@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 
 #include "util/random.h"
 #include "game.h"
@@ -26,6 +27,7 @@ namespace effectDataNS {
 	};
 
 	const int EFFECT_ARR_SIZE = 9;
+	const float TESTING_Y_VELOCITY = 300.0f;
 }
 
 class PickupManager {
@@ -33,10 +35,14 @@ private:
 	Game* game;
 	TextureManager* pickupTexture;
 	EntityManager* entityManager;
+	IntFloatMap* pickupDelayTimers;
+
+	bool effectTesting;
+	effectNS::EFFECT_TYPE effectToTest;
 
 public:
 	PickupManager();
-	PickupManager(Game* g, TextureManager* pt, EntityManager* em);
+	PickupManager(Game* g, TextureManager* pt, EntityManager* em, IntFloatMap* pdt);
 
 	~PickupManager();
 
@@ -47,6 +53,10 @@ public:
 	Pickup* createPickup(effectNS::EFFECT_TYPE et);
 
 	effectNS::EffectData getPickupData(effectNS::EFFECT_TYPE et);
+
+	void testPickup(effectNS::EFFECT_TYPE et);
+	void massSpawnPickups();
+	void massSpawnPickups(int side);
 };
 
 #endif
