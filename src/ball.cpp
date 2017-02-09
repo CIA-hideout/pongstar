@@ -146,9 +146,11 @@ void Ball::runEffects() {
 			case effectNS::ENLARGE: {
 				spriteData.scale = VECTOR2(2.0f, 2.0f);
 			} break;
+
 			case effectNS::SHRINK: {
 				spriteData.scale = VECTOR2(0.5f, 0.5f);
 			} break;
+
 			case effectNS::INVERT: {
 				velocity = VECTOR2(-velocity.x, -velocity.y);
 			} break;

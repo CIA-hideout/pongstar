@@ -38,7 +38,9 @@ LRESULT Game::messageHandler(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) 
 			input->keyUp(wParam);
 			return 0;
 		case WM_CHAR:                           // character entered
-			input->keyIn(wParam);
+			if (wParam != ENTER_KEY) {
+				input->keyIn(wParam);
+			}
 			return 0;
 		case WM_MOUSEMOVE:                      // mouse moved
 			input->mouseIn(lParam);

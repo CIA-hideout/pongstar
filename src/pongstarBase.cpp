@@ -65,7 +65,7 @@ void PongstarBase::initializeEntities() {
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	//pickupManager->testPickup(effectNS::SLOW);
+	//pickupManager->testPickup(effectNS::MULTIPLY);
 	//pickupManager->massSpawnPickups(1);
 }
 
