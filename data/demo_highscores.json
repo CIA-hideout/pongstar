@@ -1,0 +1,50 @@
+{
+    "classic": [
+        {
+            "name": "ACE",
+            "score": 34667
+        },
+        {
+            "name": "MR YANDAO",
+            "score": 14515
+        },
+        {
+            "name": "LEAH",
+            "score": 56681
+        },
+        {
+            "name": "LUKE",
+            "score": 8653
+        },
+        {
+            "name": "KING PONG",
+            "score": 7742
+        },
+    ],
+    "timeAttack": [
+        {
+            "name": "NOOB",
+            "score": 9
+        },
+        {
+            "name": "LEMON",
+            "score": 14
+        },
+        {
+            "name": "MAC",
+            "score": 3
+        },
+        {
+            "name": "OWL99",
+            "score": 15
+        },
+        {
+            "name": "THE DOCTOR",
+            "score": 8
+        },
+        {
+            "name": "FROSTY",
+            "score": 2
+        },
+    ]
+}
