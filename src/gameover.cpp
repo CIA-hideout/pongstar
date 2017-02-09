@@ -59,13 +59,14 @@ void Gameover::update(float frameTime) {
 			// Remove enter char
 			std::string name = input->getTextIn().substr(0, input->getTextIn().size() - 1);
 
-			nextSceneType = sceneNS::HIGH_SCORES;
-			sceneData.scores.name = toUpperCase(name);
+			if (name.length() > 0) {
+				nextSceneType = sceneNS::HIGH_SCORES;
+				sceneData.scores.name = toUpperCase(name);
+				input->clearTextIn();
+			}
 		} else {
 			nextSceneType = sceneNS::MENU;
 		}
-
-		input->clearTextIn();
 	}
 
 	if (blinkTimer < gameoverNS::BLINK_INTERVAL) {
