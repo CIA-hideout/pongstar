@@ -51,6 +51,7 @@ struct HighScoreJson {
 namespace dataManagerNS {
 	const char CONTROLS_JSON[] = "data\\controls.json";
 	const char HIGH_SCORES_JSON[] = "data\\highscores.json";
+	//const char HIGH_SCORES_JSON[] = "data\\demo_highscores.json";
 }
 
 class DataManager {
