@@ -25,6 +25,11 @@ Pickup* PickupManager::randomPickup() {
 	effectNS::EffectData data;
 
 	data = effectTesting ? getPickupData(effectToTest) : effectDataNS::effectArray[getRandEffectArrIndex()];
+	if (data.effectType == effectNS::MYSTERY) {
+		effectNS::EffectData random = effectDataNS::effectArray[randInt(0, effectDataNS::EFFECT_ARR_SIZE - 2)];
+		data.effectType = random.effectType;
+		data.duration = random.duration;
+	}
 	Pickup* pickup = new Pickup(data.effectType, data.frame, data.duration, pickupDelayTimers);
 	
 	if (!pickup->initialize(game, pickupNS::WIDTH, pickupNS::HEIGHT, pickupNS::NCOLS, pickupTexture))
