@@ -139,6 +139,10 @@ void Ball::runEffects() {
 		switch (ed.effectType) {
 			case effectNS::ENLARGE: {
 				spriteData.scale = VECTOR2(2.0f, 2.0f);
+				int height = spriteData.height * spriteData.scale.y;
+
+				if (spriteData.y + height > BOTTOM_WALL)
+					spriteData.y = BOTTOM_WALL - height;
 			} break;
 
 			case effectNS::SHRINK: {
