@@ -15,17 +15,13 @@
 #include "pickupManager.h"
 
 namespace messageManagerNS {
-	const float MAGNET_DELAY_TIMER = 1.0f;
+	const float MAGNET_DELAY_TIMER = 0.2f;
 }
 
 class MessageManager {
 private:
 	Game* game;
 	std::queue<Message*> messageQueue;
-
-	float magnetDelayTimer;
-	bool startedTimer;
-	int magnetiseBallId;
 
 	// Components
 	EntityManager* entityManager;
@@ -44,10 +40,7 @@ public:
 	void dispatchAddEffect(Message* msg);
 	void dispatchRunEffect(Message* msg);
 	void dispatchEndEffect(Message* msg);
-	void dispatchMagnetEffect(Message* msg);
 	void dispatchOthers(Message* msg);
-
-	void update(float frameTime);
 	
 	void resolve();
 };

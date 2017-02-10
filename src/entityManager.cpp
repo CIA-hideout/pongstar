@@ -58,6 +58,11 @@ std::vector<Paddle*> EntityManager::getPaddles() {
 	return pv;
 }
 
+bool EntityManager::hasShield(paddleNS::SIDE side) {
+	Paddle* p = getPaddle(side);
+	return p->getShield();
+}
+
 void EntityManager::deleteEntity(int id) {
 	entityMap.erase(id);
 }
@@ -67,6 +72,10 @@ Ball* EntityManager::createBall() {
 
 	if (!ball->initialize(game, ballNS::WIDTH, ballNS::HEIGHT, ballNS::NCOLS, (*tmMap)[textureNS::BALL]))
 		throw(GameError(gameErrorNS::FATAL_ERROR, "Error initializing ball"));
+
+	// let new balls know about existence of shield
+	ball->setLeftShield(hasShield(paddleNS::LEFT));
+	ball->setRightShield(hasShield(paddleNS::RIGHT));
 
 	addEntity(ball);
 	ballIds.push_back(ball->getId());
@@ -84,12 +93,8 @@ std::vector<Ball*> EntityManager::getBalls() {
 }
 
 void EntityManager::deleteBall(int id) {
-	if (ballIds.size() > 1) {
-		entityMap[id]->setActive(false);
-		ballIds.erase(std::remove(ballIds.begin(), ballIds.end(), id), ballIds.end());
-	} else {
-		getEntity(id)->setVisible(true);
-	}
+	entityMap[id]->setActive(false);
+	ballIds.erase(std::remove(ballIds.begin(), ballIds.end(), id), ballIds.end());
 }
 
 void EntityManager::multiplyBall(int id) {
