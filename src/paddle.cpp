@@ -20,7 +20,7 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s) : Entity() {
 	shield = false;
 	magnetised = false;
 	magnetBall = nullptr;
-	magnetTimer = 2.0f;
+	magnetTimer = 1.0f;
 
 	D3DXCreateLine(g->get3Ddevice(), &shieldLine);
 	shieldLine->SetWidth(20);
@@ -53,10 +53,10 @@ void Paddle::update(float frameTime) {
 
 	if (magnetised && magnetBall != nullptr) {
 		magnetBall->setVelocity(VECTOR2(0, yVelocity));
-		magnetBallId = magnetBall->getId();
+		//magnetBallId = magnetBall->getId();
 	}
 
-	if (magnetTimerStarted) {
+	if (magnetInitialized) {
 		magnetTimer -= frameTime;
 	}
 
@@ -67,6 +67,16 @@ void Paddle::update(float frameTime) {
 bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {	
+			case entityNS::BALL: {
+				if (magnetised && !magnetInitialized)
+					initMagnetEffect(ent);
+			} break;
+			
+			case entityNS::BUMPER:
+			case entityNS::PICKUP:
+			case entityNS::PADDLE:
+			default: 
+				break;
 		}
 	}
 
@@ -122,10 +132,10 @@ void Paddle::runEffects() {
 				if (!magnetised) {
 					magnetTimer = ed.duration;
 					magnetised = true;	
-					msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
-					pushMsg(msgPtr);
+				/*	msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
+					pushMsg(msgPtr);*/
 				}
-			}
+			} break;
 
 			default:
 				break;
@@ -163,14 +173,42 @@ void Paddle::runEffects() {
 	}
 
 	if (magnetTimer <= 0) {
-		magnetTimer = 2.0f;
-		magnetTimerStarted = false;
+		audio->playCue(HIT_CUE);
+		magnetBall->setMagnetised(false);
 
-		msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBallId);
+		magnetTimer = 1.0f;
+		magnetInitialized = false;
+
+		//p->setMagnetised(false);
+		//p->setMagnetBall(nullptr);
+
+		magnetised = false;
+		magnetBall = nullptr;
+
+		/*msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBallId);
 		msgPtrTwo = new Message(messageNS::END_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
 
 		pushMsg(msgPtr);
-		pushMsg(msgPtrTwo);
+		pushMsg(msgPtrTwo);*/
+	}
+}
+
+void Paddle::initMagnetEffect(Entity &ent) {
+	audio->playCue(HIT_CUE);
+	magnetBall = (Ball*)&ent;
+	magnetBall->setVelocity(VECTOR2(0, 0));
+	magnetBall->setMagnetised(true);
+	magnetInitialized = true;
+	
+	int ballWidth = magnetBall->getWidth() * magnetBall->getScaleX();
+	int paddleWidth = spriteData.width * spriteData.scale.x;
+
+	// Ball will always stick to the front of paddle
+	if (magnetBall->getX() + ballWidth > spriteData.x && side == paddleNS::RIGHT) {
+		magnetBall->setX(spriteData.x - paddleWidth);
+	} 
+	else if (magnetBall->getX() - ballWidth < spriteData.x + paddleWidth && side == paddleNS::LEFT) {
+		magnetBall->setX(spriteData.x + paddleWidth);
 	}
 }
 

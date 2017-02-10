@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "dataManager.h"
 #include "graphics.h"
+#include "ball.h"
 
 namespace paddleNS {
 	const int HEIGHT = 120;
@@ -28,11 +29,11 @@ private:
 	LP_LINE shieldLine;
 	LP_LINE magnetLine;
 
-	Entity* magnetBall;
-	int magnetBallId;
+	Ball* magnetBall;
+	//int magnetBallId;
 
 	float magnetTimer;
-	bool magnetTimerStarted;
+	bool magnetInitialized;
 
 public:
 	Paddle();
@@ -48,7 +49,7 @@ public:
 	paddleNS::SIDE getSide() { return side; }
 	bool getShield() { return shield; }
 	bool getMagnetised() { return magnetised; }
-	Entity* getMagnetBall() { return magnetBall; }
+	Ball* getMagnetBall() { return magnetBall; }
 	float getMagnetTimer() { return magnetTimer; }
 
 	// setters
@@ -57,7 +58,7 @@ public:
 	void setSide(paddleNS::SIDE s) { side = s; }
 	void setShield(bool s) { shield = s; }
 	void setMagnetised(bool m) { magnetised = m; }
-	void setMagnetBall(Entity* mb) { magnetBall = mb; }
+	void setMagnetBall(Ball* mb) { magnetBall = mb; }
 	void setMagnetTimer(float mt) { magnetTimer = mt; }
 
 	void update(float frameTime);
@@ -65,7 +66,8 @@ public:
 
 	void runEffects();
 	void resetEffects();
-	void startMagnetTimer() { magnetTimerStarted = true; };
+	void startMagnetTimer() { magnetInitialized = true; };
+	void initMagnetEffect(Entity &ent);
 };
 
 #endif

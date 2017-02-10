@@ -59,15 +59,18 @@ void PongstarBase::initializeEntities() {
 	entityManager->addEntity(paddle1);
 	entityManager->addEntity(paddle2);
 	entityManager->addEntity(bumper);
-
+	 
 	Ball* ball = entityManager->createBall();
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
+	std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::SHIELD, effectNS::MULTIPLY };
+
 	// For pickups testing
-	//pickupManager->testPickup(effectNS::MULTIPLY);
-	//pickupManager->massSpawnPickups(1);
-	pickupManager->massSpawnContrastPickups();
+	//pickupManager->testPickup(effectNS::MAGNET);
+	//pickupManager->createPickup(effectNS::MAGNET);
+	pickupManager->massSpawnPickups(ev);
+	//pickupManager->massSpawnContrastPickups();
 }
 
 void PongstarBase::update(float frameTime) {

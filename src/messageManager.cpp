@@ -61,21 +61,21 @@ void MessageManager::dispatchScore(Message* msg) {
 			Paddle* paddlePtr = entityManager->getPaddle(side);
 			paddlePtr->setScore(paddlePtr->getScore() + 1);
 
-			entityManager->deleteBall(msg->getEntityId());
+			if (entityManager->getBallCount() > 1) {
+				entityManager->deleteBall(msg->getEntityId());
+			} else {
+				// If only 1 ball in play and ball is reset to center
+				// Launch ball towards winner at random angle
+				Ball* b = (Ball*)entityManager->getEntity(msg->getEntityId());
+				int angle = randInt(45, 135);
+				VECTOR2 velocity = entityManager->getVelocityFromAngle(angle);
 
-			// If only 1 ball in play and ball is reset to center
-			if (entityManager->getBallCount() == 1) {
-				if (entityManager->getBalls()[0]->getVelocity() == VECTOR2(0, 0)) {
-					// Launch ball towards winner at random angle
-					int angle = randInt(45, 135);
-					VECTOR2 velocity = entityManager->getVelocityFromAngle(angle);
-
-					if (side == paddleNS::LEFT) {
-						velocity.x *= -1;
-					}
-
-					entityManager->getBalls()[0]->autoStartBall(velocity);
+				if (side == paddleNS::LEFT) {
+					velocity.x *= -1;
 				}
+
+				b->setVisible(true);
+				b->autoStartBall(velocity);
 			}
 		} break;
 	}
@@ -108,6 +108,8 @@ void MessageManager::dispatchAddEffect(Message* msg) {
 		case messageNS::RIGHT_P: {
 			entityManager->getPaddle(paddleNS::RIGHT)->addEffect(msg->getEffectType(), msg->getDuration());
 		} break;
+		default:
+			break;
 	}
 }
 
@@ -145,15 +147,15 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 
 		case effectNS::MAGNET: {
 			// Identify sending msg id, left or right paddle
-			Paddle* p = (Paddle*)entityManager->getEntity(msg->getEntityId());
-			//paddleNS::SIDE side = p->getSide();
+			//Paddle* p = (Paddle*)entityManager->getEntity(msg->getEntityId());
+			////paddleNS::SIDE side = p->getSide();
 
-			// get all balls
-			std::vector<Ball*> bv = entityManager->getBalls();
+			//// get all balls
+			//std::vector<Ball*> bv = entityManager->getBalls();
 
-			for (size_t i = 0; i < bv.size(); i++) {
-				bv[i]->setMagnetised(true);
-			}
+			//for (size_t i = 0; i < bv.size(); i++) {
+			//	bv[i]->setMagnetised(true);
+			//}
 		} break;
 
 		default: break;
@@ -190,7 +192,7 @@ void MessageManager::dispatchEndEffect(Message* msg) {
 			if (!otherP->getMagnetised()) {
 				std::vector<Ball*> bv = entityManager->getBalls();
 				for (size_t i = 0; i < bv.size(); i++) {
-					bv[i]->setMagnetised(false);
+					//bv[i]->setMagnetised(false);
 				}
 			}
 
@@ -256,7 +258,7 @@ void MessageManager::update(float frameTime) {
 	if (magnetDelayTimer <= 0) {
 		// Set ball to magnetized
 		Ball* b = (Ball*)entityManager->getEntity(magnetiseBallId);
-		b->setMagnetised(true);
+		//b->setMagnetised(true);
 
 		magnetDelayTimer = messageManagerNS::MAGNET_DELAY_TIMER;
 		startedTimer = false;

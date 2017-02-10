@@ -17,7 +17,7 @@
 using namespace std::chrono;
 
 namespace pongstarNS {
-	const int POINTS_TO_WIN = 5;
+	const int POINTS_TO_WIN = 50;
 	const int TIME_PER_GAME = 30 * 1000;	// milliseconds
 	const int TEN_SECONDS = 10 * 1000;
 }

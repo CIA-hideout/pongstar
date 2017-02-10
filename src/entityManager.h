@@ -64,8 +64,9 @@ public:
 	void multiplyBall(int id);
 	VECTOR2 getVelocityFromAngle(float angle);
 
-	Paddle* getPaddle(paddleNS::SIDE side);
+	Paddle* getPaddle(paddleNS::SIDE s);
 	std::vector<Paddle*> getPaddles();
+	bool hasShield(paddleNS::SIDE s);
 
 	// Entities
 	void addEntity(Entity* e);

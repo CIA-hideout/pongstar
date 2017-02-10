@@ -15,7 +15,7 @@
 #include "pickupManager.h"
 
 namespace messageManagerNS {
-	const float MAGNET_DELAY_TIMER = 1.0f;
+	const float MAGNET_DELAY_TIMER = 0.2f;
 }
 
 class MessageManager {

@@ -27,7 +27,7 @@ namespace effectDataNS {
 	};
 
 	const int EFFECT_ARR_SIZE = 9;
-	const float TESTING_Y_VELOCITY = 300.0f;
+	const float TESTING_X_VELOCITY = 300.0f;
 }
 
 class PickupManager {
@@ -57,6 +57,7 @@ public:
 	void testPickup(effectNS::EFFECT_TYPE et);
 	void massSpawnPickups();
 	void massSpawnPickups(int side);
+	void massSpawnPickups(std::vector<effectNS::EFFECT_TYPE> ev);
 	void massSpawnContrastPickups();
 };
 

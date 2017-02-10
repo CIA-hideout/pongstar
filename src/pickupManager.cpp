@@ -72,8 +72,8 @@ void PickupManager::massSpawnPickups() {
 	for (int i = 0; i <= 10; i++) {
 		pickup = randomPickup();
 		pickup->setVelocity(randBool() ?
-			VECTOR2(-effectDataNS::TESTING_Y_VELOCITY, 0) :
-			VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
+			VECTOR2(-effectDataNS::TESTING_X_VELOCITY, 0) :
+			VECTOR2(effectDataNS::TESTING_X_VELOCITY, 0));
 	}
 }
 
@@ -83,8 +83,25 @@ void PickupManager::massSpawnPickups(int side) {
 	for (int i = 0; i <= 5; i++) {
 		pickup = randomPickup();
 		pickup->setVelocity(side == 0 ?
-			VECTOR2(-effectDataNS::TESTING_Y_VELOCITY, 0) :
-			VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
+			VECTOR2(-effectDataNS::TESTING_X_VELOCITY, 0) :
+			VECTOR2(effectDataNS::TESTING_X_VELOCITY, 0));
+	}
+}
+
+void PickupManager::massSpawnPickups(std::vector<effectNS::EFFECT_TYPE> ev) {
+	Pickup* pickup;
+	
+	std::vector<effectNS::EffectData> effDataVec;
+
+	int size = static_cast<int>(ev.size());
+
+	for (size_t i = 0; i < 5; i++) {
+		pickup = createPickup(ev[randInt(0, size - 1)]);
+		pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE.x) / 2);
+		pickup->setY((float)getRandYSpawn());
+		pickup->setVelocity(randBool() ?
+			VECTOR2(-effectDataNS::TESTING_X_VELOCITY, 0) :
+			VECTOR2(effectDataNS::TESTING_X_VELOCITY, 0));
 	}
 }
 
@@ -96,7 +113,7 @@ void PickupManager::massSpawnContrastPickups() {
 		enlarge = createPickup(effectNS::ENLARGE);
 		enlarge->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE.x) / 2);
 		enlarge->setY((float)getRandYSpawn());
-		enlarge->setVelocity(VECTOR2(effectDataNS::TESTING_Y_VELOCITY, 0));
+		enlarge->setVelocity(VECTOR2(effectDataNS::TESTING_X_VELOCITY, 0));
 	}
 
 	for (int i = 0; i <= 0; i++) {
