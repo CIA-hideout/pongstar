@@ -22,9 +22,8 @@ private:
 
 	bool leftShield;
 	bool rightShield;
-
 	bool magnetised;
-	//bool initializedMagnetEffect;
+
 public:
 	Ball();
 	~Ball();
@@ -32,12 +31,10 @@ public:
 	void setLeftShield(bool s) { leftShield = s; };
 	void setRightShield(bool s) { rightShield = s; }
 	void setMagnetised(bool m) { magnetised = m; }
-	//void setInitializedMagnetEffect(bool ime) { initializedMagnetEffect = ime; }
 
 	bool getLeftShield() { return leftShield; }
 	bool getRightShield() { return rightShield; }
 	bool getMagnetised() { return magnetised; }
-	//bool getInitializedMagnetEffect() { return initializedMagnetEffect; }
 
 	void update(float frameTime);
 	void resetBall();
@@ -48,8 +45,6 @@ public:
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 	
 	void runEffects();
-	void initMagnetEffect(int targetPaddleId);
-	void resetMagnetBinding();
 
 	float getBallAngle();
 };

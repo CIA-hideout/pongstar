@@ -23,10 +23,6 @@ private:
 	Game* game;
 	std::queue<Message*> messageQueue;
 
-	float magnetDelayTimer;
-	bool startedTimer;
-	int magnetiseBallId;
-
 	// Components
 	EntityManager* entityManager;
 	PickupManager* pickupManager;
@@ -44,10 +40,7 @@ public:
 	void dispatchAddEffect(Message* msg);
 	void dispatchRunEffect(Message* msg);
 	void dispatchEndEffect(Message* msg);
-	void dispatchMagnetEffect(Message* msg);
 	void dispatchOthers(Message* msg);
-
-	void update(float frameTime);
 	
 	void resolve();
 };

@@ -53,7 +53,6 @@ void Paddle::update(float frameTime) {
 
 	if (magnetised && magnetBall != nullptr) {
 		magnetBall->setVelocity(VECTOR2(0, yVelocity));
-		//magnetBallId = magnetBall->getId();
 	}
 
 	if (magnetInitialized) {
@@ -78,14 +77,14 @@ bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 			default: 
 				break;
 		}
+		return true;
 	}
 
-	return true;
+	return false;
 }
 
 void Paddle::runEffects() {
 	Message* msgPtr;
-	Message* msgPtrTwo;
 
 	// initialize all effects once
 	while (effects->getStartEffectQueue().size() > 0) {
@@ -128,12 +127,9 @@ void Paddle::runEffects() {
 			} break;
 
 			case effectNS::MAGNET: {
-				// Initialize magnet effect
 				if (!magnetised) {
 					magnetTimer = ed.duration;
 					magnetised = true;	
-				/*	msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
-					pushMsg(msgPtr);*/
 				}
 			} break;
 
@@ -178,18 +174,8 @@ void Paddle::runEffects() {
 
 		magnetTimer = 1.0f;
 		magnetInitialized = false;
-
-		//p->setMagnetised(false);
-		//p->setMagnetBall(nullptr);
-
 		magnetised = false;
 		magnetBall = nullptr;
-
-		/*msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::UNBIND, id, magnetBallId);
-		msgPtrTwo = new Message(messageNS::END_EFFECT, messageNS::BALL, effectNS::MAGNET, id);
-
-		pushMsg(msgPtr);
-		pushMsg(msgPtrTwo);*/
 	}
 }
 
@@ -238,11 +224,11 @@ void Paddle::draw(COLOR_ARGB color) {
 
 		if (side == paddleNS::LEFT) {
 			magnetPoints[0] = VECTOR2(spriteData.x - 10, spriteData.y);
-			magnetPoints[1] = VECTOR2(spriteData.x - 10, spriteData.y + spriteData.height);
+			magnetPoints[1] = VECTOR2(spriteData.x - 10, spriteData.y + spriteData.height * spriteData.scale.y);
 		}
 		else {
 			magnetPoints[0] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y);
-			magnetPoints[1] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y + spriteData.height);
+			magnetPoints[1] = VECTOR2(spriteData.x + spriteData.width + 10, spriteData.y + spriteData.height * spriteData.scale.y);
 		}
 
 		magnetLine->Begin();

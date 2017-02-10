@@ -19,21 +19,19 @@ namespace paddleNS {
 class Paddle : public Entity {
 private:
 	PaddleControls controls;
-	int score;
 	paddleNS::SIDE side;
+	int score;
+
+	float yVelocityMultipler;
 	bool shield;
 	bool magnetised;
-	
-	float yVelocityMultipler;
+
+	Ball* magnetBall;
+	float magnetTimer;
+	bool magnetInitialized;
 
 	LP_LINE shieldLine;
 	LP_LINE magnetLine;
-
-	Ball* magnetBall;
-	//int magnetBallId;
-
-	float magnetTimer;
-	bool magnetInitialized;
 
 public:
 	Paddle();
@@ -51,6 +49,7 @@ public:
 	bool getMagnetised() { return magnetised; }
 	Ball* getMagnetBall() { return magnetBall; }
 	float getMagnetTimer() { return magnetTimer; }
+	bool getMagnetInitialized() { return magnetInitialized; }
 
 	// setters
 	void setPaddleControls(PaddleControls pc) { controls = pc; }
@@ -60,6 +59,7 @@ public:
 	void setMagnetised(bool m) { magnetised = m; }
 	void setMagnetBall(Ball* mb) { magnetBall = mb; }
 	void setMagnetTimer(float mt) { magnetTimer = mt; }
+	void setMagnetInitialized(bool mi) { magnetInitialized = mi; }
 
 	void update(float frameTime);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);

@@ -13,8 +13,6 @@ Ball::Ball() : Entity() {
 	autoStartTimer = 0.0;
 	leftShield = false;
 	rightShield = false;
-	//magnetised = false;
-	//initializedMagnetEffect = false;
 }
 
 Ball::~Ball() {}
@@ -44,10 +42,6 @@ void Ball::resetBall() {
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
 	spriteData.scale = VECTOR2(1.0f, 1.0f);
-
-	// reset paddle effects
-	/*Message *msgPtr = new Message(messageNS::OTHERS, messageNS::CLEAN_UP);
-	pushMsg(msgPtr);*/
 }
 
 void Ball::autoStartBall(VECTOR2 v) {
@@ -61,7 +55,7 @@ void Ball::randomStartBall() {
 }
 
 void Ball::wallCollision() {
-	Message* msgPtr = nullptr;
+	Message* msgPtr;
 
 	// Collide with right wall and shield is on
 	if (spriteData.x > RIGHT_SHIELD - ballNS::WIDTH * spriteData.scale.x && rightShield) {
@@ -136,7 +130,7 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 }
 
 void Ball::runEffects() {
-	Message* msgPtr = nullptr;
+	Message* msgPtr;
 	float xRatio, yRatio;
 	
 	// initialize all effects once
@@ -223,18 +217,8 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 			case entityNS::PADDLE: {
 				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 
-				if (!magnetised) {	
+				if (!magnetised)
 					audio->playCue(HIT_CUE);
-				}
-
-				/*if (!magnetised) {
-					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-					audio->playCue(HIT_CUE);
-				}
-
-				if (magnetised && !initializedMagnetEffect) {
-					initMagnetEffect(ent.getId());
-				}*/
 			} break;
 
 			case entityNS::BUMPER: {
@@ -246,22 +230,9 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 			default: break;
 		}
-
 		return true;
 	}
-}
-
-void Ball::initMagnetEffect(int targetPaddleId) {
-	// send instance to paddle to ask for binding
-	Message* msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::BIND, targetPaddleId, id);
-	pushMsg(msgPtr);
-	setVelocity(VECTOR2(0, 0));
-	//initializedMagnetEffect = true;
-}
-
-void Ball::resetMagnetBinding() {
-	/*magnetised = false;
-	initializedMagnetEffect = false;*/
+	return false;
 }
 
 float Ball::getBallAngle() {
