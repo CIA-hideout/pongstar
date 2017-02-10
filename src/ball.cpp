@@ -13,8 +13,6 @@ Ball::Ball() : Entity() {
 	autoStartTimer = 0.0;
 	leftShield = false;
 	rightShield = false;
-	magnetised = false;
-	initializedMagnetEffect = false;
 }
 
 Ball::~Ball() {}
@@ -44,10 +42,6 @@ void Ball::resetBall() {
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
 	spriteData.scale = VECTOR2(1.0f, 1.0f);
-
-	// reset paddle effects
-	Message *msgPtr = new Message(messageNS::OTHERS, messageNS::CLEAN_UP);
-	pushMsg(msgPtr);
 }
 
 void Ball::autoStartBall(VECTOR2 v) {
@@ -61,7 +55,7 @@ void Ball::randomStartBall() {
 }
 
 void Ball::wallCollision() {
-	Message* msgPtr = nullptr;
+	Message* msgPtr;
 
 	// Collide with right wall and shield is on
 	if (spriteData.x > RIGHT_SHIELD - ballNS::WIDTH * spriteData.scale.x && rightShield) {
@@ -136,7 +130,7 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 }
 
 void Ball::runEffects() {
-	Message* msgPtr = nullptr;
+	Message* msgPtr;
 	float xRatio, yRatio;
 	
 	// initialize all effects once
@@ -145,6 +139,10 @@ void Ball::runEffects() {
 		switch (ed.effectType) {
 			case effectNS::ENLARGE: {
 				spriteData.scale = VECTOR2(2.0f, 2.0f);
+				int height = spriteData.height * spriteData.scale.y;
+
+				if (spriteData.y + height > BOTTOM_WALL)
+					spriteData.y = BOTTOM_WALL - height;
 			} break;
 
 			case effectNS::SHRINK: {
@@ -221,14 +219,10 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 			case entityNS::PADDLE: {
-				if (!magnetised) {
-					Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
-					audio->playCue(HIT_CUE);
-				}
+				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
 
-				if (magnetised && !initializedMagnetEffect) {
-					initMagnetEffect(ent.getId());
-				}
+				if (!magnetised)
+					audio->playCue(HIT_CUE);
 			} break;
 
 			case entityNS::BUMPER: {
@@ -240,22 +234,9 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 			default: break;
 		}
-
 		return true;
 	}
-}
-
-void Ball::initMagnetEffect(int targetPaddleId) {
-	// send instance to paddle to ask for binding
-	Message* msgPtr = new Message(messageNS::MAGNET_EFFECT, messageNS::BIND, targetPaddleId, id);
-	pushMsg(msgPtr);
-	setVelocity(VECTOR2(0, 0));
-	initializedMagnetEffect = true;
-}
-
-void Ball::resetMagnetBinding() {
-	magnetised = false;
-	initializedMagnetEffect = false;
+	return false;
 }
 
 float Ball::getBallAngle() {

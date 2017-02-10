@@ -59,20 +59,23 @@ void PongstarBase::initializeEntities() {
 	entityManager->addEntity(paddle1);
 	entityManager->addEntity(paddle2);
 	entityManager->addEntity(bumper);
-
+	 
 	Ball* ball = entityManager->createBall();
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	//pickupManager->testPickup(effectNS::MULTIPLY);
-	//pickupManager->massSpawnPickups(1);
+	//std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::SHIELD, effectNS::MULTIPLY };
+	pickupManager->testPickup(effectNS::MAGNET);
+	pickupManager->createPickup(effectNS::MAGNET);
+	//pickupManager->massSpawnPickups(ev);
+	//pickupManager->massSpawnContrastPickups();
 }
 
 void PongstarBase::update(float frameTime) {
 	Input* input = game->getInput();
 	std::map<int, Entity*>* eMap = entityManager->getEntityMap();
-	Entity* entity = new Entity();
+	Entity* entity;
 
 	for (auto& x : *eMap) {
 		entity = x.second;
@@ -88,7 +91,6 @@ void PongstarBase::update(float frameTime) {
 	}
 
 	messageManager->resolve();
-	messageManager->update(frameTime);
 
 	while (deleteEntityQueue.size() > 0) {
 		int idToRemove = deleteEntityQueue.front();

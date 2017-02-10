@@ -4,6 +4,7 @@
 #include "entity.h"
 #include "dataManager.h"
 #include "graphics.h"
+#include "ball.h"
 
 namespace paddleNS {
 	const int HEIGHT = 120;
@@ -18,21 +19,19 @@ namespace paddleNS {
 class Paddle : public Entity {
 private:
 	PaddleControls controls;
-	int score;
 	paddleNS::SIDE side;
+	int score;
+
+	float yVelocityMultipler;
 	bool shield;
 	bool magnetised;
-	
-	float yVelocityMultipler;
+
+	Ball* magnetBall;
+	float magnetTimer;
+	bool magnetInitialized;
 
 	LP_LINE shieldLine;
 	LP_LINE magnetLine;
-
-	Entity* magnetBall;
-	int magnetBallId;
-
-	float magnetTimer;
-	bool magnetTimerStarted;
 
 public:
 	Paddle();
@@ -48,8 +47,9 @@ public:
 	paddleNS::SIDE getSide() { return side; }
 	bool getShield() { return shield; }
 	bool getMagnetised() { return magnetised; }
-	Entity* getMagnetBall() { return magnetBall; }
+	Ball* getMagnetBall() { return magnetBall; }
 	float getMagnetTimer() { return magnetTimer; }
+	bool getMagnetInitialized() { return magnetInitialized; }
 
 	// setters
 	void setPaddleControls(PaddleControls pc) { controls = pc; }
@@ -57,15 +57,17 @@ public:
 	void setSide(paddleNS::SIDE s) { side = s; }
 	void setShield(bool s) { shield = s; }
 	void setMagnetised(bool m) { magnetised = m; }
-	void setMagnetBall(Entity* mb) { magnetBall = mb; }
+	void setMagnetBall(Ball* mb) { magnetBall = mb; }
 	void setMagnetTimer(float mt) { magnetTimer = mt; }
+	void setMagnetInitialized(bool mi) { magnetInitialized = mi; }
 
 	void update(float frameTime);
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+	bool collidesWith(Entity& ent, VECTOR2& collisionVector);
 
 	void runEffects();
 	void resetEffects();
-	void startMagnetTimer() { magnetTimerStarted = true; };
+	void startMagnetTimer() { magnetInitialized = true; };
+	void initMagnetEffect(Entity& ent);
 };
 
 #endif
