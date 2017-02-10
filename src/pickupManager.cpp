@@ -26,10 +26,7 @@ Pickup* PickupManager::randomPickup() {
 
 	data = effectTesting ? getPickupData(effectToTest) : effectDataNS::effectArray[getRandEffectArrIndex()];
 	if (data.effectType == effectNS::MYSTERY) {
-		effectNS::EffectData random = effectDataNS::effectArray[getRandEffectArrIndex()];
-		while (random.effectType == effectNS::MYSTERY) {
-			random = effectDataNS::effectArray[getRandEffectArrIndex()];
-		}
+		effectNS::EffectData random = effectDataNS::effectArray[randInt(0, effectDataNS::EFFECT_ARR_SIZE - 2)];
 		data.effectType = random.effectType;
 		data.duration = random.duration;
 	}
