@@ -62,12 +62,12 @@ public:
 	void setMagnetInitialized(bool mi) { magnetInitialized = mi; }
 
 	void update(float frameTime);
-	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
+	bool collidesWith(Entity& ent, VECTOR2& collisionVector);
 
 	void runEffects();
 	void resetEffects();
 	void startMagnetTimer() { magnetInitialized = true; };
-	void initMagnetEffect(Entity &ent);
+	void initMagnetEffect(Entity& ent);
 };
 
 #endif

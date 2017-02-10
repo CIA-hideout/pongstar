@@ -60,7 +60,8 @@ void MessageManager::dispatchScore(Message* msg) {
 				// If only 1 ball in play and ball is reset to center
 				// Launch ball towards winner at random angle
 				Ball* b = (Ball*)entityManager->getEntity(msg->getEntityId());
-				int angle = randInt(45, 135);
+				//int angle = randInt(45, 135);
+				int angle = 90;
 				VECTOR2 velocity = entityManager->getVelocityFromAngle(angle);
 
 				if (side == paddleNS::LEFT) {

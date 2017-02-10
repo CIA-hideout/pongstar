@@ -93,10 +93,8 @@ void PickupManager::massSpawnPickups(std::vector<effectNS::EFFECT_TYPE> ev) {
 	
 	std::vector<effectNS::EffectData> effDataVec;
 
-	int size = static_cast<int>(ev.size());
-
-	for (size_t i = 0; i < 5; i++) {
-		pickup = createPickup(ev[randInt(0, size - 1)]);
+	for (int i = 0; i < 5; i++) {
+		pickup = createPickup(ev[randInt(0, ev.size() - 1)]);
 		pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE.x) / 2);
 		pickup->setY((float)getRandYSpawn());
 		pickup->setVelocity(randBool() ?

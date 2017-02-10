@@ -66,7 +66,7 @@ void Paddle::update(float frameTime) {
 bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {	
-			case entityNS::BALL: {
+			case entityNS::BALL: {				
 				if (magnetised && !magnetInitialized)
 					initMagnetEffect(ent);
 			} break;
@@ -183,23 +183,32 @@ void Paddle::runEffects() {
 	}
 }
 
-void Paddle::initMagnetEffect(Entity &ent) {
+void Paddle::initMagnetEffect(Entity& ent) {
 	audio->playCue(HIT_CUE);
 	magnetBall = (Ball*)&ent;
 	magnetBall->setVelocity(VECTOR2(0, 0));
 	magnetBall->setMagnetised(true);
 	magnetInitialized = true;
-	
+
 	int ballWidth = magnetBall->getWidth() * magnetBall->getScaleX();
 	int paddleWidth = spriteData.width * spriteData.scale.x;
 
-	// Ball will always stick to the front of paddle
-	if (magnetBall->getX() + ballWidth > spriteData.x && side == paddleNS::RIGHT) {
+	int ballHeight = magnetBall->getHeight() * magnetBall->getScaleY();
+	int paddleHeight = spriteData.height * spriteData.scale.y;
+
+	bool collideLeft = magnetBall->getX() + ballWidth > spriteData.x;
+	bool collideRight = magnetBall->getX() - ballWidth < spriteData.x; 
+	bool collideTop = magnetBall->getY() + ballHeight > spriteData.y && magnetBall->getY() < spriteData.y;
+	bool collideBottom = magnetBall->getY() < spriteData.y + paddleHeight && magnetBall->getY() + ballHeight > spriteData.y + paddleHeight;
+
+	if (collideLeft && side == paddleNS::RIGHT)
 		magnetBall->setX(spriteData.x - paddleWidth);
-	} 
-	else if (magnetBall->getX() - ballWidth < spriteData.x + paddleWidth && side == paddleNS::LEFT) {
+	else if (collideRight && side == paddleNS::LEFT)
 		magnetBall->setX(spriteData.x + paddleWidth);
-	}
+	else if (collideTop)
+		magnetBall->setY(spriteData.y - ballHeight);
+	else if (collideBottom)
+		magnetBall->setY(spriteData.y + paddleHeight);
 }
 
 void Paddle::draw(COLOR_ARGB color) {
