@@ -62,13 +62,9 @@ void Pongstar::initialize(HWND hwnd) {
 	sd.playMenuCue = true;
 	sd.playGameCue = false;
 
-	//Menu* menu = new Menu(audio ,input, fontManager);
-	//menu->initialize(sd);
-	//gameStack->push(menu);
-
-	Classic* classic = new Classic(this, audio, dataManager, fontManager, tmMap, true);
-	classic->initialize(sd);
-	gameStack->push(classic);
+	Menu* menu = new Menu(audio ,input, fontManager);
+	menu->initialize(sd);
+	gameStack->push(menu);
 }
 
 //=============================================================================
@@ -115,10 +111,10 @@ void Pongstar::update() {
 				nextScene = new Instructions(this, audio, fontManager);
 			} break;
 			case sceneNS::CLASSIC: {
-				nextScene = new Classic(this, audio, dataManager, fontManager, tmMap, true);
+				nextScene = new Classic(this, audio, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::TIME_ATK: {
-				nextScene = new TimeAttack(this, audio, dataManager, fontManager, tmMap, true);
+				nextScene = new TimeAttack(this, audio, dataManager, fontManager, tmMap);
 			} break;
 			case sceneNS::HIGH_SCORES: {
 				nextScene = new HighScore(audio, input, dataManager, fontManager);

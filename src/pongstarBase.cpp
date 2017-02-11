@@ -1,12 +1,14 @@
 #include "pongstarBase.h"
 
-PongstarBase::PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t, bool sp) {
+PongstarBase::PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t) {
 	game = g;
 	audio = a;
 	dataManager = dm;
 	fontManager = fm;
 	tmMap = t;
-	singlePlayer = sp;
+	singlePlayer = false;
+
+	triggerAIKey = dataManager->getControlsJson().triggerAI;
 }
 
 PongstarBase::~PongstarBase() {}
@@ -39,8 +41,8 @@ void PongstarBase::initialize(sceneNS::SceneData sd) {
 void PongstarBase::initializeEntities() {
 	ControlsJson controls = dataManager->getControlsJson();
 
-	Paddle* paddle1 = new Paddle(game->getGraphics(), controls.p1, paddleNS::LEFT);
-	Paddle* paddle2 = new Paddle(game->getGraphics(), controls.p2, paddleNS::RIGHT);
+	Paddle* paddle1 = new Paddle(game->getGraphics(), controls.p1, paddleNS::LEFT, true);
+	Paddle* paddle2 = new Paddle(game->getGraphics(), controls.p2, paddleNS::RIGHT, !singlePlayer);
 	Bumper* bumper = new Bumper();
 
 	if (!paddle1->initialize(game, paddleNS::WIDTH, paddleNS::HEIGHT, paddleNS::NCOLS, tmMap[textureNS::PADDLE]))
@@ -105,6 +107,9 @@ void PongstarBase::update(float frameTime) {
 		entityManager->getBalls()[0]->randomStartBall();
 	}
 
+	if (input->wasKeyPressed(triggerAIKey))
+		singlePlayer = !singlePlayer;
+	
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
 		elapsedTime = duration_cast<milliseconds>(presentTime - startTime).count();
@@ -118,7 +123,16 @@ void PongstarBase::update(float frameTime) {
 
 void PongstarBase::ai(float frameTime) {
 	if (singlePlayer) {
-		entityManager->getPaddle(paddleNS::RIGHT)->ai(frameTime, *entityManager->getBalls()[0]);
+		// find closest ball to paddle and use that for reference
+		std::vector<Ball*> balls = entityManager->getBalls();
+		Ball* closestBall = balls[0];
+
+		for (size_t i = 0; i < balls.size(); i++) {
+			if (balls[i]->getCenterX() > closestBall->getCenterX())
+				closestBall = balls[i];
+		}
+		
+		entityManager->getPaddle(paddleNS::RIGHT)->ai(frameTime, *closestBall);
 	}
 }
 

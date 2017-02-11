@@ -37,6 +37,7 @@ protected:
 	PickupManager* pickupManager;
 	std::queue<int> deleteEntityQueue;
 	EntityManager* entityManager;
+	UCHAR triggerAIKey;
 
 	// Other sprites that are not entities
 	Image divider;
@@ -48,7 +49,7 @@ protected:
 	bool singlePlayer;
 
 public:
-	PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t, bool sp);
+	PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t);
 	~PongstarBase();
 
 	void initializeEntities();
