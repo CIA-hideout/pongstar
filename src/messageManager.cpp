@@ -119,7 +119,7 @@ void MessageManager::dispatchRunEffect(Message* msg) {
 			} else {
 				entityManager->multiplyBall(msg->getEntityId());
 			}
-			
+
 		} break;
 
 		case effectNS::SHIELD: {
@@ -176,7 +176,7 @@ void MessageManager::dispatchOthers(Message* msg) {
 			if (balls.size() == 1) {
 				std::vector<Paddle*> paddles = entityManager->getPaddles();
 				for (size_t i = 0; i < paddles.size(); i++) {
-					paddles[i]->resetEffects();				
+					paddles[i]->resetEffects();
 				}
 			}
 		} break;

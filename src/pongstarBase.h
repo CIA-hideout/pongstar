@@ -17,7 +17,7 @@
 using namespace std::chrono;
 
 namespace pongstarNS {
-	const int POINTS_TO_WIN = 5;
+	const int POINTS_TO_WIN = 2;
 	const int TIME_PER_GAME = 30 * 1000;	// milliseconds
 	const int TEN_SECONDS = 10 * 1000;
 }
@@ -37,6 +37,7 @@ protected:
 	PickupManager* pickupManager;
 	std::queue<int> deleteEntityQueue;
 	EntityManager* entityManager;
+	UCHAR triggerAIKey;
 
 	// Other sprites that are not entities
 	Image divider;
@@ -45,6 +46,7 @@ protected:
 	steady_clock::time_point startTime;
 	int elapsedTime;
 	bool gameStarted;
+	bool singlePlayer;
 
 public:
 	PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t);
@@ -55,7 +57,7 @@ public:
 	// Interface
 	virtual void initialize(sceneNS::SceneData sd);	// initialize base pongstar items
 	virtual void update(float frameTime);
-	virtual void ai();
+	virtual void ai(float frameTime);
 	virtual void collisions();
 	virtual void render();
 

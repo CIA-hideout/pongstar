@@ -2,7 +2,7 @@
 
 Paddle::Paddle() : Entity() {}
 
-Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s) : Entity() {
+Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s, bool ec) : Entity() {
 	entityType = entityNS::PADDLE;
 	spriteData.width = paddleNS::WIDTH;
 	spriteData.height = paddleNS::HEIGHT;
@@ -21,6 +21,7 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s) : Entity() {
 	magnetised = false;
 	magnetBall = nullptr;
 	magnetTimer = 1.0f;
+	enableControls = ec;
 
 	D3DXCreateLine(g->get3Ddevice(), &shieldLine);
 	shieldLine->SetWidth(20);
@@ -35,32 +36,33 @@ Paddle::~Paddle() {}
 void Paddle::update(float frameTime) {
 	Entity::update(frameTime);
 
-	float yVelocity = 0.0f;
-
-	if (input->isKeyDown(controls.up)) {
-		if (getY() > TOP_WALL) {	// paddle is below the top wall
-			yVelocity = -paddleNS::VELOCITY * yVelocityMultipler;
-		}
-	}
-
-	if (input->isKeyDown(controls.down)) {
-		if (getY() + (paddleNS::HEIGHT * getScaleY()) < BOTTOM_WALL) {	// paddle is above the bottom wall
-			yVelocity = paddleNS::VELOCITY * yVelocityMultipler;
-		}
-	}
-
-	setVelocity(VECTOR2(0, yVelocity));
-
-	if (magnetised && magnetBall != nullptr) {
-		magnetBall->setVelocity(VECTOR2(0, yVelocity));
-	}
-
-	if (magnetInitialized) {
+	if (magnetInitialized)
 		magnetTimer -= frameTime;
-	}
 
-	spriteData.x += frameTime * velocity.x;
-	spriteData.y += frameTime * velocity.y;
+	if (enableControls) {
+		float yVelocity = 0.0f;
+
+		if (input->isKeyDown(controls.up)) {
+			if (getY() > TOP_WALL) {	// paddle is below the top wall
+				yVelocity = -paddleNS::VELOCITY * yVelocityMultipler;
+			}
+		}
+
+		if (input->isKeyDown(controls.down)) {
+			if (getY() + (paddleNS::HEIGHT * getScaleY()) < BOTTOM_WALL) {	// paddle is above the bottom wall
+				yVelocity = paddleNS::VELOCITY * yVelocityMultipler;
+			}
+		}
+
+		setVelocity(VECTOR2(0, yVelocity));
+
+		if (magnetised && magnetBall != nullptr) {
+			magnetBall->setVelocity(VECTOR2(0, yVelocity));
+		}
+
+		spriteData.x += frameTime * velocity.x;
+		spriteData.y += frameTime * velocity.y;
+	}
 }
 
 bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
@@ -255,4 +257,123 @@ void Paddle::resetEffects() {
 
 	shield = false;
 	magnetised = false;	
+}
+
+/*
+ * Paddle AI
+ */
+
+void Paddle::logAction(paddleNS::ACTION a) {
+	char actionStr[10];
+
+	if (a == paddleNS::UP)
+		sprintf(actionStr, "UP");
+	else if (a == paddleNS::DOWN)
+		sprintf(actionStr, "DOWN");
+	else
+		sprintf(actionStr, "STAY");
+
+	printf("[PADDLE AI] %s\n", actionStr);
+}
+
+float Paddle::moveUp() {
+	if (getY() > TOP_WALL) {	// paddle is below the top wall
+		return -paddleNS::VELOCITY * yVelocityMultipler;
+	}
+
+	return 0.0f;
+}
+
+float Paddle::moveDown() {
+	if (getY() + (paddleNS::HEIGHT * getScaleY()) < BOTTOM_WALL) {
+		return paddleNS::VELOCITY * yVelocityMultipler;
+	}
+
+	return 0.0f;
+}
+
+paddleNS::ACTION Paddle::convertNoToAction(int no) {
+	if (no == 0)
+		return paddleNS::UP;
+	if (no == 1)
+		return paddleNS::DOWN;
+	return paddleNS::STAY;
+}
+
+bool Paddle::ballLevelWithPaddle(int centerBallY, int centerPaddleY) {
+	int height = spriteData.height * spriteData.scale.y;
+
+	int max = centerPaddleY + height / 2;
+	int min = centerPaddleY - height / 2 ;
+
+	return centerBallY < max && centerBallY > min;
+}
+
+void Paddle::findNewMove(Ball* ball) {
+	paddleNS::ACTION action;
+	float subTimer = 1.0f / paddleNS::PARTS_OF_SECOND;
+	bool ballBelow = ball->getCenterY() > getCenterY();
+
+	if (ballLevelWithPaddle((int)ball->getCenterY(), (int)getCenterY()))
+		action = paddleNS::STAY;
+	else if (ballBelow)
+		action = paddleNS::DOWN;
+	else // ballAbove 
+		action = paddleNS::UP;
+
+	actions.push(paddleNS::ActionDuration(action, subTimer));
+}
+
+void Paddle::initMagnetAI() {
+	float subTimer = magnetTimer / paddleNS::INIT_MAGNET_STEPS;
+	
+	for (int i = 0; i < paddleNS::INIT_MAGNET_STEPS; i++) {
+		paddleNS::ACTION action = convertNoToAction(randInt(0, 2));		
+		magnetActions.push(paddleNS::ActionDuration(action, subTimer));
+	}
+}
+
+float Paddle::resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, float frameTime) {
+	aq->front().duration -= frameTime;
+	float yVelocity = 0.0f;
+
+	logAction(aq->front().action);
+	switch (aq->front().action) {
+	case paddleNS::UP:
+		yVelocity = moveUp();
+		break;
+	case paddleNS::DOWN:
+		yVelocity = moveDown();
+		break;
+	case paddleNS::STAY:
+		yVelocity = 0.0f;
+		break;
+	default:
+		break;
+	}
+
+	if (aq->front().duration <= 0)
+		aq->pop();
+
+	return yVelocity;
+}
+
+void Paddle::ai(float frameTime, Entity &ent) {
+	Ball* ball = (Ball*)&ent;
+
+	if (actions.size() == 0)
+		findNewMove(ball);
+
+	float yVelocity = resolveActionQueue(&actions, frameTime);
+
+	if (magnetised && magnetBall != nullptr) {
+		if (magnetActions.size() == 0)
+			initMagnetAI();
+
+		yVelocity = resolveActionQueue(&magnetActions, frameTime);
+		magnetBall->setY(magnetBall->getY() + frameTime * yVelocity);
+	}
+
+	setVelocity(VECTOR2(0, yVelocity));
+	spriteData.y += frameTime * velocity.y;
 }

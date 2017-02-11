@@ -72,9 +72,9 @@ void Pongstar::initialize(HWND hwnd) {
 //=============================================================================
 void Pongstar::update() {
 	if (muted)
-		audio->muteCategory("default");
+		audio->muteCategory("Default");
 	else
-		audio->unmuteCategory("default");
+		audio->unmuteCategory("Default");
 
 	gameStack->top()->update(frameTime);
 
@@ -147,7 +147,9 @@ void Pongstar::update() {
 //=============================================================================
 // Artificial Intelligence
 //=============================================================================
-void Pongstar::ai() {}
+void Pongstar::ai() {
+	gameStack->top()->ai(frameTime);
+}
 
 //=============================================================================
 // Handle collisions

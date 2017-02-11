@@ -6,5 +6,6 @@
 	"p2": {
 		"up": "up",
 		"down": "down"
-	}
+	},
+	"triggerAI": "G"
 }

@@ -33,14 +33,17 @@ struct PaddleControls {
 struct ControlsJson {
 	PaddleControls p1;
 	PaddleControls p2;
+	UCHAR triggerAI;
 
 	ControlsJson() {}
 	ControlsJson(
 		PaddleControls p1, 
-		PaddleControls p2
+		PaddleControls p2,
+		UCHAR aiKey
 	) : 
 		p1(p1), 
-		p2(p2) {}
+		p2(p2),
+		triggerAI(aiKey) {}
 };
 
 struct HighScoreJson {

@@ -1,6 +1,8 @@
 #ifndef _PADDLE_H
 #define _PADDLE_H
 
+#include <queue>
+
 #include "entity.h"
 #include "dataManager.h"
 #include "graphics.h"
@@ -14,6 +16,20 @@ namespace paddleNS {
 	const float VELOCITY = 1000.0f;
 
 	enum SIDE { LEFT, RIGHT };
+	enum ACTION {
+		UP, DOWN, STAY
+	};
+	
+	struct ActionDuration {
+		ACTION action;
+		float duration;
+
+		ActionDuration() {}
+		ActionDuration(ACTION a, float d) : action(a), duration(d) {}
+	};
+
+	const int INIT_MAGNET_STEPS = 8;
+	const int PARTS_OF_SECOND = 8;
 }
 
 class Paddle : public Entity {
@@ -33,9 +49,14 @@ private:
 	LP_LINE shieldLine;
 	LP_LINE magnetLine;
 
+	// AI
+	bool enableControls;
+	std::queue<paddleNS::ActionDuration> magnetActions;
+	std::queue<paddleNS::ActionDuration> actions;
+
 public:
 	Paddle();
-	Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s);
+	Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s, bool ec);
 
 	~Paddle();
 
@@ -62,12 +83,24 @@ public:
 	void setMagnetInitialized(bool mi) { magnetInitialized = mi; }
 
 	void update(float frameTime);
+	void ai(float frameTime, Entity &ent);
 	bool collidesWith(Entity& ent, VECTOR2& collisionVector);
 
 	void runEffects();
 	void resetEffects();
 	void startMagnetTimer() { magnetInitialized = true; };
 	void initMagnetEffect(Entity& ent);
+
+	// AI
+	float moveUp();
+	float moveDown();
+	paddleNS::ACTION convertNoToAction(int n);
+	void findNewMove(Ball* b);
+	void initMagnetAI();
+	float resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, 
+		float frameTime);
+	bool ballLevelWithPaddle(int centerBallY, int centerPaddleY);
+	void logAction(paddleNS::ACTION a);
 };
 
 #endif

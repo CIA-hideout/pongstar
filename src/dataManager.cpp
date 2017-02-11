@@ -118,10 +118,14 @@ HighScoreMap DataManager::parseHighScoreVal(const Value& val) {
 
 void DataManager::initControlData() {
 	Document document = readFile(dataManagerNS::CONTROLS_JSON);
+
+	std::string aiStr = toUpperCase(document["triggerAI"].GetString());
+	UCHAR triggerAIKey = isSpecialKey(aiStr) == 0 ? (UCHAR)*strToCharArr(aiStr) : isSpecialKey(aiStr);
 	
 	ControlsJson cj = ControlsJson(
 		parseControlVal(document["p1"].GetObjectA()),
-		parseControlVal(document["p2"].GetObjectA())
+		parseControlVal(document["p2"].GetObjectA()),
+		triggerAIKey
 		);
 
 	controlsJson = cj;
