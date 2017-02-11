@@ -17,7 +17,7 @@ const char* textureToString(textureNS::TEXTURE t) {
 //=============================================================================
 Pongstar::Pongstar() {
 	gameStack = new std::stack<Scene*>;
-	muted = false;
+	muted = true;
 }
 
 //=============================================================================
@@ -62,9 +62,13 @@ void Pongstar::initialize(HWND hwnd) {
 	sd.playMenuCue = true;
 	sd.playGameCue = false;
 
-	Menu* menu = new Menu(audio ,input, fontManager);
-	menu->initialize(sd);
-	gameStack->push(menu);
+	//Menu* menu = new Menu(audio ,input, fontManager);
+	//menu->initialize(sd);
+	//gameStack->push(menu);
+
+	Classic* classic = new Classic(this, audio, dataManager, fontManager, tmMap, true);
+	classic->initialize(sd);
+	gameStack->push(classic);
 }
 
 //=============================================================================
@@ -72,9 +76,9 @@ void Pongstar::initialize(HWND hwnd) {
 //=============================================================================
 void Pongstar::update() {
 	if (muted)
-		audio->muteCategory("default");
+		audio->muteCategory("Default");
 	else
-		audio->unmuteCategory("default");
+		audio->unmuteCategory("Default");
 
 	gameStack->top()->update(frameTime);
 
@@ -111,10 +115,10 @@ void Pongstar::update() {
 				nextScene = new Instructions(this, audio, fontManager);
 			} break;
 			case sceneNS::CLASSIC: {
-				nextScene = new Classic(this, audio, dataManager, fontManager, tmMap);
+				nextScene = new Classic(this, audio, dataManager, fontManager, tmMap, true);
 			} break;
 			case sceneNS::TIME_ATK: {
-				nextScene = new TimeAttack(this, audio, dataManager, fontManager, tmMap);
+				nextScene = new TimeAttack(this, audio, dataManager, fontManager, tmMap, true);
 			} break;
 			case sceneNS::HIGH_SCORES: {
 				nextScene = new HighScore(audio, input, dataManager, fontManager);
@@ -147,7 +151,9 @@ void Pongstar::update() {
 //=============================================================================
 // Artificial Intelligence
 //=============================================================================
-void Pongstar::ai() {}
+void Pongstar::ai() {
+	gameStack->top()->ai(frameTime);
+}
 
 //=============================================================================
 // Handle collisions

@@ -1,7 +1,7 @@
 #include "classic.h"
 
-Classic::Classic(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t) :
-PongstarBase(g, a, dm, fm, t) {
+Classic::Classic(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t, bool sp) :
+PongstarBase(g, a, dm, fm, t, sp) {
 	sceneType = sceneNS::CLASSIC;
 	sceneData.gameMode = sceneNS::GM_CLASSIC;
 }

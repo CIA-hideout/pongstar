@@ -1,11 +1,12 @@
 #include "pongstarBase.h"
 
-PongstarBase::PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t) {
+PongstarBase::PongstarBase(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t, bool sp) {
 	game = g;
 	audio = a;
 	dataManager = dm;
 	fontManager = fm;
 	tmMap = t;
+	singlePlayer = sp;
 }
 
 PongstarBase::~PongstarBase() {}
@@ -59,17 +60,17 @@ void PongstarBase::initializeEntities() {
 	entityManager->addEntity(paddle1);
 	entityManager->addEntity(paddle2);
 	entityManager->addEntity(bumper);
-	 
+
 	Ball* ball = entityManager->createBall();
 	ball->setX(GAME_WIDTH / 2 - ballNS::WIDTH / 2);
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	//std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::MULTIPLY };
-	//pickupManager->testPickup(effectNS::MULTIPLY);
-	pickupManager->createPickup(effectNS::MAGNET);
-	//pickupManager->massSpawnPickups(ev);
-	//pickupManager->massSpawnContrastPickups();
+	// std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::SHIELD, effectNS::MULTIPLY };
+	// pickupManager->testPickup(effectNS::MAGNET);
+	// pickupManager->createPickup(effectNS::MAGNET);
+	// pickupManager->massSpawnPickups(ev);
+	// pickupManager->massSpawnContrastPickups();
 }
 
 void PongstarBase::update(float frameTime) {
@@ -115,7 +116,11 @@ void PongstarBase::update(float frameTime) {
 	}
 }
 
-void PongstarBase::ai() {}
+void PongstarBase::ai(float frameTime) {
+	if (singlePlayer) {
+		entityManager->getPaddle(paddleNS::RIGHT)->ai(frameTime, *entityManager->getBalls()[0]);
+	}
+}
 
 void PongstarBase::collisions() {
 	VECTOR2 collisionVector;

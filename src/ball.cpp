@@ -91,7 +91,7 @@ void Ball::wallCollision() {
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);
-	
+
 		// Left paddle scored, ball goes to left
 		resetBall();
 	}
@@ -131,7 +131,7 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 }
 
 void Ball::paddleBounce(VECTOR2 &collisionVector, Entity &ent) {
-	// Calculate ratios of collision vector 
+	// Calculate ratios of collision vector
 	float xRatio = fabs(collisionVector.x) / (fabs(collisionVector.x) + fabs(collisionVector.y));
 	float yRatio = fabs(collisionVector.y) / (fabs(collisionVector.x) + fabs(collisionVector.y));
 	float ballVelocity = (getResultantVelocity() == 0) ? ballNS::VELOCITY : getResultantVelocity();

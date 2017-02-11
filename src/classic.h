@@ -7,7 +7,7 @@ class Classic : public PongstarBase {
 private:
 
 public:
-	Classic(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t);
+	Classic(Game* g, Audio* a, DataManager* dm, FontManager* fm, TextureManagerMap t, bool sp);
 	~Classic();
 
 	void update(float frameTime);

@@ -38,7 +38,7 @@ public:
 
 	void initialize(sceneNS::SceneData sd);
 	void update(float frameTime);
-	void ai() {};
+	void ai(float frameTime) {};
 	void collisions() {};
 	void render();
 	void renderTitle(std::string firstWord, std::string secondWord);

@@ -50,7 +50,7 @@ public:
 
 	virtual void initialize(sceneNS::SceneData sd) = 0;
 	virtual void update(float frameTime) = 0;
-	virtual void ai() = 0;
+	virtual void ai(float frameTime) = 0;
 	virtual void collisions() = 0;
 	virtual void render() = 0;
 
