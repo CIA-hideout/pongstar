@@ -191,6 +191,8 @@ public:
 	// Adds the gravitational force to the velocity vector of this entity
 	void gravityForce(Entity *other, float frameTime);
 
+	float getResultantVelocity();
+
 	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);
 	virtual void runEffects() {};
 	virtual void resetEffects() {};

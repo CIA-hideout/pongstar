@@ -429,6 +429,11 @@ void Entity::gravityForce(Entity *ent, float frameTime) {
 	velocity += gravityV;
 }
 
+float Entity::getResultantVelocity() {
+	// Pythagoras' theorem
+	return std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+}
+
 void Entity::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {
 	effects->addEffect(effectType, duration);
 }

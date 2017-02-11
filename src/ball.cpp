@@ -134,7 +134,7 @@ void Ball::paddleBounce(VECTOR2 &collisionVector, Entity &ent) {
 	// Calculate ratios of collision vector 
 	float xRatio = fabs(collisionVector.x) / (fabs(collisionVector.x) + fabs(collisionVector.y));
 	float yRatio = fabs(collisionVector.y) / (fabs(collisionVector.x) + fabs(collisionVector.y));
-	float ballVelocity = getBallVelocity();
+	float ballVelocity = (getResultantVelocity() == 0) ? ballNS::VELOCITY : getResultantVelocity();
 
 	// Use ratios to determine resultant velocity of ball
 	// Negative used to invert the direction
@@ -157,8 +157,8 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 			case entityNS::PADDLE: {
 				paddleBounce(collisionVector, ent);
 
-				//if (!magnetised)
-					//audio->playCue(HIT_CUE);
+				if (!magnetised)
+					audio->playCue(HIT_CUE);
 			} break;
 
 			case entityNS::BUMPER: {
@@ -258,12 +258,6 @@ void Ball::runEffects() {
 
 		effects->popEndEffectQueue();
 	}
-
-}
-
-float Ball::getBallVelocity() {
-	// Pythagoras' theorem
-	return std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
 }
 
 float Ball::getBallAngle() {
