@@ -105,33 +105,36 @@ void EntityManager::multiplyBall(int id) {
 	Ball* newBall1 = createBall();
 	newBall1->setX(currentBall->getX());
 	newBall1->setY(currentBall->getY());
-	newVelocity = getVelocityFromAngle(ballAngle + 30);
+	newVelocity = getVelocityFromAngle(ballAngle + 30, currentBall->getResultantVelocity());
 	newBall1->setVelocity(newVelocity);
 
 	Ball* newBall2 = createBall();
 	newBall2->setX(currentBall->getX());
 	newBall2->setY(currentBall->getY());
-	newVelocity = getVelocityFromAngle(ballAngle - 30);
+	newVelocity = getVelocityFromAngle(ballAngle - 30, currentBall->getResultantVelocity());
 	newBall2->setVelocity(newVelocity);
 }
 
-VECTOR2 EntityManager::getVelocityFromAngle(float angle) {
-	float theta = std::fmod(angle, 90);
-	float velocity1 = ((90 - theta) / 90) * ballNS::VELOCITY;
-	float velocity2 = (theta / 90) * ballNS::VELOCITY;
+VECTOR2 EntityManager::getVelocityFromAngle(float angle, float resultantVelocity) {	
+	float thetaDeg = std::fmod(angle, 90);
+	float thetaRad = (thetaDeg * PI) / 180;
+
+	float v1 = std::cos(thetaRad) * resultantVelocity;
+	float v2 = std::sin(thetaRad) * resultantVelocity;
+
 	VECTOR2 velocity;
 
 	if (angle >= 0 && angle < 90) {
-		velocity = VECTOR2(velocity2, -velocity1);
+		velocity = VECTOR2(v2, -v1);
 	}
 	else if (angle >= 90 && angle < 180) {
-		velocity = VECTOR2(velocity1, velocity2);
+		velocity = VECTOR2(v1, v2);
 	}
 	else if (angle >= 180 && angle < 270) {
-		velocity = VECTOR2(-velocity2, velocity1);
+		velocity = VECTOR2(-v2, v1);
 	}
 	else if (angle >= 270 && angle < 360) {
-		velocity = VECTOR2(-velocity1, -velocity2);
+		velocity = VECTOR2(-v1, -v2);
 	}
 
 	return velocity;

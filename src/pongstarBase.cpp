@@ -65,8 +65,8 @@ void PongstarBase::initializeEntities() {
 	ball->setY(GAME_HEIGHT / 2 - ballNS::HEIGHT / 2);
 
 	// For pickups testing
-	//std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::SHIELD, effectNS::MULTIPLY };
-	pickupManager->testPickup(effectNS::MAGNET);
+	//std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::MULTIPLY };
+	//pickupManager->testPickup(effectNS::MULTIPLY);
 	pickupManager->createPickup(effectNS::MAGNET);
 	//pickupManager->massSpawnPickups(ev);
 	//pickupManager->massSpawnContrastPickups();

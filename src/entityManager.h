@@ -62,7 +62,7 @@ public:
 	int getBallCount() { return ballIds.size(); };
 	void deleteBall(int id);	// validate if ball can be deleted
 	void multiplyBall(int id);
-	VECTOR2 getVelocityFromAngle(float angle);
+	VECTOR2 getVelocityFromAngle(float angle, float resultantVelocity);
 
 	Paddle* getPaddle(paddleNS::SIDE s);
 	std::vector<Paddle*> getPaddles();

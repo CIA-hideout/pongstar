@@ -24,10 +24,10 @@ void Ball::update(float frameTime) {
 	spriteData.y += frameTime * velocity.y;
 
 	if (autoStart) {
-		audio->playCue(HIT_CUE);
 		if (autoStartTimer < ballNS::AUTO_START_DELAY) {
 			autoStartTimer += frameTime;
 		} else {
+			audio->playCue(HIT_CUE);
 			autoStart = false;
 			autoStartTimer = 0.0;
 			velocity = autoStartVelocity;
@@ -130,97 +130,32 @@ void Ball::bumperCollision(Entity &bumper, VECTOR2 &collisionVector) {
 	}
 }
 
-void Ball::runEffects() {
-	Message* msgPtr;
-	float xRatio, yRatio;
-	
-	// initialize all effects once
-	while (effects->getStartEffectQueue().size() > 0) {
-		EffectDuration ed = effects->getStartEffectQueue().front();
-		switch (ed.effectType) {
-			case effectNS::ENLARGE: {
-				spriteData.scale = VECTOR2(2.0f, 2.0f);
-				int height = spriteData.height * spriteData.scale.y;
+void Ball::paddleBounce(VECTOR2 &collisionVector, Entity &ent) {
+	// Calculate ratios of collision vector 
+	float xRatio = fabs(collisionVector.x) / (fabs(collisionVector.x) + fabs(collisionVector.y));
+	float yRatio = fabs(collisionVector.y) / (fabs(collisionVector.x) + fabs(collisionVector.y));
+	float ballVelocity = (getResultantVelocity() == 0) ? ballNS::VELOCITY : getResultantVelocity();
 
-				if (spriteData.y + height > BOTTOM_WALL)
-					spriteData.y = BOTTOM_WALL - height;
-			} break;
+	// Use ratios to determine resultant velocity of ball
+	// Negative used to invert the direction
+	float xVelocity = sqrt(ballVelocity * ballVelocity * xRatio);
+	float yVelocity = sqrt(ballVelocity * ballVelocity * yRatio);
 
-			case effectNS::SHRINK: {
-				spriteData.scale = VECTOR2(0.5f, 0.5f);
-			} break;
-
-			case effectNS::INVERT: {
-				velocity = VECTOR2(-velocity.x, -velocity.y);
-			} break;
-
-			case effectNS::BOOST: {
-				xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-				yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-				velocity = VECTOR2(ballNS::VELOCITY * xRatio * 2, ballNS::VELOCITY * yRatio * 2);
-			} break;
-
-			case effectNS::SLOW: {
-				xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-				yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-				velocity = VECTOR2(ballNS::VELOCITY * xRatio * 0.5, ballNS::VELOCITY * yRatio * 0.5);
-			} break;
-
-			case effectNS::MULTIPLY: {
-				msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
-				pushMsg(msgPtr);
-			} break;
-
-			case effectNS::SHIELD:
-			case effectNS::MAGNET:
-			case effectNS::MYSTERY:
-			default:
-				break;
-		}
-
-		effects->popStartEffectQueue();
+	if (collisionVector.x > 0) {
+		xVelocity = -xVelocity;
+	}
+	if (collisionVector.y > 0) {
+		yVelocity = -yVelocity;
 	}
 
-
-	while (effects->getEndEffectQueue().size() > 0) {
-		EffectDuration ed = effects->getEndEffectQueue().front();
-		switch (ed.effectType) {
-			case effectNS::ENLARGE:
-			case effectNS::SHRINK: {
-				spriteData.scale = VECTOR2(1.0f, 1.0f);
-			} break;
-
-			case effectNS::BOOST: {
-				xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-				yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-				velocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);				
-			} break;
-
-			case effectNS::SLOW: {
-				xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-				yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-				velocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
-			} break;
-
-			case effectNS::INVERT:
-			case effectNS::MULTIPLY:
-			case effectNS::MYSTERY:
-			case effectNS::SHIELD:
-			case effectNS::MAGNET:
-			default:
-				break;
-		}
-
-		effects->popEndEffectQueue();
-	}
-
+	velocity = VECTOR2(xVelocity, yVelocity);
 }
 
 bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
 			case entityNS::PADDLE: {
-				Entity::paddleBounce(collisionVector, ent, ballNS::VELOCITY);
+				paddleBounce(collisionVector, ent);
 
 				if (!magnetised)
 					audio->playCue(HIT_CUE);
@@ -238,6 +173,91 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 		return true;
 	}
 	return false;
+}
+
+void Ball::runEffects() {
+	Message* msgPtr;
+	float xRatio, yRatio;
+
+	// initialize all effects once
+	while (effects->getStartEffectQueue().size() > 0) {
+		EffectDuration ed = effects->getStartEffectQueue().front();
+		switch (ed.effectType) {
+		case effectNS::ENLARGE: {
+			spriteData.scale = VECTOR2(2.0f, 2.0f);
+			int height = spriteData.height * spriteData.scale.y;
+
+			if (spriteData.y + height > BOTTOM_WALL)
+				spriteData.y = BOTTOM_WALL - height;
+		} break;
+
+		case effectNS::SHRINK: {
+			spriteData.scale = VECTOR2(0.5f, 0.5f);
+		} break;
+
+		case effectNS::INVERT: {
+			velocity = VECTOR2(-velocity.x, -velocity.y);
+		} break;
+
+		case effectNS::BOOST: {
+			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+			velocity = VECTOR2(ballNS::VELOCITY * xRatio * 2, ballNS::VELOCITY * yRatio * 2);
+		} break;
+
+		case effectNS::SLOW: {
+			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+			velocity = VECTOR2(ballNS::VELOCITY * xRatio * 0.5, ballNS::VELOCITY * yRatio * 0.5);
+		} break;
+
+		case effectNS::MULTIPLY: {
+			msgPtr = new Message(messageNS::RUN_EFFECT, messageNS::BALL, effectNS::MULTIPLY, id);
+			pushMsg(msgPtr);
+		} break;
+
+		case effectNS::SHIELD:
+		case effectNS::MAGNET:
+		case effectNS::MYSTERY:
+		default:
+			break;
+		}
+
+		effects->popStartEffectQueue();
+	}
+
+
+	while (effects->getEndEffectQueue().size() > 0) {
+		EffectDuration ed = effects->getEndEffectQueue().front();
+		switch (ed.effectType) {
+		case effectNS::ENLARGE:
+		case effectNS::SHRINK: {
+			spriteData.scale = VECTOR2(1.0f, 1.0f);
+		} break;
+
+		case effectNS::BOOST: {
+			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+			velocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
+		} break;
+
+		case effectNS::SLOW: {
+			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
+			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
+			velocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
+		} break;
+
+		case effectNS::INVERT:
+		case effectNS::MULTIPLY:
+		case effectNS::MYSTERY:
+		case effectNS::SHIELD:
+		case effectNS::MAGNET:
+		default:
+			break;
+		}
+
+		effects->popEndEffectQueue();
+	}
 }
 
 float Ball::getBallAngle() {

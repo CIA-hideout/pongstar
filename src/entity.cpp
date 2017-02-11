@@ -401,17 +401,6 @@ void Entity::bounce(VECTOR2 &collisionVector, Entity &ent) {
 		deltaV += ((massRatio * cUVdotVdiff) * cUV);
 }
 
-void Entity::paddleBounce(VECTOR2 &collisionVector, Entity &ent, float ballVelocity) {
-	// Calculate ratios of collision vector 
-	float xRatio = collisionVector.x / (fabs(collisionVector.x) + fabs(collisionVector.y));
-	float yRatio = collisionVector.y / (fabs(collisionVector.x) + fabs(collisionVector.y));
-
-	// Use ratios to determine resultant velocity of ball
-	// Negative used to invert the direction
-	VECTOR2 newVelocity = VECTOR2(ballVelocity * -xRatio, ballVelocity * -yRatio);
-	velocity = newVelocity;
-}
-
 //=============================================================================
 // Force of gravity on this entity from other entity
 // Adds the gravitational force to the velocity vector of this entity
@@ -438,6 +427,11 @@ void Entity::gravityForce(Entity *ent, float frameTime) {
 	gravityV *= force * frameTime;
 	// Add gravity vector to moving velocity vector to change direction
 	velocity += gravityV;
+}
+
+float Entity::getResultantVelocity() {
+	// Pythagoras' theorem
+	return std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
 }
 
 void Entity::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {

@@ -1,6 +1,7 @@
 #ifndef _BALL_H
 #define _BALL_H
 
+#include <cmath>
 #include "entity.h"
 #include "message.h"
 #include "pickup.h"
@@ -42,6 +43,7 @@ public:
 	void randomStartBall();
 	void wallCollision();
 	void bumperCollision(Entity &bumper, VECTOR2 &collisionVector);
+	void paddleBounce(VECTOR2 &collisionVector, Entity &ent);
 	bool collidesWith(Entity &ent, VECTOR2 &collisionVector);
 	
 	void runEffects();
