@@ -188,8 +188,6 @@ public:
 	// Entity bounces after collision with other Entity
 	void bounce(VECTOR2 &collisionVector, Entity &ent);
 
-	void paddleBounce(VECTOR2 &collisionVector, Entity &ent, float ballVelocity);
-
 	// Adds the gravitational force to the velocity vector of this entity
 	void gravityForce(Entity *other, float frameTime);
 
