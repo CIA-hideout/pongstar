@@ -75,10 +75,10 @@ void HighScore::update(float frameTime) {
 
 	if (input->wasKeyPressed(UP_KEY) || input->wasKeyPressed(DOWN_KEY)) {
 		audio->playCue(NAVIGATION_CUE);
-		if (sceneData.gameMode == sceneNS::GM_CLASSIC)
-			sceneData.gameMode = sceneNS::GM_TIME_ATK;
-		else
+		if (sceneData.gameMode == sceneNS::GM_TIME_ATK)
 			sceneData.gameMode = sceneNS::GM_CLASSIC;
+		else
+			sceneData.gameMode = sceneNS::GM_TIME_ATK;
 	}
 
 	if (blinkTimer < highScoreNS::BLINK_INTERVAL) {
@@ -189,7 +189,7 @@ void HighScore::render() {
 
 	// Render marker indicating game mode
 	int markerWidth = largeFm->getTotalWidth(fontNS::SABO, "-");
-	int markerYpos = (sceneData.gameMode == sceneNS::GM_CLASSIC) ? highScoreNS::CLASSIC_Y_POS : highScoreNS::TIME_ATK_Y_POS;
+	int markerYpos = (sceneData.gameMode == sceneNS::GM_TIME_ATK) ? highScoreNS::TIME_ATK_Y_POS : highScoreNS::CLASSIC_Y_POS;
 
 	largeFm->print(
 		fontNS::SABO,
@@ -239,10 +239,8 @@ void HighScore::render() {
 		"PRESS ESC"
 	);
 
-	if (sceneData.gameMode == sceneNS::GM_CLASSIC) {
-		renderClassicHS();
-	}
-	else {
+	if (sceneData.gameMode == sceneNS::GM_TIME_ATK)
 		renderTimeAtkHS();
-	}
+	else
+		renderClassicHS();
 }

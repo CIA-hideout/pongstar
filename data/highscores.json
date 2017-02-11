@@ -1,4 +1,14 @@
 {
-    "classic": [],
-    "timeAttack": []
+    "classic": [
+        {
+            "name": "HELLO",
+            "score": 16913
+        }
+    ],
+    "timeAttack": [
+        {
+            "name": "BYE",
+            "score": 10
+        }
+    ]
 }

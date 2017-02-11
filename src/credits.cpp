@@ -31,6 +31,8 @@ void Credits::initialize(sceneNS::SceneData sd) {
 	scale = creditsNS::SMALL_FONT_SIZE / fontNS::DEFAULT_FONT_SIZE;
 	smallFm->setScale(fontNS::SABO_FILLED, scale);
 	smallFm->setScale(fontNS::SABO, scale);
+
+	sceneData.escToMenu = true;
 }
 
 void Credits::update(float frameTime) {
