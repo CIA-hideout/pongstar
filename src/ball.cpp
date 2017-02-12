@@ -69,6 +69,7 @@ void Ball::wallCollision() {
 	}
 	// Collide with right wall
 	else if (spriteData.x > RIGHT_WALL) {
+		audio->playCue(SCORE_CUE);
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);
@@ -88,6 +89,7 @@ void Ball::wallCollision() {
 	}
 	// Collision with left wall
 	else if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale.x)) {
+		audio->playCue(SCORE_CUE);
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);
@@ -185,10 +187,10 @@ void Ball::runEffects() {
 		switch (ed.effectType) {
 		case effectNS::ENLARGE: {
 			spriteData.scale = VECTOR2(2.0f, 2.0f);
-			int height = spriteData.height * spriteData.scale.y;
+			float height = spriteData.height * spriteData.scale.y;
 
 			if (spriteData.y + height > BOTTOM_WALL)
-				spriteData.y = BOTTOM_WALL - height;
+				spriteData.y = (float)BOTTOM_WALL - height;
 		} break;
 
 		case effectNS::SHRINK: {
@@ -208,7 +210,7 @@ void Ball::runEffects() {
 		case effectNS::SLOW: {
 			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
 			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-			velocity = VECTOR2(ballNS::VELOCITY * xRatio * 0.5, ballNS::VELOCITY * yRatio * 0.5);
+			velocity = VECTOR2(ballNS::VELOCITY * xRatio / 2, ballNS::VELOCITY * yRatio / 2);
 		} break;
 
 		case effectNS::MULTIPLY: {

@@ -69,8 +69,10 @@ bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {	
 			case entityNS::BALL: {				
-				if (magnetised && !magnetInitialized)
+				if (magnetised && !magnetInitialized) {
 					initMagnetEffect(ent);
+					audio->playCue(MAGNETISED_CUE);
+				}	
 			} break;
 			
 			case entityNS::BUMPER:
@@ -94,10 +96,10 @@ void Paddle::runEffects() {
 		switch (ed.effectType) {
 			case effectNS::ENLARGE: {
 				spriteData.scale.y = 2.0f;
-				int height =  spriteData.height * spriteData.scale.y;
+				float height =  spriteData.height * spriteData.scale.y;
 
 				if (spriteData.y + height > BOTTOM_WALL)
-					spriteData.y = BOTTOM_WALL - height;
+					spriteData.y = (float)BOTTOM_WALL - height;
 			} break;
 
 			case effectNS::SHRINK: {
@@ -122,7 +124,6 @@ void Paddle::runEffects() {
 			} break;
 
 			case effectNS::MYSTERY: {
-				
 			} break;
 
 			case effectNS::SHIELD: {
@@ -186,17 +187,16 @@ void Paddle::runEffects() {
 }
 
 void Paddle::initMagnetEffect(Entity& ent) {
-	audio->playCue(HIT_CUE);
 	magnetBall = (Ball*)&ent;
 	magnetBall->setVelocity(VECTOR2(0, 0));
 	magnetBall->setMagnetised(true);
 	magnetInitialized = true;
 
-	int ballWidth = magnetBall->getWidth() * magnetBall->getScaleX();
-	int paddleWidth = spriteData.width * spriteData.scale.x;
+	float ballWidth = magnetBall->getWidth() * magnetBall->getScaleX();
+	float paddleWidth = spriteData.width * spriteData.scale.x;
 
-	int ballHeight = magnetBall->getHeight() * magnetBall->getScaleY();
-	int paddleHeight = spriteData.height * spriteData.scale.y;
+	float ballHeight = magnetBall->getHeight() * magnetBall->getScaleY();
+	float paddleHeight = spriteData.height * spriteData.scale.y;
 
 	bool collideLeft = magnetBall->getX() + ballWidth > spriteData.x;
 	bool collideRight = magnetBall->getX() - ballWidth < spriteData.x; 
@@ -219,14 +219,14 @@ void Paddle::draw(COLOR_ARGB color) {
 	if (shield) {
 		VECTOR2 shieldPoints[2];
 		if (side == paddleNS::LEFT) {
-			shieldPoints[0] = VECTOR2(LEFT_SHIELD, 0);
-			shieldPoints[1] = VECTOR2(LEFT_SHIELD, GAME_HEIGHT);
+			shieldPoints[0] = VECTOR2((float)LEFT_SHIELD, 0);
+			shieldPoints[1] = VECTOR2((float)LEFT_SHIELD, (float)GAME_HEIGHT);
 			shieldLine->Begin();
 			shieldLine->Draw(shieldPoints, 2, graphicsNS::ORANGE + graphicsNS::ALPHA25);
 		}
 		else {
-			shieldPoints[0] = VECTOR2(RIGHT_SHIELD, 0);
-			shieldPoints[1] = VECTOR2(RIGHT_SHIELD, GAME_HEIGHT);
+			shieldPoints[0] = VECTOR2((float)RIGHT_SHIELD, 0);
+			shieldPoints[1] = VECTOR2((float)RIGHT_SHIELD, (float)GAME_HEIGHT);
 			shieldLine->Begin();
 			shieldLine->Draw(shieldPoints, 2, graphicsNS::BLUE + graphicsNS::ALPHA25);
 		}
@@ -300,13 +300,13 @@ paddleNS::ACTION Paddle::convertNoToAction(int no) {
 	return paddleNS::STAY;
 }
 
-bool Paddle::ballLevelWithPaddle(int centerBallY, int centerPaddleY) {
-	int height = spriteData.height * spriteData.scale.y;
+bool Paddle::ballLevelWithPaddle(float centerBallY, float centerPaddleY) {
+	float height = spriteData.height * spriteData.scale.y;
 
-	int max = centerPaddleY + height / 2;
-	int min = centerPaddleY - height / 2 ;
+	float paddleBottom = centerPaddleY + height / 2;
+	float paddleTop = centerPaddleY - height / 2 ;
 
-	return centerBallY < max && centerBallY > min;
+	return centerBallY < paddleBottom && centerBallY > paddleTop;
 }
 
 void Paddle::findNewMove(Ball* ball) {
@@ -314,7 +314,7 @@ void Paddle::findNewMove(Ball* ball) {
 	float subTimer = 1.0f / paddleNS::PARTS_OF_SECOND;
 	bool ballBelow = ball->getCenterY() > getCenterY();
 
-	if (ballLevelWithPaddle((int)ball->getCenterY(), (int)getCenterY()))
+	if (ballLevelWithPaddle(ball->getCenterY(), getCenterY()))
 		action = paddleNS::STAY;
 	else if (ballBelow)
 		action = paddleNS::DOWN;

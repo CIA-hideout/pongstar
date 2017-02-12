@@ -16,9 +16,7 @@ namespace paddleNS {
 	const float VELOCITY = 1000.0f;
 
 	enum SIDE { LEFT, RIGHT };
-	enum ACTION {
-		UP, DOWN, STAY
-	};
+	enum ACTION { UP, DOWN, STAY };
 	
 	struct ActionDuration {
 		ACTION action;
@@ -99,7 +97,7 @@ public:
 	void initMagnetAI();
 	float resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, 
 		float frameTime);
-	bool ballLevelWithPaddle(int centerBallY, int centerPaddleY);
+	bool ballLevelWithPaddle(float centerBallY, float centerPaddleY);
 	void logAction(paddleNS::ACTION a);
 };
 

@@ -24,19 +24,18 @@ int Bumper::getRandYSpawn() {
 }
 
 bool Bumper::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
-	Message* msgPtr = NULL;
+	Message* msgPtr;
 
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {
-			case entityNS::BALL:
+			case entityNS::BALL: {
 				// Set message to spawn pickup
 				messageNS::PICKUP_CMD direction = (side == bumperNS::LEFT) ? messageNS::MOVE_RIGHT : messageNS::MOVE_LEFT;
 				msgPtr = new Message(messageNS::PICKUP, direction);
 				pushMsg(msgPtr);
+			} break;
 
-				// Move bumper
-				//randomLocationBumper();
-				break;
+			default: break;
 		}
 	}
 
