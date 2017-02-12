@@ -16,8 +16,8 @@ Global Settings
     Header File = pongstar.h;
     Exclude Category Names = 0;
     Exclude Variable Names = 0;
-    Last Modified Low = 3406195577;
-    Last Modified High = 30572902;
+    Last Modified Low = 813848296;
+    Last Modified High = 30573796;
 
     Category
     {
@@ -225,8 +225,12 @@ Wave Bank
     Windows Bank Path Edited = 0;
     Seek Tables = 1;
     Compression Preset Name = <none>;
-    Bank Last Revised Low = 3838058321;
-    Bank Last Revised High = 30573009;
+    Xbox Bank Last Modified Low = 0;
+    Xbox Bank Last Modified High = 0;
+    PC Bank Last Modified Low = 2718516121;
+    PC Bank Last Modified High = 30573797;
+    Bank Last Revised Low = 2718510905;
+    Bank Last Revised High = 30573797;
 
     Wave
     {
@@ -246,8 +250,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 379775256;
-            Last Modified High = 30510047;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -269,8 +273,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3172585958;
-            Last Modified High = 30560214;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -292,8 +296,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 2333752821;
-            Last Modified High = 30572896;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -315,8 +319,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 4220173159;
-            Last Modified High = 30572880;
+            Last Modified Low = 459911552;
+            Last Modified High = 30572863;
         }
     }
 
@@ -338,8 +342,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3888689790;
-            Last Modified High = 30572893;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -361,8 +365,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 330331183;
-            Last Modified High = 30572894;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -384,8 +388,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 214747098;
-            Last Modified High = 30572894;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -407,8 +411,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3861332939;
-            Last Modified High = 30572893;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -430,8 +434,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 1545912510;
-            Last Modified High = 30510049;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -453,8 +457,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 1545947825;
-            Last Modified High = 30510049;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -476,8 +480,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 1546127953;
-            Last Modified High = 30510049;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -499,8 +503,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3785798292;
-            Last Modified High = 30572901;
+            Last Modified Low = 1568345472;
+            Last Modified High = 30572968;
         }
     }
 
@@ -522,8 +526,8 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3039653632;
-            Last Modified High = 30573008;
+            Last Modified Low = 2575275008;
+            Last Modified High = 30573027;
         }
     }
 
@@ -545,8 +549,54 @@ Wave Bank
             Loop Region Offset = 0;
             Loop Region Length = 0;
             File Type = 1;
-            Last Modified Low = 3809653632;
-            Last Modified High = 30573008;
+            Last Modified Low = 2575275008;
+            Last Modified High = 30573027;
+        }
+    }
+
+    Wave
+    {
+        Name = score;
+        File = score.wav;
+        Build Settings Last Modified Low = 3020370775;
+        Build Settings Last Modified High = 30573795;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 2;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 92;
+            Play Region Length = 167936;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 2430391680;
+            Last Modified High = 30573795;
+        }
+    }
+
+    Wave
+    {
+        Name = magnetised;
+        File = magnetised.wav;
+        Build Settings Last Modified Low = 2251911043;
+        Build Settings Last Modified High = 30573797;
+
+        Cache
+        {
+            Format Tag = 0;
+            Channels = 2;
+            Sampling Rate = 44100;
+            Bits Per Sample = 1;
+            Play Region Offset = 44;
+            Play Region Length = 64764;
+            Loop Region Offset = 0;
+            Loop Region Length = 0;
+            File Type = 1;
+            Last Modified Low = 834108800;
+            Last Modified High = 30573450;
         }
     }
 }
@@ -558,11 +608,15 @@ Sound Bank
     Windows File = Win\Sound Bank.xsb;
     Xbox Bank Path Edited = 0;
     Windows Bank Path Edited = 1;
+    Bank Last Modified Low = 2718750890;
+    Bank Last Modified High = 30573797;
+    Header Last Modified High = 0;
+    Header Last Modified Low = 0;
 
     Sound
     {
         Name = enlarge;
-        Volume = -1200;
+        Volume = -500;
         Pitch = 0;
         Priority = 0;
 
@@ -609,7 +663,7 @@ Sound Bank
     Sound
     {
         Name = boost;
-        Volume = -1200;
+        Volume = -500;
         Pitch = 0;
         Priority = 0;
 
@@ -656,7 +710,7 @@ Sound Bank
     Sound
     {
         Name = slow;
-        Volume = -1200;
+        Volume = -500;
         Pitch = 0;
         Priority = 0;
 
@@ -703,7 +757,7 @@ Sound Bank
     Sound
     {
         Name = shrink;
-        Volume = -1200;
+        Volume = -500;
         Pitch = 0;
         Priority = 0;
 
@@ -750,7 +804,7 @@ Sound Bank
     Sound
     {
         Name = shield;
-        Volume = -1200;
+        Volume = -300;
         Pitch = 0;
         Priority = 0;
 
@@ -797,7 +851,7 @@ Sound Bank
     Sound
     {
         Name = multiply;
-        Volume = -1200;
+        Volume = -500;
         Pitch = 0;
         Priority = 0;
 
@@ -844,7 +898,7 @@ Sound Bank
     Sound
     {
         Name = invert;
-        Volume = -1200;
+        Volume = -500;
         Pitch = 0;
         Priority = 0;
 
@@ -891,7 +945,7 @@ Sound Bank
     Sound
     {
         Name = hit;
-        Volume = -1200;
+        Volume = -1700;
         Pitch = 0;
         Priority = 0;
 
@@ -1032,7 +1086,7 @@ Sound Bank
     Sound
     {
         Name = esc;
-        Volume = -1200;
+        Volume = -600;
         Pitch = 0;
         Priority = 0;
 
@@ -1126,7 +1180,7 @@ Sound Bank
     Sound
     {
         Name = menu;
-        Volume = -520;
+        Volume = -600;
         Pitch = 0;
         Priority = 0;
 
@@ -1174,7 +1228,7 @@ Sound Bank
     Sound
     {
         Name = game;
-        Volume = -1200;
+        Volume = -2000;
         Pitch = 0;
         Priority = 0;
 
@@ -1212,6 +1266,100 @@ Sound Bank
                     Bank Index = 0;
                     Entry Name = game;
                     Entry Index = 12;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = score;
+        Volume = 600;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = Wave Bank;
+                    Bank Index = 0;
+                    Entry Name = score;
+                    Entry Index = 14;
+                    Weight = 255;
+                    Weight Min = 0;
+                }
+            }
+        }
+    }
+
+    Sound
+    {
+        Name = magnetised;
+        Volume = -500;
+        Pitch = 0;
+        Priority = 0;
+
+        Category Entry
+        {
+            Name = Default;
+        }
+
+        Track
+        {
+            Volume = 0;
+            Use Filter = 0;
+
+            Play Wave Event
+            {
+                Break Loop = 0;
+                Use Speaker Position = 0;
+                Use Center Speaker = 1;
+                New Speaker Position On Loop = 1;
+                Speaker Position Angle = 0.000000;
+                Speaker Position Arc = 0.000000;
+
+                Event Header
+                {
+                    Timestamp = 0;
+                    Relative = 0;
+                    Random Recurrence = 0;
+                    Random Offset = 0;
+                }
+
+                Wave Entry
+                {
+                    Bank Name = Wave Bank;
+                    Bank Index = 0;
+                    Entry Name = magnetised;
+                    Entry Index = 15;
                     Weight = 255;
                     Weight Min = 0;
                 }
@@ -1314,6 +1462,14 @@ Sound Bank
         {
             Name = shield;
             Index = 4;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+
+        Sound Entry
+        {
+            Name = score;
+            Index = 14;
             Weight Min = 0;
             Weight Max = 255;
         }
@@ -1494,6 +1650,46 @@ Sound Bank
         {
             Name = menu;
             Index = 12;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = score;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = score;
+            Index = 14;
+            Weight Min = 0;
+            Weight Max = 255;
+        }
+    }
+
+    Cue
+    {
+        Name = magnetised;
+
+        Variation
+        {
+            Variation Type = 3;
+            Variation Table Type = 1;
+            New Variation on Loop = 0;
+        }
+
+        Sound Entry
+        {
+            Name = magnetised;
+            Index = 15;
             Weight Min = 0;
             Weight Max = 255;
         }

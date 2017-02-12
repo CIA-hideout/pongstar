@@ -154,12 +154,9 @@ bool Entity::collideBox(Entity &ent, VECTOR2 &collisionVector) {
 	if ((getCenterX() + edge.right*getScaleX() < ent.getCenterX() + ent.getEdge().left*ent.getScaleX()) ||
 		(getCenterX() + edge.left*getScaleX() > ent.getCenterX() + ent.getEdge().right*ent.getScaleX()) ||
 		(getCenterY() + edge.bottom*getScaleY() < ent.getCenterY() + ent.getEdge().top*ent.getScaleY()) ||
-		(getCenterY() + edge.top*getScaleY() > ent.getCenterY() + ent.getEdge().bottom*ent.getScaleY()))
-	{
-
+		(getCenterY() + edge.top*getScaleY() > ent.getCenterY() + ent.getEdge().bottom*ent.getScaleY())) {
 		return false;
 	}
-
 	// set collision vector
 	collisionVector = *ent.getCenter() - *getCenter();
 	return true;

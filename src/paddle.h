@@ -16,9 +16,7 @@ namespace paddleNS {
 	const float VELOCITY = 1000.0f;
 
 	enum SIDE { LEFT, RIGHT };
-	enum ACTION {
-		UP, DOWN, STAY
-	};
+	enum ACTION { UP, DOWN, STAY };
 	
 	struct ActionDuration {
 		ACTION action;

@@ -69,8 +69,10 @@ bool Paddle::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 	if (Entity::collidesWith(ent, collisionVector)) {
 		switch (ent.getEntityType()) {	
 			case entityNS::BALL: {				
-				if (magnetised && !magnetInitialized)
+				if (magnetised && !magnetInitialized) {
 					initMagnetEffect(ent);
+					audio->playCue(MAGNETISED_CUE);
+				}	
 			} break;
 			
 			case entityNS::BUMPER:
@@ -122,7 +124,6 @@ void Paddle::runEffects() {
 			} break;
 
 			case effectNS::MYSTERY: {
-				
 			} break;
 
 			case effectNS::SHIELD: {
@@ -186,7 +187,6 @@ void Paddle::runEffects() {
 }
 
 void Paddle::initMagnetEffect(Entity& ent) {
-	audio->playCue(HIT_CUE);
 	magnetBall = (Ball*)&ent;
 	magnetBall->setVelocity(VECTOR2(0, 0));
 	magnetBall->setMagnetised(true);

@@ -69,6 +69,7 @@ void Ball::wallCollision() {
 	}
 	// Collide with right wall
 	else if (spriteData.x > RIGHT_WALL) {
+		audio->playCue(SCORE_CUE);
 		msgPtr = new Message(messageNS::SCORE, messageNS::LEFT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);
@@ -88,6 +89,7 @@ void Ball::wallCollision() {
 	}
 	// Collision with left wall
 	else if (spriteData.x < LEFT_WALL - (spriteData.width * spriteData.scale.x)) {
+		audio->playCue(SCORE_CUE);
 		msgPtr = new Message(messageNS::SCORE, messageNS::RIGHT_P, messageNS::INCREMENT, id);
 		pushMsg(msgPtr);
 		setVisible(false);

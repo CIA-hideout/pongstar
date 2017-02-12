@@ -84,7 +84,7 @@ const char ESC_CUE[] = "esc";
 const char HIT_CUE[] = "hit";
 const char GAME_CUE[] = "game";
 const char MENU_CUE[] = "menu";
-
+const char SCORE_CUE[] = "score";
 const char ENLARGE_CUE[] = "enlarge";
 const char SHRINK_CUE[] = "shrink";
 const char BOOST_CUE[] = "boost";
@@ -93,5 +93,6 @@ const char MULTIPLY_CUE[] = "multiply";
 const char SHIELD_CUE[] = "shield";
 const char MAGNET_CUE[] = "magnet";
 const char INVERT_CUE[] = "invert";
+const char MAGNETISED_CUE[] = "magnetised";
 
 #endif

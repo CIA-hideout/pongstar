@@ -70,7 +70,7 @@ void PongstarBase::initializeEntities() {
 	// For pickups testing
 	// std::vector<effectNS::EFFECT_TYPE> ev = { effectNS::SHIELD, effectNS::MULTIPLY };
 	// pickupManager->testPickup(effectNS::MAGNET);
-	// pickupManager->createPickup(effectNS::MAGNET);
+	// pickupManager->createPickup(effectNS::INVERT);
 	// pickupManager->massSpawnPickups(ev);
 	// pickupManager->massSpawnContrastPickups();
 }
