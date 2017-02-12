@@ -112,7 +112,7 @@ void PongstarBase::update(float frameTime) {
 	
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
-		elapsedTime = duration_cast<milliseconds>(presentTime - startTime).count();
+		elapsedTime = (int)duration_cast<milliseconds>(presentTime - startTime).count();
 	}
 
 	for (auto& x : *pickupDelayTimers) {

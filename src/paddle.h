@@ -99,7 +99,7 @@ public:
 	void initMagnetAI();
 	float resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, 
 		float frameTime);
-	bool ballLevelWithPaddle(int centerBallY, int centerPaddleY);
+	bool ballLevelWithPaddle(float centerBallY, float centerPaddleY);
 	void logAction(paddleNS::ACTION a);
 };
 

@@ -115,9 +115,10 @@ void EntityManager::multiplyBall(int id) {
 	newBall2->setVelocity(newVelocity);
 }
 
-VECTOR2 EntityManager::getVelocityFromAngle(float angle, float resultantVelocity) {	
-	float thetaDeg = std::fmod(angle, 90);
-	float thetaRad = (thetaDeg * PI) / 180;
+VECTOR2 EntityManager::getVelocityFromAngle(float angle, float resultantVelocity) {
+	float basicAngle = 90.0;
+	float thetaDeg = std::fmod(angle, basicAngle);
+	float thetaRad = (thetaDeg * (float)PI) / 180;
 
 	float v1 = std::cos(thetaRad) * resultantVelocity;
 	float v2 = std::sin(thetaRad) * resultantVelocity;
