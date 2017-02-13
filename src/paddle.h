@@ -27,7 +27,7 @@ namespace paddleNS {
 	};
 
 	const int INIT_MAGNET_STEPS = 8;
-	const int PARTS_OF_SECOND = 12;
+	const int PARTS_OF_SECOND = 15;
 
 	const float RIGHT_PADDLE_START_X = GAME_WIDTH - SIDE_SPACE - WIDTH;
 	const float PADDLE_BUFFER_RANGE = 300; // if ball enter this range, start following ball
@@ -51,7 +51,9 @@ private:
 	LP_LINE magnetLine;
 
 	// AI
+	bool inverted;
 	bool enableControls;
+	paddleNS::ACTION prevAction;
 	std::queue<paddleNS::ActionDuration> magnetActions;
 	std::queue<paddleNS::ActionDuration> actions;
 

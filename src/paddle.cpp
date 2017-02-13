@@ -18,6 +18,7 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s, bool ec) : Enti
 	magnetBall = nullptr;
 	magnetTimer = 1.0f;
 	enableControls = ec;
+	inverted = false;
 
 	calibrateEdges();
 
@@ -106,6 +107,7 @@ void Paddle::runEffects() {
 
 			case effectNS::INVERT: {
 				controls = PaddleControls(controls.down, controls.up);
+				inverted = true;
 			} break;
 
 			case effectNS::BOOST: {
@@ -160,6 +162,7 @@ void Paddle::runEffects() {
 
 			case effectNS::INVERT:{ 
 				controls = PaddleControls(controls.down, controls.up);
+				inverted = false;
 			} break;
 
 			case effectNS::MULTIPLY:
@@ -319,6 +322,15 @@ void Paddle::findNewMove(Entity* ent) {
 	else // entAbove 
 		action = paddleNS::UP;
 
+	if (inverted) {
+		if (randBool() && action != prevAction) {
+			if (action == paddleNS::UP)
+				action = paddleNS::DOWN;
+			else if (action == paddleNS::DOWN)
+				action = paddleNS::UP;
+		}
+	}
+
 	actions.push(paddleNS::ActionDuration(action, subTimer));
 }
 
@@ -350,9 +362,11 @@ float Paddle::resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, float
 		break;
 	}
 
-	if (aq->front().duration <= 0)
+	if (aq->front().duration <= 0) {
+		prevAction = aq->front().action;
 		aq->pop();
-
+	}
+	
 	return yVelocity;
 }
 

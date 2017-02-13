@@ -144,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="config\controls.json" />
+    <None Include="data\demo_highscores.json" />
     <None Include="data\highscores.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

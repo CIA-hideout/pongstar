@@ -109,7 +109,7 @@ void PongstarBase::update(float frameTime) {
 
 	if (input->wasKeyPressed(triggerAIKey))
 		singlePlayer = !singlePlayer;
-	
+
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
 		elapsedTime = (int)duration_cast<milliseconds>(presentTime - startTime).count();
