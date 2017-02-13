@@ -250,17 +250,17 @@ void Ball::runEffects() {
 }
 
 float Ball::getBallAngle() {
-	float theta = (90 * fabs(velocity.y)) / ballNS::VELOCITY;
+	float theta = (90 * fabs(velocity.y) * fabs(velocity.y)) / (ballNS::VELOCITY * ballNS::VELOCITY);
 	float angle = 0;
 
 	if (velocity.x >= 0 && velocity.y < 0) {
-		angle = theta;
+		angle = 90 - theta;
 	}
 	else if (velocity.x > 0 && velocity.y >= 0) {
 		angle = 90 + theta;
 	}
 	else if (velocity.x <= 0 && velocity.y > 0) {
-		angle = 180 + theta;
+		angle = 270 - theta;
 	}
 	else if (velocity.x < 0 && velocity.y <= 0) {
 		angle = 270 + theta;

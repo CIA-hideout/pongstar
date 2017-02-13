@@ -99,25 +99,36 @@ void EntityManager::deleteBall(int id) {
 
 void EntityManager::multiplyBall(int id) {
 	Ball* currentBall = (Ball*)getEntity(id);
-	float ballAngle = currentBall->getBallAngle();
-	VECTOR2 newVelocity;
 
-	Ball* newBall1 = createBall();
-	newBall1->setX(currentBall->getX());
-	newBall1->setY(currentBall->getY());
-	newVelocity = getVelocityFromAngle(ballAngle + 30, currentBall->getResultantVelocity());
-	newBall1->setVelocity(newVelocity);
+	// Do not multiply if the ball is not moving
+	if (currentBall->getResultantVelocity() != 0) {
+		float ballAngle = currentBall->getBallAngle();
+		VECTOR2 newVelocity;
 
-	Ball* newBall2 = createBall();
-	newBall2->setX(currentBall->getX());
-	newBall2->setY(currentBall->getY());
-	newVelocity = getVelocityFromAngle(ballAngle - 30, currentBall->getResultantVelocity());
-	newBall2->setVelocity(newVelocity);
+		Ball* newBall1 = createBall();
+		newBall1->setX(currentBall->getX());
+		newBall1->setY(currentBall->getY());
+		newVelocity = getVelocityFromAngle(ballAngle + 30, currentBall->getResultantVelocity());
+		newBall1->setVelocity(newVelocity);
+
+		Ball* newBall2 = createBall();
+		newBall2->setX(currentBall->getX());
+		newBall2->setY(currentBall->getY());
+		newVelocity = getVelocityFromAngle(ballAngle - 30, currentBall->getResultantVelocity());
+		newBall2->setVelocity(newVelocity);
+	}
 }
 
 VECTOR2 EntityManager::getVelocityFromAngle(float angle, float resultantVelocity) {
+	float validAngle = angle;
+	if (angle > 360) {
+		validAngle -= 360;
+	} else if (angle < 0) {
+		validAngle += 360;
+	}
+
 	float basicAngle = 90.0;
-	float thetaDeg = std::fmod(angle, basicAngle);
+	float thetaDeg = std::fmod(validAngle, basicAngle);
 	float thetaRad = (thetaDeg * (float)PI) / 180;
 
 	float v1 = std::cos(thetaRad) * resultantVelocity;
@@ -125,16 +136,16 @@ VECTOR2 EntityManager::getVelocityFromAngle(float angle, float resultantVelocity
 
 	VECTOR2 velocity;
 
-	if (angle >= 0 && angle < 90) {
+	if (validAngle >= 0 && validAngle < 90) {
 		velocity = VECTOR2(v2, -v1);
 	}
-	else if (angle >= 90 && angle < 180) {
+	else if (validAngle >= 90 && validAngle < 180) {
 		velocity = VECTOR2(v1, v2);
 	}
-	else if (angle >= 180 && angle < 270) {
+	else if (validAngle >= 180 && validAngle < 270) {
 		velocity = VECTOR2(-v2, v1);
 	}
-	else if (angle >= 270 && angle < 360) {
+	else if (validAngle >= 270 && validAngle < 360) {
 		velocity = VECTOR2(-v1, -v2);
 	}
 
