@@ -177,7 +177,6 @@ bool Ball::collidesWith(Entity &ent, VECTOR2 &collisionVector) {
 
 void Ball::runEffects() {
 	Message* msgPtr;
-	float xRatio, yRatio;
 
 	// initialize all effects once
 	while (effects->getStartEffectQueue().size() > 0) {
