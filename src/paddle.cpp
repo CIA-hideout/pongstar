@@ -18,6 +18,7 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s, bool ec) : Enti
 	magnetBall = nullptr;
 	magnetTimer = 1.0f;
 	enableControls = ec;
+	inverted = false;
 
 	calibrateEdges();
 
@@ -106,6 +107,7 @@ void Paddle::runEffects() {
 
 			case effectNS::INVERT: {
 				controls = PaddleControls(controls.down, controls.up);
+				inverted = true;
 			} break;
 
 			case effectNS::BOOST: {
@@ -160,6 +162,7 @@ void Paddle::runEffects() {
 
 			case effectNS::INVERT:{ 
 				controls = PaddleControls(controls.down, controls.up);
+				inverted = false;
 			} break;
 
 			case effectNS::MULTIPLY:
@@ -298,26 +301,35 @@ paddleNS::ACTION Paddle::convertNoToAction(int no) {
 	return paddleNS::STAY;
 }
 
-bool Paddle::ballLevelWithPaddle(float centerBallY, float centerPaddleY) {
+bool Paddle::entLevelWithPaddle(float centerEntY, float centerPaddleY) {
 	float height = spriteData.height * spriteData.scale.y;
 
 	float paddleBottom = centerPaddleY + height / 2;
 	float paddleTop = centerPaddleY - height / 2 ;
 
-	return centerBallY < paddleBottom && centerBallY > paddleTop;
+	return centerEntY < paddleBottom && centerEntY > paddleTop;
 }
 
-void Paddle::findNewMove(Ball* ball) {
+void Paddle::findNewMove(Entity* ent) {
 	paddleNS::ACTION action;
 	float subTimer = 1.0f / paddleNS::PARTS_OF_SECOND;
-	bool ballBelow = ball->getCenterY() > getCenterY();
+	bool entBelow = ent->getCenterY() > getCenterY();
 
-	if (ballLevelWithPaddle(ball->getCenterY(), getCenterY()))
+	if (entLevelWithPaddle(ent->getCenterY(), getCenterY()))
 		action = paddleNS::STAY;
-	else if (ballBelow)
+	else if (entBelow)
 		action = paddleNS::DOWN;
-	else // ballAbove 
+	else // entAbove 
 		action = paddleNS::UP;
+
+	if (inverted) {
+		if (randBool() && action != prevAction) {
+			if (action == paddleNS::UP)
+				action = paddleNS::DOWN;
+			else if (action == paddleNS::DOWN)
+				action = paddleNS::UP;
+		}
+	}
 
 	actions.push(paddleNS::ActionDuration(action, subTimer));
 }
@@ -350,26 +362,30 @@ float Paddle::resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, float
 		break;
 	}
 
-	if (aq->front().duration <= 0)
+	if (aq->front().duration <= 0) {
+		prevAction = aq->front().action;
 		aq->pop();
-
+	}
+	
 	return yVelocity;
 }
 
 void Paddle::ai(float frameTime, Entity &ent) {
-	Ball* ball = (Ball*)&ent;
+	float yVelocity;
 
 	if (actions.size() == 0)
-		findNewMove(ball);
+		findNewMove(&ent);
 
-	float yVelocity = resolveActionQueue(&actions, frameTime);
+	yVelocity = resolveActionQueue(&actions, frameTime);
 
-	if (magnetised && magnetBall != nullptr) {
-		if (magnetActions.size() == 0)
-			initMagnetAI();
+	if (ent.getEntityType() == entityNS::BALL) {
+		if (magnetised && magnetBall != nullptr) {
+			if (magnetActions.size() == 0)
+				initMagnetAI();
 
-		yVelocity = resolveActionQueue(&magnetActions, frameTime);
-		magnetBall->setY(magnetBall->getY() + frameTime * yVelocity);
+			yVelocity = resolveActionQueue(&magnetActions, frameTime);
+			magnetBall->setY(magnetBall->getY() + frameTime * yVelocity);
+		}
 	}
 
 	setVelocity(VECTOR2(0, yVelocity));

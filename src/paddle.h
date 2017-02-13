@@ -27,7 +27,10 @@ namespace paddleNS {
 	};
 
 	const int INIT_MAGNET_STEPS = 8;
-	const int PARTS_OF_SECOND = 10;
+	const int PARTS_OF_SECOND = 15;
+
+	const float RIGHT_PADDLE_START_X = GAME_WIDTH - SIDE_SPACE - WIDTH;
+	const float PADDLE_BUFFER_RANGE = 300; // if ball enter this range, start following ball
 }
 
 class Paddle : public Entity {
@@ -48,7 +51,9 @@ private:
 	LP_LINE magnetLine;
 
 	// AI
+	bool inverted;
 	bool enableControls;
+	paddleNS::ACTION prevAction;
 	std::queue<paddleNS::ActionDuration> magnetActions;
 	std::queue<paddleNS::ActionDuration> actions;
 
@@ -93,11 +98,11 @@ public:
 	float moveUp();
 	float moveDown();
 	paddleNS::ACTION convertNoToAction(int n);
-	void findNewMove(Ball* b);
+	void findNewMove(Entity* b);
 	void initMagnetAI();
 	float resolveActionQueue(std::queue<paddleNS::ActionDuration>* aq, 
 		float frameTime);
-	bool ballLevelWithPaddle(float centerBallY, float centerPaddleY);
+	bool entLevelWithPaddle(float centerEntY, float centerPaddleY);
 	void logAction(paddleNS::ACTION a);
 };
 

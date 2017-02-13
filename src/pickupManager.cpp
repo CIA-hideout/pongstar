@@ -57,6 +57,17 @@ Pickup* PickupManager::createPickup(effectNS::EFFECT_TYPE et) {
 	return pickup;
 }
 
+std::vector<Pickup*> PickupManager::getPickups() {
+	std::vector<Pickup*> pickups;
+
+	for (auto &x : *entityManager->getEntityMap()) {
+		if (x.second->getEntityType() == entityNS::PICKUP)
+			pickups.push_back((Pickup*)x.second);
+	}
+
+	return pickups;
+}
+
 effectNS::EffectData PickupManager::getPickupData(effectNS::EFFECT_TYPE et) {
 	for (int i = 0; i < effectDataNS::EFFECT_ARR_SIZE; i++) {
 		if (effectDataNS::effectArray[i].effectType ==  et)
@@ -96,8 +107,6 @@ void PickupManager::massSpawnPickups(int side) {
 void PickupManager::massSpawnPickups(std::vector<effectNS::EFFECT_TYPE> ev) {
 	Pickup* pickup;
 	
-	std::vector<effectNS::EffectData> effDataVec;
-
 	for (int i = 0; i < 5; i++) {
 		pickup = createPickup(ev[randInt(0, ev.size() - 1)]);
 		pickup->setX(GAME_WIDTH / 2 - (pickupNS::WIDTH * pickupNS::SCALE.x) / 2);

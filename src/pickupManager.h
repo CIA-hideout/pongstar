@@ -51,6 +51,7 @@ public:
 
 	Pickup* randomPickup();
 	Pickup* createPickup(effectNS::EFFECT_TYPE et);
+	std::vector<Pickup*> getPickups();
 
 	effectNS::EffectData getPickupData(effectNS::EFFECT_TYPE et);
 

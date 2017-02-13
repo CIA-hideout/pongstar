@@ -50,7 +50,7 @@ Paddle* EntityManager::getPaddle(paddleNS::SIDE s) {
 	return s == paddleNS::LEFT ? (Paddle*)entityMap[leftPaddleId] : (Paddle*)entityMap[rightPaddleId];
 }
 
-std::vector<Paddle*> EntityManager::getPaddles() {	
+std::vector<Paddle*> EntityManager::getPaddles() {
 	std::vector<Paddle*> pv;
 	pv.push_back(getPaddle(paddleNS::LEFT));
 	pv.push_back(getPaddle(paddleNS::RIGHT));
@@ -98,6 +98,7 @@ void EntityManager::deleteBall(int id) {
 }
 
 void EntityManager::multiplyBall(int id) {
+	VECTOR2 newVelocity;
 	Ball* currentBall = (Ball*)getEntity(id);
 
 	// Do not multiply if the ball is not moving

@@ -56,7 +56,7 @@ void PongstarBase::initializeEntities() {
 
 	paddle1->setX((float)paddleNS::SIDE_SPACE);
 	paddle1->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
-	paddle2->setX(GAME_WIDTH - paddleNS::SIDE_SPACE - paddleNS::WIDTH);
+	paddle2->setX(paddleNS::RIGHT_PADDLE_START_X);
 	paddle2->setY(GAME_HEIGHT / 2 - paddleNS::HEIGHT / 2);
 
 	entityManager->addEntity(paddle1);
@@ -109,7 +109,7 @@ void PongstarBase::update(float frameTime) {
 
 	if (input->wasKeyPressed(triggerAIKey))
 		singlePlayer = !singlePlayer;
-	
+
 	if (gameStarted) {
 		steady_clock::time_point presentTime = steady_clock::now();
 		elapsedTime = (int)duration_cast<milliseconds>(presentTime - startTime).count();
@@ -123,16 +123,33 @@ void PongstarBase::update(float frameTime) {
 
 void PongstarBase::ai(float frameTime) {
 	if (singlePlayer) {
-		// find closest ball to paddle and use that for reference
+		// find closest entity to paddle and use that for reference
 		std::vector<Ball*> balls = entityManager->getBalls();
-		Ball* closestBall = balls[0];
+		std::vector<Pickup*> pickups = pickupManager->getPickups();
+
+		Entity* closestEntity = balls[0];
+		Pickup* closestPickup;
 
 		for (size_t i = 0; i < balls.size(); i++) {
-			if (balls[i]->getCenterX() > closestBall->getCenterX())
-				closestBall = balls[i];
+			if (balls[i]->getCenterX() > closestEntity->getCenterX())
+				closestEntity = balls[i];
 		}
-		
-		entityManager->getPaddle(paddleNS::RIGHT)->ai(frameTime, *closestBall);
+
+		if (pickups.size() > 0) {
+			closestPickup = pickups[0];
+
+			for (size_t i = 0; i < pickups.size(); i++) {
+				if (pickups[i]->getCenterX() > closestPickup->getCenterX())
+					closestPickup = pickups[i];
+			}
+
+			// if ball enter paddle buffer range, follow ball
+			if (paddleNS::RIGHT_PADDLE_START_X - closestEntity->getCenterY() > paddleNS::PADDLE_BUFFER_RANGE &&
+				closestPickup->getCenterX() > closestEntity->getCenterX())
+				closestEntity = closestPickup;
+		}
+
+		entityManager->getPaddle(paddleNS::RIGHT)->ai(frameTime, *closestEntity);
 	}
 }
 
