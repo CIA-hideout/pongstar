@@ -4,13 +4,10 @@ Bumper::Bumper() : Entity() {
 	entityType = entityNS::BUMPER;
 	spriteData.width = bumperNS::WIDTH;
 	spriteData.height = bumperNS::HEIGHT;
-	edge.top = -(long)(bumperNS::HEIGHT  * spriteData.scale.y / 2);
-	edge.bottom = (long)(bumperNS::HEIGHT  * spriteData.scale.y / 2);
-	edge.left = -(long)(bumperNS::WIDTH  * spriteData.scale.x / 2);
-	edge.right = (long)(bumperNS::WIDTH  * spriteData.scale.x / 2);
-	
 	side = randBool() ? bumperNS::LEFT : bumperNS::RIGHT;
+
 	randomLocationBumper();
+	calibrateEdges();
 }
 
 Bumper::~Bumper() {}

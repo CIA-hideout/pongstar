@@ -4,6 +4,7 @@ const char* nameToString(fontNS::FONT_NAME n) {
 	switch (n) {
 		case fontNS::SABO:			return "sabo";
 		case fontNS::SABO_FILLED:   return "sabo_filled";
+		default:					return "Invalid font name";
 	}
 }
 
@@ -14,6 +15,7 @@ const char* colorToString(fontNS::FONT_COLOR c) {
 		case fontNS::ORANGE:		return "orange";
 		case fontNS::RED:			return "red";
 		case fontNS::GREY:			return "grey";
+		default:					return "Invalid color";
 	}
 }
 

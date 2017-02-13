@@ -6,10 +6,6 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s, bool ec) : Enti
 	entityType = entityNS::PADDLE;
 	spriteData.width = paddleNS::WIDTH;
 	spriteData.height = paddleNS::HEIGHT;
-	edge.top = -(long)(paddleNS::HEIGHT * spriteData.scale.y / 2);
-	edge.bottom = (long)(paddleNS::HEIGHT * spriteData.scale.y / 2);
-	edge.left = -(long)(paddleNS::WIDTH * spriteData.scale.x / 2);
-	edge.right = (long)(paddleNS::WIDTH * spriteData.scale.x / 2);
 
 	currentFrame = (s == paddleNS::LEFT) ? 0 : 1;
 	loop = false;
@@ -22,6 +18,8 @@ Paddle::Paddle(Graphics* g, PaddleControls pc, paddleNS::SIDE s, bool ec) : Enti
 	magnetBall = nullptr;
 	magnetTimer = 1.0f;
 	enableControls = ec;
+
+	calibrateEdges();
 
 	D3DXCreateLine(g->get3Ddevice(), &shieldLine);
 	shieldLine->SetWidth(20);
@@ -222,13 +220,13 @@ void Paddle::draw(COLOR_ARGB color) {
 			shieldPoints[0] = VECTOR2((float)LEFT_SHIELD, 0);
 			shieldPoints[1] = VECTOR2((float)LEFT_SHIELD, (float)GAME_HEIGHT);
 			shieldLine->Begin();
-			shieldLine->Draw(shieldPoints, 2, graphicsNS::ORANGE + graphicsNS::ALPHA25);
+			shieldLine->Draw(shieldPoints, 2, graphicsNS::ORANGE & graphicsNS::ALPHA25);
 		}
 		else {
 			shieldPoints[0] = VECTOR2((float)RIGHT_SHIELD, 0);
 			shieldPoints[1] = VECTOR2((float)RIGHT_SHIELD, (float)GAME_HEIGHT);
 			shieldLine->Begin();
-			shieldLine->Draw(shieldPoints, 2, graphicsNS::BLUE + graphicsNS::ALPHA25);
+			shieldLine->Draw(shieldPoints, 2, graphicsNS::BLUE & graphicsNS::ALPHA25);
 		}
 
 		shieldLine->End();

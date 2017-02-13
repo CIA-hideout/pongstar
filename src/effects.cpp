@@ -17,6 +17,10 @@ bool Effects::effectExists(effectNS::EFFECT_TYPE effectType) {
 	return false;
 }
 
+bool Effects::isPhysicalEffect(effectNS::EFFECT_TYPE et) {
+	return et == effectNS::ENLARGE || et == effectNS::SHRINK || et == effectNS::BOOST || et == effectNS::SLOW;
+}
+
 ContrastEffect Effects::findContrastEffect(effectNS::EFFECT_TYPE newEffect) {
 	effectNS::EFFECT_TYPE contrastEffect = effectNS::EFFECT_TYPE();
 	bool exists = false;
@@ -86,4 +90,11 @@ void Effects::popStartEffectQueue() {
 void Effects::popEndEffectQueue() {
 	currentEffects.erase(endEffectQueue.front().effectType);
 	endEffectQueue.pop();
+}
+
+void Effects::resetEffects() {
+	for (auto& x : currentEffects) {
+		if (isPhysicalEffect(x.first))
+			endEffectQueue.push(EffectDuration(x.first, x.second));
+	}
 }

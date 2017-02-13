@@ -8,7 +8,6 @@
 class Font : public Image {
 private:
 	int widths[256];
-	std::string text;
 	int kerning;	// independent of scale, space between each char
 
 public:

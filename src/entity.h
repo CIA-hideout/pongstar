@@ -19,7 +19,9 @@ namespace entityNS {
 class Entity : public Image {
 	// Entity properties
 protected:
+	static int nextId;
 	int id;
+
 	entityNS::COLLISION_TYPE collisionType;
 	VECTOR2 center;         // center of entity
 	float   radius;         // radius of collision circle
@@ -192,6 +194,8 @@ public:
 	void gravityForce(Entity *other, float frameTime);
 
 	float getResultantVelocity();
+
+	void calibrateEdges();
 
 	void addEffect(effectNS::EFFECT_TYPE effectType, float duration);
 	virtual void runEffects() {};

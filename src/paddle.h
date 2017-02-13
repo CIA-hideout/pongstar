@@ -27,7 +27,7 @@ namespace paddleNS {
 	};
 
 	const int INIT_MAGNET_STEPS = 8;
-	const int PARTS_OF_SECOND = 8;
+	const int PARTS_OF_SECOND = 10;
 }
 
 class Paddle : public Entity {
