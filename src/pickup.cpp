@@ -12,13 +12,10 @@ Pickup::Pickup(effectNS::EFFECT_TYPE et, int f, float d, std::unordered_map<int,
 	spriteData.scale = pickupNS::SCALE;
 	spriteData.width = pickupNS::WIDTH;
 	spriteData.height = pickupNS::HEIGHT;
-	edge.top = -(long)(pickupNS::HEIGHT * spriteData.scale.y / 2);
-	edge.bottom = (long)(pickupNS::HEIGHT * spriteData.scale.y / 2);
-	edge.left = -(long)(pickupNS::WIDTH * spriteData.scale.x / 2);
-	edge.right = (long)(pickupNS::WIDTH * spriteData.scale.x / 2);
-
 	currentFrame = f;
 	loop = false;
+
+	calibrateEdges();
 }
 
 Pickup::~Pickup() {}

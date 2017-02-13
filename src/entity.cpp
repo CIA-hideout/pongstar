@@ -1,6 +1,6 @@
 #include "entity.h"
 
-int currentId = 0;
+int Entity::nextId = 0;
 
 //=============================================================================
 // constructor
@@ -34,8 +34,8 @@ Entity::Entity() : Image() {
 //=============================================================================
 bool Entity::initialize(Game *gamePtr, int width, int height, int ncols,
 	TextureManager *textureM) {
-	currentId++;
-	id = currentId;
+	nextId++;
+	id = nextId;
 
 	input = gamePtr->getInput();                // the input system
 	audio = gamePtr->getAudio();				// the audio system
@@ -429,6 +429,13 @@ void Entity::gravityForce(Entity *ent, float frameTime) {
 float Entity::getResultantVelocity() {
 	// Pythagoras' theorem
 	return std::sqrt(velocity.x * velocity.x + velocity.y * velocity.y);
+}
+
+void Entity::calibrateEdges() {
+	edge.top = -(long)(spriteData.height * spriteData.scale.y / 2);
+	edge.bottom = (long)(spriteData.height * spriteData.scale.y / 2);
+	edge.left = -(long)(spriteData.width * spriteData.scale.x / 2);
+	edge.right = (long)(spriteData.width * spriteData.scale.x / 2);
 }
 
 void Entity::addEffect(effectNS::EFFECT_TYPE effectType, float duration) {

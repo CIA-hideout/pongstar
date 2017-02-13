@@ -4,15 +4,14 @@ Ball::Ball() : Entity() {
 	entityType = entityNS::BALL;
 	spriteData.width = ballNS::WIDTH;
 	spriteData.height = ballNS::HEIGHT;
-	edge.top = -(long)(ballNS::HEIGHT * spriteData.scale.y / 2);
-	edge.bottom = (long)(ballNS::HEIGHT * spriteData.scale.y / 2);
-	edge.left = -(long)(ballNS::WIDTH * spriteData.scale.x / 2);
-	edge.right = (long)(ballNS::WIDTH * spriteData.scale.x / 2);
 
 	autoStart = false;
 	autoStartTimer = 0.0;
+	velocityMultiplier = 1.0f;
 	leftShield = false;
 	rightShield = false;
+
+	calibrateEdges();
 }
 
 Ball::~Ball() {}
@@ -20,8 +19,8 @@ Ball::~Ball() {}
 void Ball::update(float frameTime) {
 	Entity::update(frameTime);
 
-	spriteData.x += frameTime * velocity.x;
-	spriteData.y += frameTime * velocity.y;
+	spriteData.x += frameTime * velocity.x * velocityMultiplier;
+	spriteData.y += frameTime * velocity.y * velocityMultiplier;
 
 	if (autoStart) {
 		if (autoStartTimer < ballNS::AUTO_START_DELAY) {
@@ -39,10 +38,9 @@ void Ball::update(float frameTime) {
 
 void Ball::resetBall() {
 	velocity = VECTOR2(0, 0);
-	effects = new Effects();
 	spriteData.x = GAME_WIDTH / 2 - ballNS::WIDTH / 2;
 	spriteData.y = GAME_HEIGHT / 2 - ballNS::HEIGHT / 2;
-	spriteData.scale = VECTOR2(1.0f, 1.0f);
+	effects->resetEffects();
 }
 
 void Ball::autoStartBall(VECTOR2 v) {
@@ -202,15 +200,11 @@ void Ball::runEffects() {
 		} break;
 
 		case effectNS::BOOST: {
-			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-			velocity = VECTOR2(ballNS::VELOCITY * xRatio * 2, ballNS::VELOCITY * yRatio * 2);
+			velocityMultiplier = 2.0f;
 		} break;
 
 		case effectNS::SLOW: {
-			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-			velocity = VECTOR2(ballNS::VELOCITY * xRatio / 2, ballNS::VELOCITY * yRatio / 2);
+			velocityMultiplier = 0.5f;
 		} break;
 
 		case effectNS::MULTIPLY: {
@@ -237,16 +231,9 @@ void Ball::runEffects() {
 			spriteData.scale = VECTOR2(1.0f, 1.0f);
 		} break;
 
-		case effectNS::BOOST: {
-			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-			velocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
-		} break;
-
+		case effectNS::BOOST:
 		case effectNS::SLOW: {
-			xRatio = velocity.x / (fabs(velocity.x) + fabs(velocity.y));
-			yRatio = velocity.y / (fabs(velocity.x) + fabs(velocity.y));
-			velocity = VECTOR2(ballNS::VELOCITY * xRatio, ballNS::VELOCITY * yRatio);
+			velocityMultiplier = 1.0f;
 		} break;
 
 		case effectNS::INVERT:

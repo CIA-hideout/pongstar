@@ -21,6 +21,7 @@ private:
 	float autoStartTimer;
 	VECTOR2 autoStartVelocity;
 
+	float velocityMultiplier;
 	bool leftShield;
 	bool rightShield;
 	bool magnetised;

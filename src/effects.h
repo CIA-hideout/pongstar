@@ -46,6 +46,7 @@ public:
 	Effects();
 	~Effects();
 
+	bool isPhysicalEffect(effectNS::EFFECT_TYPE et);
 	bool effectExists(effectNS::EFFECT_TYPE et);
 	ContrastEffect findContrastEffect(effectNS::EFFECT_TYPE et);
 
@@ -67,6 +68,8 @@ public:
 	EffectDuration frontEffectQueue() { return startEffectQueue.front(); }
 	
 	void popEndEffectQueue();
+
+	void resetEffects();
 };
 
 #endif
