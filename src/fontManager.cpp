@@ -70,14 +70,14 @@ void FontManager::initialize() {
 		name = x.first;
 		colorsVec = x.second;
 		
-		sprintf(infoLocation, "%s%s.dat", fileDirectory, nameToString(name));
+		sprintf_s(infoLocation, "%s%s.dat", fileDirectory, nameToString(name));
 
 		for (size_t i = 0; i < colorsVec.size(); i++) {
 			font = new Font();
 			tm = new TextureManager();
 			
-			sprintf(fontLocation, "%s%s_%s.png", fileDirectory, nameToString(name), colorToString(colorsVec[i]));
-			sprintf(errorMsg, "Error initializing %s_%s texture", nameToString(name), colorToString(colorsVec[i]));
+			sprintf_s(fontLocation, "%s%s_%s.png", fileDirectory, nameToString(name), colorToString(colorsVec[i]));
+			sprintf_s(errorMsg, "Error initializing %s_%s texture", nameToString(name), colorToString(colorsVec[i]));
 
 			if (!(*tm).initialize(graphics, fontLocation))
 				throw(GameError(gameErrorNS::FATAL_ERROR, errorMsg));

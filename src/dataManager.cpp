@@ -1,9 +1,10 @@
 #include "dataManager.h"
 
 char* strToCharArr(std::string str) {
-	char *temp = new char[str.length() + 1];
+	int length = str.length() + 1;
+	char *temp = new char[length];
 
-	std::strcpy(temp, str.c_str());
+	strcpy_s(temp, length, str.c_str());
 	return temp;
 }
 
@@ -58,7 +59,7 @@ Value DataManager::convertHsmToVal(HighScoreMap hsm, Document::AllocatorType& a)
 		Value scoreObj(kObjectType), name;
 
 		char buffer[30];
-		int len = sprintf(buffer, "%s", x.second.c_str() ); // dynamically created string.
+		int len = sprintf_s(buffer, "%s", x.second.c_str() ); // dynamically created string.
 		name.SetString(buffer, len, a);
 		memset(buffer, 0, sizeof(buffer));
 

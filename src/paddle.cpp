@@ -268,11 +268,11 @@ void Paddle::logAction(paddleNS::ACTION a) {
 	char actionStr[10];
 
 	if (a == paddleNS::UP)
-		sprintf(actionStr, "UP");
+		sprintf_s(actionStr, "UP");
 	else if (a == paddleNS::DOWN)
-		sprintf(actionStr, "DOWN");
+		sprintf_s(actionStr, "DOWN");
 	else
-		sprintf(actionStr, "STAY");
+		sprintf_s(actionStr, "STAY");
 
 	printf("[PADDLE AI] %s\n", actionStr);
 }

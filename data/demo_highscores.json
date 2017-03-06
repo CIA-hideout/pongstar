@@ -19,7 +19,7 @@
         {
             "name": "LEAH",
             "score": 56681
-        },
+        }
     ],
     "timeAttack": [
         {
@@ -35,7 +35,7 @@
             "score": 8
         },
         {
-            "name": "NOOB",
+            "name": "BOB",
             "score": 9
         },
         {
@@ -49,6 +49,6 @@
         {
             "name": "OWL99",
             "score": 15
-        },
+        }
     ]
 }

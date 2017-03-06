@@ -20,10 +20,10 @@ HWND hwnd = NULL;
 //=============================================================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
 	// Enable debug console
-	AllocConsole();
-	freopen("CONIN$", "r", stdin);
-	freopen("CONOUT$", "w", stdout);
-	freopen("CONOUT$", "w", stderr);
+	//AllocConsole();
+	//freopen("CONIN$", "r", stdin);
+	//freopen("CONOUT$", "w", stdout);
+	//freopen("CONOUT$", "w", stderr);
 
 	// Check for memory leak if debug build
 	#if defined(DEBUG) | defined(_DEBUG)
@@ -71,7 +71,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		MessageBox(NULL, "Unknown error occured in game.", "Error", MB_OK);
 	}
 
-	FreeConsole();
+	//FreeConsole();
 	SAFE_DELETE(game);     // free memory before exit
 	return 0;
 }

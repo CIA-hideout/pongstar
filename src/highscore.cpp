@@ -106,9 +106,9 @@ void HighScore::renderClassicHS() {
 	
 		wholeTime = it->first / 1000;			// get first 2 digit for seconds
 		decimalTime = it->first % 1000 / 10;	// get first 2 digit after conversion to decimal
-		sprintf(rankStr, "%i", index + 1);
-		sprintf(nameStr, "%s", it->second.c_str());
-		sprintf(timeStr, "%i.%02i", wholeTime, decimalTime);
+		sprintf_s(rankStr, "%i", index + 1);
+		sprintf_s(nameStr, "%s", it->second.c_str());
+		sprintf_s(timeStr, "%i.%02i", wholeTime, decimalTime);
 
 		timeXpos = highScoreNS::SCORE_RIGHT_X_POS - largeFm->getTotalWidth(fontNS::SABO_FILLED, timeStr);
 	
@@ -133,8 +133,8 @@ void HighScore::renderTimeAtkHS() {
 		index = std::distance(timeAtkMap.rbegin(), it);
 		startHeight = highScoreNS::OVERALL_Y_POS + index * height;
 		
-		sprintf(rankStr, "%i", index + 1);
-		sprintf(nameStr, "%s", it->second.c_str());
+		sprintf_s(rankStr, "%i", index + 1);
+		sprintf_s(nameStr, "%s", it->second.c_str());
 
 		scoreXpos = highScoreNS::SCORE_RIGHT_X_POS - largeFm->getTotalWidth(fontNS::SABO_FILLED, std::to_string(it->first));
 

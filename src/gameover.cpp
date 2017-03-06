@@ -86,7 +86,7 @@ void Gameover::renderScore() {
 		int decimalTime = sceneData.scores.time % 1000 / 10;	// get first 2 digit after conversion to decimal
 
 		char timeStr[512];
-		sprintf(timeStr, "%i.%02i", wholeTime, decimalTime);
+		sprintf_s(timeStr, "%i.%02i", wholeTime, decimalTime);
 
 		int timeWidth = largeFm->getTotalWidth(fontNS::SABO_FILLED, timeStr);
 

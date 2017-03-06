@@ -49,8 +49,8 @@ void Pongstar::initialize(HWND hwnd) {
 		tm = new TextureManager();
 		texture = textureNS::initTextureVec[i];
 
-		sprintf(textureLocation, "%s%s.png", textureNS::TEXTURE_DIRECTORY, textureToString(texture));
-		sprintf(errorMsg, "Error initializing %s texture", textureToString(texture));
+		sprintf_s(textureLocation, "%s%s.png", textureNS::TEXTURE_DIRECTORY, textureToString(texture));
+		sprintf_s(errorMsg, "Error initializing %s texture", textureToString(texture));
 
 		if (!tm->initialize(graphics, textureLocation))
 			throw(GameError(gameErrorNS::FATAL_ERROR, errorMsg));
